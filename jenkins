@@ -1,0 +1,397 @@
+jenkins
+---------------
+jenkins is an opensource, java based, ci tool.
+
+hudson --> 2004 --> oracle
+
+2011 --> jenkins community
+
+jenkins --> jenkins community
+
+CI is the process of automating build, test the code, everytime a developer push the code.
+
+Continuous Integration= Continuous Testing + Continuous Build
+
+CI Benfits
+-----------
+Immediate bug detection
+No integration step in the software development lifecycle
+a deployable system at any given point
+Record of evolutoon of the project
+
+in house project/ Internal project       using continuous Deployment
+External Project --> wallmart/ floikart  using Continuous Delivery
+
+jacoco
+java code coverage   plugin 
+
+sonatype nexus repo
+jfrog artifactory repo
+
+
+Jenkins Installation
+---------------------
+
+sudo su -
+
+yum install wget -y
+
+sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+
+sudo yum upgrade
+
+sudo amazon-linux-extras install java-openjdk11 -y
+
+sudo yum install fontconfig java-11-openjdk 
+
+sudo yum install jenkins -y
+
+sudo systemctl enable jenkins
+
+sudo systemctl start jenkins
+
+sudo systemctl status jenkins
+
+Public ip and default port number 8080 you can login
+
+cat /var/lib/jenkins/secrets/initialAdminPassword
+e4dfb3c5bb304fe4a8d27c05097267ee
+jenkins
+username: Naveenstar
+Password: Princy@#$2022
+
+https://github.com/MithunTechnologiesDevOps
+
+https://github.com/snaveen457/maven-web-application.git
+
+crate job 
+
+yum install git -y
+git --version
+
+github 
+username: snaveen457
+Password: Vooha@#$2022
+
+give branch name development
+
+build steps      to build maven
+invoke top-level               Maven targets is avaliable for build 
+give goals name     clean package
+
+install maven in jenkins server better reduce errors
+
+in dahboard go to manage jenkins,click global tool configuration, click on Add maven, give name maven3.6.2 and save
+
+in dashboard go to project, go to configure, select maven version, and save.
+
+
+Building war: /var/lib/jenkins/workspace/wallmart-dev/target/maven-web-application.war
+
+/usr/lib/jvm
+~/.bash_profile
+java-11-openjdk-11.0.18.0.10-1.amzn2.0.1.x86_64
+create sonarqube server and login with web browser
+
+open git repository, go to development branch, got to pom.xml file inside sonarqube ip address and pot number need to give, and create token on sonarqube we can add and commit changes.
+
+in jenkins go to job, go to configure, in maven clean package next give like sonar:sonar after save it.
+
+build the code one more time it will code goes to git repo and maven and sonarqube server also.
+
+
+pom.xml giving repository details
+
+configure nexus 
+
+Not authorised nexus credential will give at vi setting.xml file
+
+cd /var/lib/jenkins/ --> jenkins directory root permission need to give
+cd tools/
+cd hudson.tasks.Maven_MavenInstallation
+ls
+cd Maven_3.9.0
+ls
+cd conf/
+vi settings.xml
+<server>
+      <id>nexus</id>
+      <username>admin</username>
+      <password>Princy@#$2022</password>
+    </server>            after save
+	
+Tomcat 
+
+Deploy to container 	this plug in using deploy 
+	
+go to jenkins dashboard, click manage jenkis , 	go to manage plugins, search Deploy to container plugin , click on install withou restart.
+
+select the tomcat server url, go to jenkins, select the job, click on configure, scrol down post build action under Deploy war/ear to a container ,
+select add container,go to tomcat8.9.0,give the tom cat url,tom cat server credentials. give package name also **/Maven-web-application.war, give context path also. and save.
+
+403 satus code forbidden 
+
+manager-gui
+admin-gui
+
+manager-script  tomcat
+cd /opt/tomcat9/conf
+vi tomcat-users.xml
+add manager-script
+
+for adding timestamp at console output
+go to job, click on configre, scrool down, under build environment, select add timesatmps to the console output,
+click on save.
+
+(Workspace delete) Delete workspace before build starts 
+
+(Delete old builds) Discard old builds, days to keep builds 5 days, max no of builds to keep 5, max no of builds to keep with artifacts 5.
+
+send e mail notification
+
+(Automate build trigger process)
+------------------------------------
+poll SCM
+Min Hours Dayofthemonth month Dayofweek
+go to job, click on configure, scroll down under build triggers select poll scm, give that contact format(time and date)
+my requiremnt every 1 min, so every 1 min need to give *****,and save.
+updated code only going trigger poll scm will do
+
+build periodically
+Min Hours Dayofthemonth month Dayofweek
+go to job, click on configure, scroll down under build triggers select build periodacally, give that contact format(time and date)
+my requiremnt every 1 min,so every 1 min need to give *****,and save.
+build peridiocally what ever particular time configure it will going trigger that time only.
+
+. 
+Disable this project (when ever shduled mainatince is there that time will use)
+ --> it will not show build now option in jenkins when it disable.
+----------------------------
+git web hooks --> Auto triger from git hub latest commits and push to jenkins
+
+(to generate the test report) install JACOCO Plug in
+-----------------------------------------------------
+Eclipse
+Eclama
+
+JACOCO plugin not deployed when code coverage is notreached is 80percent
+
+build is success or failure i need to send eamil notification
+--------------------------------------------------------------
+we have to configure SMTP with jenkins server.
+
+smtp.gmail.com
+
+sanveenstar777@gmail.com
+
+smtp 465
+
+go to manage jenkins, configur systems,scroll down end email notification, give smtp server smtp.gmail.com,
+go to advanced use SMTP Authentication, user name gmail password,use ssl, replay to address gmail.
+
+go to manage jenkins, configur systems,scroll down end extended email notificatication,give smtp server smtp.gmail.com,
+smtp user name and password,use ssl, default recipients give gmail id,save.
+
+jenkins directory structure
+-----------------------------
+/var/lib/jenkins jenkins home directory
+/var/log/jenkins jenkisns log directory
+
+/jobs
+flikart-dev
+bilds --> dir name
+15 -->dir name
+logs -->file
+nextbuild number -->file
+
+flipkar-qa
+builds
+
+workspace
+-------------
+flikart-dev  --> source code is avaliable
+flikart-dev@tmp
+
+users
+----------
+users.xml 
+
+plugins
+----------
+
+nodes
+----------
+default node is master
+
+-------------------------------------
+Maven Project type
+------------------
+
+maven integration plug in going to see project type
+
+click on new item, give project name as maven project, descrpition, source code management,git repository url,give git credntial, give development branch,
+scroll down pre steps build maven version give it, root pom pom.xml, goals  clean package,build settings e mail notifications give e mail id,
+save.
+now trigger maven job
+
+plugin management
+-------------------
+Deploy to container             --> to deploy the application into Tom cat server
+Deploy weblogic (oracle)        --> to deploy application into enterprise application server
+maven integration               --> to get that mavenproject type we are going to install maven integration project
+safe Restart                    --> jenkins url restart or jenkins url safeRestart
+jenkins url restart             --> running jobs will stop and restart
+jenkins url safeRestart         --> jenkins will restart once all running jobs are finished.
+Next Build Number               --> change the next build number from existing one required from buld number.
+JACOCO                          --> to generate the test reports
+SSH Agent                       --> when pipeline project time we will use
+Email Extension                 --> to get mails
+sonarQube Scanner               --> sonar qube servr details need to provide with help this plug in.
+no build script
+no pom.xml                      --> sonarqube server details 
+Audit trail plugin              --> how to track which user loged in and deleted job and trigger job
+tail -f audittrail.log.0          updated code it will show automatically
+Schduled build                  --> particular time build to schdule
+Artifactory plugin              --> integrated with nexus will use this plugin
+cloud foundry                   --> connect IBM Cloud through jenkins server use this plugin
+Blue ocean                      --> separe you can do pipeline
+publish over ssh                -->
+ThinBackup                      -->
+Build name Description setter   -->  for giving name to build 
+convert to pipeline             --> existing build project type will change
+invoke top-levelmaven targets   --> to build code
+
+Pipeline project
+
+script
+
+/var/lib/jenkins
+config.xml
+<useSecurity>true</useSecurity>
+restart jenkins service for password forgot jenkins to recovery
+
+tomcat/jBoss/wildfly/jenkins --> 8080 all these defalut port number
+
+Tomcat --> server.xml in this file onlychange port number
+
+jenkins --> /etc/sysconfig/jenkins change port number in jenkins
+
+/etc/sysconfig  --> Redhat
+/etc/default    --> ubuntu
+jenkins
+vi jenkins
+JENKINS_pORT="9980"
+after restart it
+systemctl restart jenkins
+
+Build with the parameters
+-----------------------------
+flipkart-dev
+flipkart-qa
+flikart-prod  instead of create 3 jobs we can create one job and we can give the vlues when ever trigger the job
+
+go to flipkart-dev,go to configure,scrol down this under general select this project is parameterized,
+select add parameter and select chioce parameter,give the name BranchName,
+in choice give branch names master,development,testqa,stage
+under Branches to build
+Branch Specifier (blank for 'any'
+*/$(BranchName)
+
+String Parameter
+Name Name
+Default Value Naveen
+
+under build steps
+Execute shell
+echo "Name is: $(Name)
+
+create a view add that jobs which we are working for that one navigate into particular jobs.
+click on plus symbol,create view,give the name flipkart-project,select the list view, click on ok.
+in that view what ever want jobs display select that jobs and click on ok. 
+
+if you want to delete view it will delete view only.
+
+now create one job flipkart-prod, edit view,which job display you can select click on ok.
+
+when ever particular view creating job select particular view and create.
+
+Jenkins security
+-----------------
+how to jenkins access to the development team?
+
+
+how create users 4
+-------------------
+
+Developers
+-------------
+mithun
+ruthvik
+
+Devops
+----------
+shishir
+manan
+
+go to manage jenkins, go to manage users, click manage users, create user, give username mithun and give password
+same to create users to 3 names
+user informatin store in file called users.xml
+cd /var/lib/jenkins/users/ path for users.xml
+login with created users and check whethe login or not
+how to restrict admin access to user?
+login with jenkins admin user, go to the manage jenkins, click on configure global security,check LDAP(Sepate admin team to support for this),
+under Authentication, jenkins own user database,
+under Authorization,By default logged in users can do anything this option,in real time never use this one,
+select project-based Matrix Authorization strategy,select add user or group,add all users,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
