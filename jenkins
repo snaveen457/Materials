@@ -347,20 +347,64 @@ under Authorization,By default logged in users can do anything this option,in re
 select project-based Matrix Authorization strategy,select add user or group,add all users,
 
 
+Pipeline project type
+-------------------------
+pipeline script
+1)scripted way
+node('master')
+(OR)
+
+node
+{
+ def mavenHome = tool name: "maven3.6.2"
+ stage('CheckoutCode')
+ {
+ 
+ }
+ 
+ stage('Build')
+ {
+ bat or sh "${mavenHome}/bin/mvn clean package"
+ }
+ stage('ExecuteSonarQubeReport')
+ {
+ sh "${mavenHome}/bin/mvn sonar:sonar"
+ stage('ExecuteSonarQubeReport')
+ {
+ sh "${mavenHome}/bin/mvn sonar:sonar
+ }
+ stage('UploadArtifactIntoNexus')
+ {
+ sh "${mavenHome}/bin/mvn deploy"
+ }
+stage ('DeployAppintoTomcat')
+{
+sh "scp -o  target/maven-web-application.war ec2-user@18.188.246.142:/opt/apache-tomcat-9.0.39/webapps"
+}
+2)Declarative way
+
+create a job,type pipelinescript-project,select pipeline and click on ok.
+go to pipeline projec,scroll down under pipeline,pipeline script is available, provide reqirements.
+
+After creating pipeline job,under pipeline syntax click on,go to snippet Generator,under sample steps scroll down select git: Git,next asking which repository, 
+give the repository url,give branch name is development, save the github credential.and copy the script paste under stage ('checkoutcode')
+
+mavenHome=/var/lib/jenkins/tools/hudson.tasks.Maven_MavenInstallation/maven3.6.2
+${mavenHome}/bin/mvn clean package
+
+scp filename username@hostname:/.../webapps
+ssh Agent plug in
+man scp 
 
 
 
+2)Declarative way pipeline script.
+freestyle
+maven
+pipeline
 
-
-
-
-
-
-
-
-
-
-
+Multi branch pipeline project type
+------------------------------------
 
 
 
