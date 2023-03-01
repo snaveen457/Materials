@@ -357,7 +357,8 @@ node('master')
 node
 {
  def mavenHome = tool name: "maven3.6.2"
- stage('CheckoutCode')
+
+stage('CheckoutCode')
  {
  
  }
@@ -393,8 +394,15 @@ mavenHome=/var/lib/jenkins/tools/hudson.tasks.Maven_MavenInstallation/maven3.6.2
 ${mavenHome}/bin/mvn clean package
 
 scp filename username@hostname:/.../webapps
+sh "scp target/maven-web-application.war ec2-user@13.211.157.52:/opt/tomcat/webapps"
+ sshagent(['3823e2aa-c202-49bc-b591-b30c9306faef']){
+     sh "scp -o  StrictHostKeyChecking=no target/maven-web-application.war ec2-user@13.211.157.52:/opt/tomcat/webapps"
 ssh Agent plug in
-man scp 
+man scp  StrictHostKeyChecking=no
+permission deined will get error 
+for webappsfolder give chmod -R 777 webapps
+
+
 
 
 
