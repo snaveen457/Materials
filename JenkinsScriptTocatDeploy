@@ -1,0 +1,23 @@
+node{
+    
+     def mavenHome = tool name: "maven3.9.0"
+
+    stage("copying code from the git"){
+        git credentialsId: '5fcccbf1-20a9-49b3-a90b-7ad12e2cb3dc', url: 'https://github.com/snaveen457/maven-web-application.git'
+    }
+    
+    stage('Build'){
+ sh "${mavenHome}/bin/mvn clean package"
+ }
+ stage("ExecutionSonaQubeReport"){
+ sh "${mavenHome}/bin/mvn sonar:sonar
+ }
+
+ stage("deplot to tomcat"){
+     
+ sshagent(['3823e2aa-c202-49bc-b591-b30c9306faef']){
+     sh "scp -o  StrictHostKeyChecking=no target/maven-web-application.war ec2-user@13.211.157.52:/opt/tomcat/webapps"
+ }
+}
+ 
+}
