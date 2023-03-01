@@ -405,6 +405,65 @@ pipeline
 
 Multi branch pipeline project type
 ------------------------------------
+create a one branch from master mbpmaster, master branch and mbpmaster, uat having jenkins file.in stage brnch jenkins file not there,
+if we take master branch how many jobs to create it will create 3 master mbpmaster and uat. remainig branch it will not create jobs because jenkins file not there.
+create job at jenkins, give name MBPLProject type, select pipelin project type,under branch sources,select the git hub give the git repo url and gitcredential,
+don't give any branch name,click on save.click build.
+
+Scan Multibranch pipeline Trigger
+---------------------------------
+peridocally if not otherwise run, selct and give time. later you have to update code from any branch and triggger.
+
+jenkins kubernate 
+
+jenkins Backup
+--------------
+ThinBackup,
+
+go to Manage jenkins,go to plug in manager, search in available Thinbackup,select Thinbackup, install without restart.
+Now go to manage jenkins,scroll down end will see thin backup.click on thinbackup,there 3 items will show like Back Now,Restore,Settings.
+click on settins,give backup directory means jenkins path,/var/lib/jenkins/jenkinsbackup,max number of backup sets give 5,under select what ever back up need,save.
+in jenkins url click on backup now,it will take back up.
+Backup schdule for full backups--> every time it will take all the backup  *****(Every minute going to take back up)
+Backup schdule for differential backups-->from previous backup to currently any updates are there that one only going to take.
+
+in jenkis server go to cd /var/lib/jenkins in jenkins folder create one folder like mkdir jenkinsbackup, ls -l,
+chown -R jenkins:jenkins jenkinsbackup
+pwd  
+/var/lib/jenkins/jenkinsbackup 
+ls
+job config history plug in (refer you tube this video)-->you can restore the deleted jobs also.
+job import plug in (refer you tube this video)
+
+-----------------------------------------------------
+Master Slave Architecture
+-------------------------
+create one master for jenkins one for slave1
+login slave 1
+go to the manage jenkins,go to manage nodes and clouds,
+create a new node, give the name node1, in Description mentioned what is use of this node,
+remote root directory need to give path /home/ec2-user/node1
+in jenkins server pc create mkdir node1,go inside node1, then take that path pwd /home/ec2-user/node1
+Labels you can give label names
+usage use this node as much as possible
+launched method launch agents via SSH node pulic ip mentione in Host, give credential ssh username with private key user name ec2-user add pem file.
+give the desecrption slave1 
+host key verification starategy manually trusted key verification strategy
+available keep this agent online as much as possible
+node property  click on save.
+it connect master to node1
+login node 1 install java,
+cd node1
+ls
+remoting remototing .jar
+
+go to jenkisns job, build any job, restrict where this project in run
+give the node name in label expression,trigger job.
+in node1 install git, now trigger job it will come to node.
+in node1 
+
+
+
 
 
 
