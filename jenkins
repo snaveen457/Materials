@@ -470,11 +470,29 @@ give the node name in label expression,trigger job.
 in node1 install git, now trigger job it will come to node.
 in node1 
 
+Jenkins Migration
+----------------
+job import plug in for jenkins migration.refer video from youtube
 
+jenkins CLI
+------------------
+if you want access hostnname:8080/cli/
+form down load jenkins.cli.jar file,after downloading create one folder and copy here jenkins.cli.jar,take this path,
 
+java -jar jenkins-cli.jar -s http://3.14.84.84:9980/ -websocket help,
+java -jar jenkins-cli.jar -auth Naveenstar:Princy@#$2023 -s http://3.14.84.84:9980/ -websocket help
+java -jar jenkins-cli.jar -auth Naveenstar:Princy@#$2023 -s http://3.14.84.84:9980/ -websocket build diskspace(job name) to trigger build
+java -jar jenkins-cli.jar -auth Naveenstar:Princy@#$2023 -s http://3.14.84.84:9980/ -websocket delete-job mbplproject delete job
 
+creating token go to manage jenkins, go to configure, under API Token, give token name, generate the token,copy the token id save some where.instead of password you can give token.
 
+upstream and Down stream
+---------------------------
+flipkart-dev-->upstream job
+flipkart-qa-->downstream job
+flipkart -prod
 
+go to flipkart-qa, go to configure, under build triggers, select build after other projects are built,in project to watch add flipkart-dev,save.
 
 
 
