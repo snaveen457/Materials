@@ -129,7 +129,7 @@ Deploy to container 	this plug in using deploy
 go to jenkins dashboard, click manage jenkis , 	go to manage plugins, search Deploy to container plugin , click on install withou restart.
 
 select the tomcat server url, go to jenkins, select the job, click on configure, scrol down post build action under Deploy war/ear to a container ,
-select add container,go to tomcat8.9.0,give the tom cat url,tom cat server credentials. give package name also **/Maven-web-application.war, give context path also. and save.
+select add container,go to tomcat8.9.0,give the tom cat url,tom cat server credentials. give package name also **/maven-web-application.war, give context path also. and save.
 
 403 satus code forbidden 
 
@@ -156,7 +156,7 @@ send e mail notification
 poll SCM
 Min Hours Dayofthemonth month Dayofweek
 go to job, click on configure, scroll down under build triggers select poll scm, give that contact format(time and date)
-my requiremnt every 1 min, so every 1 min need to give *****,and save.
+my requiremnt every 1 min, so every 1 min need to give * * * * *,and save.
 updated code only going trigger poll scm will do
 
 build periodically
