@@ -170,12 +170,21 @@ Disable this project (when ever shduled mainatince is there that time will use)
  --> it will not show build now option in jenkins when it disable.
 ----------------------------
 git web hooks --> Auto triger from git hub latest commits and push to jenkins
+it is used to integrate jenkins with github projects and trigger a job when developer push the code in github repo.
+setup github webhook
+----------------------
+1)Navigate to the "settins" page of your repository
+2)click the webhooks&service" tab in the side bar
+3)click the "Add webhook"button
+4)For the "Payload URL", use the jenkinsURL, set the "Content type" to application/JSON
+5)Click"Add webhook"
 
 (to generate the test report) install JACOCO Plug in
 -----------------------------------------------------
 Eclipse
 Eclama
 
+JACOCO generate test report
 JACOCO plugin not deployed when code coverage is notreached is 80percent
 
 build is success or failure i need to send eamil notification
@@ -216,11 +225,12 @@ flikart-dev@tmp
 
 users
 ----------
-users.xml 
+user information store in users.xml 
+
 
 plugins
 ----------
-
+what ever installed plugin stored in plugins.
 nodes
 ----------
 default node is master
