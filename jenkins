@@ -477,6 +477,7 @@ go to Manage jenkins,go to plug in manager, search in available Thinbackup,selec
 Now go to manage jenkins,scroll down end will see thin backup.click on thinbackup,there 3 items will show like Back Now,Restore,Settings.
 click on settins,give backup directory means jenkins path,/var/lib/jenkins/jenkinsbackup,max number of backup sets give 5,under select what ever back up need,save.
 in jenkins url click on backup now,it will take back up.
+
 Backup schdule for full backups--> every time it will take all the backup  *****(Every minute going to take back up)
 Backup schdule for differential backups-->from previous backup to currently any updates are there that one only going to take.
 
