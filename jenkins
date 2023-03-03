@@ -354,11 +354,12 @@ user informatin store in file called users.xml
 cd /var/lib/jenkins/users/ path for users.xml
 login with created users and check whethe login or not
 how to restrict admin access to user?
-login with jenkins admin user, go to the manage jenkins, click on configure global security,check LDAP(Sepate admin team to support for this),
+login with jenkins admin user, go to the manage jenkins, click on configure global security,check LDAP(Separate admin team to support for this),
 under Authentication, jenkins own user database,
 under Authorization,By default logged in users can do anything this option,in real time never use this one,
 select project-based Matrix Authorization strategy,select add user or group,add all users,
-
+Authentication -->it is going to check that valid credential or not.
+Authorization --> ofter checking valid credential, authorization checks which access you have.
 
 Pipeline project type
 -------------------------
