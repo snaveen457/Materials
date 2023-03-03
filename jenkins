@@ -276,7 +276,7 @@ invoke top-levelmaven targets   --> to build code
 Pipeline project
 
 script
-
+jenkins service for password forgot jenkins to recovery
 /var/lib/jenkins
 config.xml
 <useSecurity>true</useSecurity>
@@ -315,8 +315,11 @@ Default Value Naveen
 
 under build steps
 Execute shell
-echo "Name is: $(Name)
+echo "Name is: ${Name}"
 
+click on build with parameters,
+Create View
+------------
 create a view add that jobs which we are working for that one navigate into particular jobs.
 click on plus symbol,create view,give the name flipkart-project,select the list view, click on ok.
 in that view what ever want jobs display select that jobs and click on ok. 
