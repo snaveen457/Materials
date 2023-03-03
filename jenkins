@@ -365,37 +365,68 @@ Pipeline project type
 -------------------------
 pipeline script
 1)scripted way
-node('master')
-(OR)
+------------------
 
+node('master')
+
+(OR)127 status code standard code, mavenHome=/var/lib/jenkins/tools/hudson.tasks.Maven_MavenInstallation/maven_3.9.0
+==================================================================================================================
 node
 {
- def mavenHome = tool name: "maven3.6.2"
-
-stage('CheckoutCode')
- {
- 
- }
- 
- stage('Build')
- {
- bat or sh "${mavenHome}/bin/mvn clean package"
- }
- stage('ExecuteSonarQubeReport')
- {
- sh "${mavenHome}/bin/mvn sonar:sonar"
- stage('ExecuteSonarQubeReport')
- {
- sh "${mavenHome}/bin/mvn sonar:sonar
- }
- stage('UploadArtifactIntoNexus')
- {
- sh "${mavenHome}/bin/mvn deploy"
- }
-stage ('DeployAppintoTomcat')
-{
-sh "scp -o  target/maven-web-application.war ec2-user@18.188.246.142:/opt/apache-tomcat-9.0.39/webapps"
+def mavenHome = tool name: "maven 3.9.0"
+stage ('CheckoutCode'){
+git branch: 'development', credentialsId: 'af55cb54-7ec0-4414-8c0e-4a8b999dadd8', url: 'https://github.com/snaveen457/maven-web-application.git'
 }
+
+stage('Build'){
+sh "${mavenHome}/bin/mvn clean package"
+}
+ 
+ stage('ExecuteSonarQubeReport'){
+ sh "${mavenHome}/bin/mvn sonar:sonar"
+ }
+ stage('UploadArtifactintonexus'){
+ sh "${mavenHome}/bin/mvn deploy"
+  }
+ stage('DeployAPpintoTomcat'){
+ sshagent(['ae8a6ec4-f887-428d-8d23-a777d300da28']){
+ sh "scp -o  StrictHostKeyChecking=no target/maven-web-application.war ec2-user@18.202.251.119:/opt/tomcat/webapps/"
+ }
+ }
+ stage('sendmailnotification')
+ mail bcc: '', body: '''Build Over.
+
+Regards''', cc: 'snaveenapt457@gmail.com', from: '', replyTo: '', subject: 'Build over', to: 'snaveenstar777@gmail.com'
+}
+
+===============================================================================================================================================
+node{
+    
+     def mavenHome = tool name: "maven 3.9.0"    --->local variable
+
+    stage("copying code from the git"){
+        git credentialsId: '5fcccbf1-20a9-49b3-a90b-7ad12e2cb3dc', url: 'https://github.com/snaveen457/maven-web-application.git'
+    }
+    
+    stage('Build'){
+ sh "${mavenHome}/bin/mvn clean package"
+ }
+ stage('ExecutionSonaQubeReport'){
+ sh "${mavenHome}/bin/mvn sonar:sonar"
+ }
+
+ stage("deplot to tomcat"){
+     
+ sshagent(['3823e2aa-c202-49bc-b591-b30c9306faef']){
+     sh "scp -o  StrictHostKeyChecking=no target/maven-web-application.war ec2-user@13.211.157.52:/opt/tomcat/webapps/"
+ }
+}
+ 
+}
+single line comment -->//
+multi line comment -->/* */ before }
+
+
 2)Declarative way
 
 create a job,type pipelinescript-project,select pipeline and click on ok.
@@ -427,8 +458,8 @@ pipeline
 
 Multi branch pipeline project type
 ------------------------------------
-create a one branch from master mbpmaster, master branch and mbpmaster, uat having jenkins file.in stage brnch jenkins file not there,
-if we take master branch how many jobs to create it will create 3 master mbpmaster and uat. remainig branch it will not create jobs because jenkins file not there.
+create a one branch from master mbpmaster, master branch and mbpmaster, development having jenkins file.in stage brnch and testqa jenkins file not there,
+if we take master branch how many jobs to create it will create 3 master mbpmaster and development. remainig branch it will not create jobs because jenkins file not there.
 create job at jenkins, give name MBPLProject type, select pipelin project type,under branch sources,select the git hub give the git repo url and gitcredential,
 don't give any branch name,click on save.click build.
 
