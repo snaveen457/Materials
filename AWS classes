@@ -22,10 +22,42 @@ object storage --> we can access data from any where without mounting the storag
 
 
 create instance,automatically EBS it will store some default value,give lsblk it will show how many block storage have,root file system.
+go to volume, create volume, give siz3 5 gb, select availability zone 1a, give tag name,create volume.
+attch created volume, go to actions,select attach volume,select running instance,select attach volume.
+then verfication go to ec2 instance, check volumes use coomand lsblk,it will show two volumes.
+created new volume before use you need to format and if you want, do partions and mount the volume.
+check file system in ec2 instance using command file -s /dev/xvdf it will show output dev/xvdf: data
+check file system in ec2 instance using command file -s /dev/xvda1 it will show output /dev/xvda1: SGI XFS filesystem data (blksz 4096, inosz 512, v2 dirs)
+create file system in ec2 instance using command like mkfs.ext4 /dev/xvdf and enter.
+df -kh use this command volume mounted or not.create directory mkdir ebsdemo,mount coomand mount /dev/xvdf ebsdemo/
+create a file vi ebsdemo/test.txt give comment,
+in real time, jenkins storage in additional volume.
+if youu want add volume, go to actions, select modify volume, give size 5 to 10 and give modify.
+root volume and additional volume how to take backup, select this volume,create snapshot,give name for snapshot.
+
+
+create additional volume and use
+==================================
 1)create EBS volume
 2) Attach EBS Volume 
-3) create a filesysytem 
-4)Mount volume with directory
+3) create a filesysytem (format)
+ext3,ext4
+4)Mount volume with directory (saving temporary)
+5) save in fstab  (saving permenently)
+
+
+restore data from the snapshot
+==============================
+1)create avolume
+2) Attach volume 
+3)mount that volume
+4)save in fstab
+
+
 
 what is the capacity of 1 EBS Volume?
 16TB or 16384 GB
+can we change volume size & type while it is in use?
+yes we can change, we can change the volume type. we can increase volume you no nedd to shutdown the server.
+create volume from the snapshot can we do file system?
+no, if i create again file sysytem data will be loss.
