@@ -1,0 +1,31 @@
+Storage services
+==================
+EBS -->block storage   EBS Additional storage capacity 16384GB
+EFS -->file system
+s3 --> object storage
+
+storage types
+==============
+Block storage --> the data(file) will be spilt into a equally distributed blocks and save as ablocks in the storage.
+advantage: performance, read and write performance.
+EBS Additional storage capacity 16384GB
+root EBS storage support 1023GB
+
+IOPS--> input output operations seconds
+
+file storage or file system --> treditional file systems,
+it will maintain as single entity
+either block storage or file storage we have to attach to the instance we have mount to the file system then only wecan use.
+
+object storage --> we can access data from any where without mounting the storage to server.
+                   each object which we will upload to object storage will have uniqueID and URL(HTTP(S)) endpoint.
+
+
+create instance,automatically EBS it will store some default value,give lsblk it will show how many block storage have,root file system.
+1)create EBS volume
+2) Attach EBS Volume 
+3) create a filesysytem 
+4)Mount volume with directory
+
+what is the capacity of 1 EBS Volume?
+16TB or 16384 GB
