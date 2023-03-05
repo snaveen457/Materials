@@ -84,8 +84,52 @@ how to attach snapshot to another server
 create one more instance in 1b availabityzone.login
 from the snapshot create volume, go to snapshot,go to action, select create volume from snapshot and create.
 go to voulmes, attach this volume, select 1b avilability zone,and create.
-after attaching volume, mount the volume, before create one directory in 1b zone,mount /dev/xvdf testsnap/
+after attaching volume, mount the volume, before create one directory in 1b zone,mount /dev/xvdf bag/
 file -s .dev/xvdf for checking file system.
+cat bag/test.txt
+
+need to create AMI old server then create new instance with new key?
+
+how can we recover EC2 if you lost pem file?
+not able to get recover old pem key.so instead of create one instance with new pem file,
+login new ec2 insatnce, create volume with public key,attach volume, copy lates public key from old to new,after detach volume,
+attach root volume, later we can do ssh with new key pair.if you want delete temporary server if you want.
+
+
+NFS --> Network file system  port number-2049
+EFS --> Elastic file system managed NFS 
+
+search in services, EFS, and click on EFS, click create file system,give name EBS_Demo,
+select network, create.
+use client software EC2 nfs client or EFS client both instances.
+we have to open the port for NFS in security groups.
+open two instances,
+need shared file sysytem,install efs or nfs file,yum install nfs-utils -y,df -kh for verification,
+copy efs dns name fs-0f5cc10f05d85ba2f.efs.eu-west-1.amazonaws.com:/ efs,
+create directory, mkdir shared,sudo mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport fs-0f5cc10f05d85ba2f.efs.eu-west-1.amazonaws.com:/ shared/
+EFS limit scalable elastic file system no limit.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
