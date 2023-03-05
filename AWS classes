@@ -32,7 +32,7 @@ create file system in ec2 instance using command like mkfs.ext4 /dev/xvdf and en
 df -kh use this command volume mounted or not.create directory mkdir ebsdemo,mount coomand mount /dev/xvdf ebsdemo/
 create a file vi ebsdemo/test.txt give comment,
 in real time, jenkins storage in additional volume.
-if youu want add volume, go to actions, select modify volume, give size 5 to 10 and give modify.
+if you want add more volume, go to actions, select modify volume, give size 5 to 10 and give modify.
 root volume and additional volume how to take backup, select this volume,create snapshot,give name for snapshot.
 
 
@@ -55,9 +55,39 @@ restore data from the snapshot
 
 
 
-what is the capacity of 1 EBS Volume?
+what is the maximum capacity of 1 EBS Volume?
 16TB or 16384 GB
+
 can we change volume size & type while it is in use?
 yes we can change, we can change the volume type. we can increase volume you no nedd to shutdown the server.
+
 create volume from the snapshot can we do file system?
 no, if i create again file sysytem data will be loss.
+
+what is replication and migration?
+replication--> duplicating maintain two servers, 
+Migration --> we are moving one data center to another data center.
+
+
+AWs infrstructure.
+=======================
+hardware --. cpu memory storage,networks
+servers -->
+on premise data centers
+aws cloud provider it's providing infrstructure,servers,storage,networks,softewares.
+
+Aws solution Architects
+Aws sysops Engineers
+
+how to attach snapshot to another server
+=============================================
+create one more instance in 1b availabityzone.login
+from the snapshot create volume, go to snapshot,go to action, select create volume from snapshot and create.
+go to voulmes, attach this volume, select 1b avilability zone,and create.
+after attaching volume, mount the volume, before create one directory in 1b zone,mount /dev/xvdf testsnap/
+file -s .dev/xvdf for checking file system.
+
+
+
+
+
