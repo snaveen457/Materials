@@ -110,25 +110,67 @@ create directory, mkdir shared,sudo mount -t nfs4 -o nfsvers=4.1,rsize=1048576,w
 EFS limit scalable elastic file system no limit.
 
 
+S3(Simple storage service)
+========================
+s3 another kind of a storage we can use to store our data to maintain our data.
+s3 is an object storage, we can access data from any where without mounting s3.
+object(file) we upload to s3 will have unique id and endpoint(url), using which we can access from any where.
+
+how can upload data to s3
+====================================
+progamatically we upload and access data using
+AWS CLI --> command line interface
+AWS API --> application programming interface
+AWS SDK --> software development kit.
+            Boto -->AWS SDK for Python
+            Boto3 --> AWS SDK for Python
+AWS GUI(console)
+
+S3 is perfect place to maintain static data of our applications.
+Application Images,Documents, Videos.
+
+Netflix,DropBox using s3 as data store.
+
+s3 Bucket name should be unique across in the world
 
 
+Security Group(Firewall)
+VPc(Subnets,Rout Tables)
+How to create s3 bucket
+========================
+login EC2 instance, search in services s3,create a bucket,give bucket name universal name like princy4321,select region where you want,
+click on bucket,upload any file,by default data (ojects) is secure but you will not access,first give the pselect type s3,principal give *,actions get object select,
+give amazon resource name.
 
 
+By Default objects(files) are secure in s3
+Security
+ACL
+Bucket Policies
+
+s3
+=====
+1)scalability
+2)Availability
+3)internet
+4)latency
+==============================
+1)S3 bucket setup
+2) data upload to s3
+3) data down load to s3
+==============================
+1.how to make an object public?
 
 
+1.static website -->
+2.dynamic website -->
 
+2.how to enable static website hosting?
 
+3.static website demo?
 
-
-
-
-
-
-
-
-
-
-
+Regions
+============
 
 
 
