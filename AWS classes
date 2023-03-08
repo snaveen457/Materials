@@ -186,20 +186,32 @@ setup 2 tomcat servers, deploy one application like maven-web-application,now cr
 
 Create load balancer,map application server ip's in load balncer,
 what is layer 7 and 4 load balncer?
+
 1)Application load balncer -->Layer 7 support HTTP/HTPPS protocol
 it support path based routing and host based routing
 
 2)Network Load balncer-->Layer 4 Support TCP Protocol
 it support port based routing port to port
 
-3)classic Load balncer-->
+3)classic Load balncer--> Legacy(old) port HTTP/HTTPS OR TCP
+
+ELB
+Listners --> will listen request on specific protocol and port.
+htpp-80
+each listner we can define routing rules so that it will route the traffic to appropriate targetgroups.
+https-443
+
+Routing rules
+Target groups --> it's logical grouping of our servers.
 
 
+create target group from ec2 instance
+========================================
+create target group,give target groupname like mavenwebapplication,give protocol,
+http,and port 8080, give vpc, click next, select two servers add,create target troup.
 
-
-
-
-
+Now create loadbalncer,selct load balncer,select applcation load balncer,click create,
+selcet interbet-facing,give load balncer port numberhttp 80,https 443,selct availablity zones,1a,1b,
 
 
 
