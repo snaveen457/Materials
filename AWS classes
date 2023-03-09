@@ -174,7 +174,7 @@ Regions
 
 Load Balancer
 =============
-Load Balance software
+mavenwebAppserversLoad Balance software
 Ngnix
 HAProxy
 Appache HTTPD
@@ -213,9 +213,10 @@ http,and port 8080, give vpc, click next, select two servers add,create target t
 Now create loadbalncer,selct load balncer,select applcation load balncer,click create,
 selcet interbet-facing,give load balncer port numberhttp 80,https 443,selct availablity zones,1a,1b,
 
+mavenwebAppservers
 
-
-
+path based routin-
+host based routin-
 
 
 
