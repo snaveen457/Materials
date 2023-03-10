@@ -272,13 +272,48 @@ how many vpc create in one region?
 5
 
 
+================================================================================================================================================
+IAM
+======
+IAM --> Identity Access Management
 
+Authentication and Autheraization
 
+Groups --> we can create a group can attach polocies to the group. we can assing users(Developers,Admins) to the group.
+Policies
+EC2 Read only Access
+EC2FullAccess
+vpc read only access
+vpc full access
+eks readonly access
+ecrreadonlyaccess
+ecr full access
+iam ready only access
+IAM full access
+s3 readonly
+s3 full access
+Users
+Roles --> Roles can be create with some polocies based on requirement. we can attach role to aws resource like EC2,EKS ..etc. 
+they can manage aws resources programatically base the polices
+AWS Resources/workloads --> EC2, ELB, EBS, VPC, S3,EFS,EKS,ECR
 
+Developers
+AWS Admin
+AWS Architects
+Devops
 
+how many ways we can manage (access/create/update/delete) AWS?
+1) AWS Console GUI(Graphical user interface) 
+2) AWS CLI
+3) AWS API
+4) AWS SDK
+other development tools like
+terraform -->infrastructure as a code
 
-
-
+Create IAM User
+---------------
+go to services page, search IAM, click IAM,
+create a Group,give group name DevOps,attch policies,
 
 
 
