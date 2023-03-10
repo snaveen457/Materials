@@ -219,6 +219,60 @@ path based routin-
 host based routin-
 
 
+Auto Scaling
+============
+Min --> Based on requirement we can have min number servers defined.
+Max --> we can define max servers
+
+AutoscalingGroup --> we can create autoscaling by defining MIN,MAX servers required for our application to handle the load.
+
+Launch Configuration --> It's an input for ASG, ASG will use launch configuration to create ec2 instances, 
+                         Launch config will have information about instance type,AMI,userdata,SSHKey, sg,.etc.
+                         
+Scaling Polocies  --> we can define how to scale when to scale.
+                      Manual Scaling 
+                      Dyanmic scaling --> Based on the Metrics(CPU,Memory) we can scale upor we can scale down servers.
+                      Schduled
+
+healthchecks -->
+
+Golden image --> we can create our own AMI which has software configuratons and application.
+
+
+
+VPC
+========
+VPC --> Virtual private cloud,it's a private network in which we will create our aws resources.
+and we will have complete control on the network and it's routing.
+
+
+subnets --> subnetworks
+private subnet --> a network which does not have accesss to the internet(WAN).
+so these servers which are created under private network will not have access to internet and we pepole cannot access the private subnet
+servers from internet. but servers which are part of same vpc (LAN Network) can talk to each other with internet.
+public subnet --> a network which has route or access to the internet. servers will have public in this network.
+servers will have access to the internet. people can access these servers from internet.
+
+Application servers
+DB servers
+load balnces (web servers)
+k8' servers
+
+IGW --> internet gate way, it's virtual router which will enabled internet connectivity our vpc.
+
+Route Tables --> 
+
+By default when we create AWS account we will have a default vpc.
+
+CIDR --> Classless inter domain routing it's an alogirtham using which we can define our network range and it's routing.
+172.31.0.0/16
+           siuder block
+
+how many vpc create in one region?
+5
+
+
+
 
 
 
