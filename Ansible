@@ -1,0 +1,136 @@
+Ansible
+===========
+ansible is an opensource configuration management tool and also we can use as a Deployment tool,provided by redhat.
+
+Configuration is some task which we want to execute on the server, it can be 
+
+1) CReating Users/Groups ..etc
+2)Installing and removing a software/package
+3)creating/updating/copying files.
+4) start/stop services .etc
+
+Configuration Management tools
+Ansible
+Chef
+Puppet
+Saltstack
+
+Two types configuration management tools
+=============================================
+Push based configuration --> server only push to hosts (Ansible)
+Ansible Agent less configuration,Ansible written in a python language.
+Pull based configuration --> host only pull from server( with agent software pull) (Chef,Puppet)
+
+Terraform -->Infrastructure as a code
+we can provision /modify/destory infrastructure(Network,Servers,storage..etc)
+
+
+can we install Ansible in windows machine or is Ansible Machine(controller) can be a windows?
+No
+can we configue windows using ansible?
+yes, we can configure windows machine using ansible.
+
+What can Ansible do?
+cofiguration management
+Continuous delivery
+
+why ansible?
+Predefined modules/functionalities.
+yml based scripts.
+Idempotent(all ready configuration is done it's not modified any thing)
+Push Based and Agent less.
+
+Ansible Components:
+=====================
+Host Inventory --> we can maintain deatils of host machines(Servers) to configure. we can list and group servers(Host Machines)
+Two types of Host incentory
+----------------------------
+Satic Inventory --> It's a file in which we can list host(server)details like IP/HostName, User Name,Password ..etc, we can group the servers.
+Default location or path of Host inventory --> /etc/ansible/hosts
+Dynamic Inventory --> it's a Script(Python/Sheel) which will fetch host details dyanmically from external source like from Cloud provider, databses etc.
+
+Connection Plugins
+-------------------
+SSH --> Linux
+WINRM -->windows Remote Machine
+
+Playbooks --> It's yaml basedvscript (configuration), play book contains atsks which you want to perform on the servers.
+we will usse ansible modules to write the tasks.
+Sample:
+-hosts: all
+ tasks:
+ - name: create a user
+   user:
+    name: mithun
+    create_home: yes
+    password: Naveen@123
+    group: <groupName>
+
+Ansible configuration
+------------------------
+Create 3 servers 1 for ansible servers 2 for hosts
+create Ansible user in server, give user name like ansible,sudo useradd ansible, and give password,sudo passwd ansible,Password Princy@#$2022
+bydafult password based authentication not enable in aws,so we have to enable, go to sudo vi /etc/ssh/sshd_config
+ keep like this # To disable tunneled clear text passwords, change to no here!
+PasswordAuthentication yes
+#PermitEmptyPasswords no
+#PasswordAuthentication no
+restart the service sudo service sshd restart, it will restart service.
+giving sudo access to ansible user, give sudo visudo,
+## Read drop-in files from /etc/sudoers.d (the # here does not mean a comment)
+#includedir /etc/sudoers.d
+ansible  ALL=(ALL)  NOPASSWD: ALL
+ec2-user  ALL=(ALL)  NOPASSWD: ALL
+
+login ansible user like sudo su anisble, required to install python, sudo yum install python3-pip -y,(It's a python package manager)
+Update package Manager
+sudo yum update -y
+install EPEL Repository on RHEL
+sudo dnf -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+confirm EPEL installation
+sudo dnf repolist epel
+Ansible Towe user Ansible playbook to deploy itself so we also need ansible installed.
+sudo yum -y install ansible vim curl
+
+sudo amazon-linux-extras install ansible2
+ansible --version
+python --version
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
