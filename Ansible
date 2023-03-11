@@ -96,24 +96,32 @@ sudo amazon-linux-extras install ansible2
 ansible --version
 python --version
 
+sudo chown ansible:ansible -R /etc/ansible/ change permission
+cd /etc/ansible
+vi hosts in this add private ip address
+# ungrouped hosts below give ip
+172.31.1.200
+172.31.1.0
 
+ansible all -m ping for checking ping, wiil get verify first time host key verification, 
+where we have to disable this, vi /etc/ansible/ansible.cfg, #host_key_checking = False  to uncomment,
 
+how to make ssh
 
+vi /etc/ansible/hosts
+172.31.1.200 ansible_user=ec2-user
+172.31.1.0 ansible_user=ec2-user
 
+vi ~/ddddd.pem
+add the key
+vi /etc/ansible/hosts
+172.31.1.200 ansible_user=ec2-user ansible_ssh_private_key_file=~/ddddd.pem
+172.31.1.0 ansible_user=ec2-user ansible_ssh_private_key_file=~/ddddd.pem
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+check this command later nsible all -m ping
+the private key have wide permissions
+chmod 400 ~/ddddd.pem
+now  will able to do access ssh connection
 
 
 
