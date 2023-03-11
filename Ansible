@@ -124,12 +124,110 @@ chmod 400 ~/ddddd.pem
 now  will able to do access ssh connection
 
 
+vi createuser.yml
 
+- hosts: all
+  tasks:
+  - name: Create ansible User
+    user: 
+      name: ansible
+      create_home: true
+      shell: /bin/bash
+      comment: "Ansible Management Account"
+      expires: -1
+      Password:  "{{ 'Princy@#$2022' }}"
+   - name: setup Sudo Access for ansible User
+     copy:
+       dest: /etc/sudoers.d/ansible
+       content: 'ansible ALL=(ALL) NOPASSWD:ALL'
+       validate: /usr/sbin/visudo -cf %s
+   - name: Disable Password Authentication
+     lineinfile:
+          dest=/etc/ssh/sshd_config
+          regexp=' ^passwordAuthentication'
+          line="passwordAuthentication yes"
+          state=present
+          backup=yes
+       notify:
+         - restart ssh
+       handlers:
+       - name: restart ssh
+         state=restarted
 
+ansible all -m ping 
 
+ssh-keygen in ansible server user
 
+[appserver] grouping server
+172.31.1.200
+172.31.1.0
 
+ansible --inventoryfile <path> -m <module>
+ansible -i <path> -m <module>
 
+ansible <all/groupName/hostname> -m <module> -a <args>
+ansible all -m ping
+ansible-doc -l  for checking modules
+ansible-doc -l <module> moredetail about module
+ansible-doc -l | grep "copy"
+
+ansible all -m shell -a "git --version"  via checking shell
+ansible all -m shell -a "date"
+ansible all -m shell -a "df -kh" checking file system of host machines
+
+ansible all -m shell  -b -a "yum install git -y"
+ansible appservers -m shell  -b -a "yum install git -y"
+ansible 172.89.12.13 -m shell  -b -a "yum install git -y"
+
+ansible all -m yum -a "name=git state=present"
+ansible all -m yum -b -a "name=git state=present"
+ansible all -m yum -b -a "name=git-2.0.1 state=present" install the software
+ansible all -m yum -b -a "name=git state=absent"  remove the software
+ansible all -m apt -a "name=git state=present"
+
+irresepective of underlying os which module you can use to manage apckages using package manager in ansible?
+
+package
+ using ansible perform below configurations on appservers.
+ 
+ ansible appserver -m yum -b -a "name=httpd state=present"
+ 
+ install httpd software
+ ansible appserver -m yum -b -a "name=httpd state=present"
+  ansible all -m yum -b -a "name=httpd state=present"
+ copy index.html file
+ ansible all -m copy -b -a "src=/home/ec2-user/index.html dest=/var/www/html/index.html"   copying file from source to destination
+ ansible all -m copy -b -a "src=/home/ec2-user/index.html dest=/var/www/html/index.html remote_src: yes"
+ scp 
+ start httpd service
+ansible-doc -l |grep "get_url"  download urls
+
+- hosts: all
+  tasks:
+  - name: install httpd
+    yum:
+      name: httpd
+      state: present
+   - name: copy index.html
+     copy:
+       src: index.html
+       dest: /var/www/html/index.html
+    - name: start https service
+      service:
+        name: httpd
+        state: started
+  
+  
+sudo ansible-playbook httpd.yml --syntax-check 
+    
+how do u dry run ansible play book or what is dry in run in ansible?
+
+ansible-playbook installhttpd.yml
+ansible-playbook installhttpd.yml --check
+
+what is verbose or how do run playbook in verbose?
+ansible-playbook installhttpd.yml -v single verbose
+ansible-playbook installhttpd.yml -vv  double verbose
 
 
 
