@@ -82,7 +82,7 @@ giving sudo access to ansible user, give sudo visudo,
 ansible  ALL=(ALL)  NOPASSWD: ALL
 ec2-user  ALL=(ALL)  NOPASSWD: ALL
 
-login ansible user like sudo su anisble, required to install python, sudo yum install python3-pip -y,(It's a python package manager)
+login ansible user like sudo su ansible, required to install python, sudo yum install python3-pip -y,(It's a python package manager)
 Update package Manager
 sudo yum update -y
 install EPEL Repository on RHEL
@@ -118,14 +118,14 @@ vi /etc/ansible/hosts
 172.31.1.200 ansible_user=ec2-user ansible_ssh_private_key_file=~/ddddd.pem
 172.31.1.0 ansible_user=ec2-user ansible_ssh_private_key_file=~/ddddd.pem
 
-check this command later nsible all -m ping
+check this command later ansible all -m ping
 the private key have wide permissions
 chmod 400 ~/ddddd.pem
 now  will able to do access ssh connection
 
 
 vi createuser.yml
-
+---
 - hosts: all
   tasks:
   - name: Create ansible User
@@ -230,11 +230,30 @@ ansible-playbook installhttpd.yml -v single verbose
 ansible-playbook installhttpd.yml -vv  double verbose
 
 
+This playbbok will install HTTP server and start the server.
+---
+- hosts: all
+become: true
+tasks:
+- name: Install Apache HTTP server
+yum: name=httpd update_cache=yes state=latest
+- name: Start HTTP Server
+service: name=httpd enabled=yes state=started
 
 
 
+- hosts: all
+become: true
+tasks:
+- name: Creating a file
+file:
+path: /opt
+owner: root
+mode: 0777
+state: touch
 
 
+-
 
 
 
