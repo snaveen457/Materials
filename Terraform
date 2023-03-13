@@ -143,7 +143,7 @@ In real-time world, the project has more variables, it is diifficult maintain th
 instead we will put the variables in a separate file called vars.tf as follows
 
 file Name: vars.tf
-
+----------------------------------------------------
 variable "ami"{
            default="ami-047dcdc46ac4f2e6b"
 }
@@ -151,10 +151,10 @@ variable "ami"{
 variable"instance_type"{
           default= "t2.micro"
 }
-
+----------------------------------------------------
 Variables..
 Now terraform looks like below
-
+----------------------------------------------------
 provider "aws" {
           region = "ap-southeast-2"
 }
@@ -168,7 +168,7 @@ resource "aws_instance" "AWSEC2Instance" {
   Name= "Terrafrom Server"
  }
 }
-
+---------------------------------------------------------
 mkdir varsdemo
 cd varsdemo
 vi vars.tf
@@ -200,14 +200,157 @@ resource "aws_instance" "AWSEC2Instance" {
   ls -la inside .terraform folder will create
    terraform apply -auto-approve
 
+----------------------------------------------
+provider "aws" {
+          region = "ap-southeast-2"
+}
+
+resource "aws_instance" "AWSEC2Instance" {
+          ami = "$(var.ami-)"
+          instance_type = "$(var.instance_type)"
+          key_name = "terraform"
+          security_groups = ["launch-wizard-1"]
+ tags={
+          Name= "Terrafrom Server"
+ }
+-------------------------------------------------
+
+variable "ami"{
+ description = "AMI Name..."
+ default = "ami-047dcdc46ac4f2e6b"
+}
+
+variable "instance_type"{
+ description = "instance_Type..."
+ default = "t2.micro"
+}
+
+variable "instances"{
+ description = "Number of instances..."
+ default = "2"
+}
+-----------------------------------------
+count.tf
+--------------------------------------
+provider "aws"{
+ region = "ap-southeast-2"
+}
+
+resource "aws_instance" "AWSServer" {
+  count = "${var.instances}"
+  ami = "${var.ami}"
+  instance_type = "${var.instance_type}"
+  key_name = "terraform"
+  security_groups = ["launch-wizard-1"]
+
+  tags = {
+   Name = "Terrafrom Server - MSS - ${count.index}"
+ }
+}
+----------------------------------------------------
+userdata
+=============
+----------------------------
+mkdir userdata
+
+vi installAppacheServer.sh
+
+#!/bin/bash
+
+sudo yum install httpd -y
+sudo systemctl enable httpd
+sudo systemctl start httpd
+---------------------------------
+ls
+
+chmod u=x installAppacheServer.sh
+
+vi var.tf
+--------------------------
+vi userdata.tf
+variable "ami"{
+ description = "AMI Name..."
+ default = "ami-047dcdc46ac4f2e6b"
+}
+
+variable "instance_type"{
+ description = "instance_Type..."
+ default = "t2.micro"
+}
+------------------------------------
+provider "aws"{
+ region = "ap-southeast-2"
+}
+
+resource "aws_instance" "AWSServer" {
+  ami = "${var.ami}"
+  instance_type = "${var.instance_type}"
+  key_name = "terraform"
+  security_groups = ["launch-wizard-1"]
+  user_data = "${file("installAppacheServer.sh")}"
+  tags = {
+   Name = "Terrafrom Server - MSS"
+ }
+------------------------------------------
+Security group
+===================
+provider "aws"{
+ region = "ap-southeast-2"
+}
+
+resource "aws_security_group" "AWSSG" {
+  name = "SGByTerrafrom"
+  description = "This Security Group by MSS"
+  vpc_id = "vpc-016a92f71226e5eb0"
+
+  ingress{
+   from_port = 80
+   to_port = 80
+   protocol = "tcp"
+   cidr_blocks = ["0.0.0.0/0"]
+ }
+
+  egress{
+   from_port = 443
+   to_port = 443
+   protocol = "tcp"
+   cidr_blocks = ["0.0.0.0/0"]
+ }
+
+tags = {
+ name = "SGbyMSS"
+  }
+}
+----------------------------------------                 
+IAM User Creation
+==================
+mkdir iamuser
+cd iamuser
+vi iamuser.tf
 
 
+provider "aws"{
+ region = "ap-southeast-2"
+}
+resource "aws_iam_user" "IAMUSER" {
+name = "Naveen"
+}
 
- 
+---------------
+var.tf
 
+variable "user_names"{
+  type = list(string)
+  default = ["balaji","manan","MithunsoftwareSolutions"]
+}
 
-
-
+provider "aws"{
+ region = "ap-southeast-2"
+}
+resource "aws_iam_user" "IAMUSER" {
+count = length(var.user_names)
+name = var.user_names[count.index]
+}
 
 
 
