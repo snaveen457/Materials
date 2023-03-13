@@ -123,6 +123,11 @@ the private key have wide permissions
 chmod 400 ~/ddddd.pem
 now  will able to do access ssh connection
 
+cat /etc/passwd for checking users
+userdel username for deleting
+ ps aux | grep 3714 for checking ansible user
+ 
+/home/ansible/git/ansible-scripts
 
 vi createuser.yml
 ---
