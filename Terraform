@@ -56,6 +56,174 @@ resource "aws_instance" "AWSEC2Instance" {
 AKIARCEVQ4RXLZT7MYE3  ACcess
 VukA+oS4shpEk7Q/MzUQqraVsa1VSoFhnLoo/M01
 
+400 status code - bad request
+terraform init
+terraformt fmt
+terrafoem validate
+terraform apply
+terraform apply -auto-approve  it will not ask yes confirmaton
+
+Create Multiple Resources
+===============================
+using count argument, we can pass the number of resources we need, as follows.
+
+provider "aws" {
+  region = "ap-southeast-2"
+  access_key = "AKIARCEVQ4RXLZT7MYE3"
+  secret_key = "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"
+}
+
+resource "aws_instance" "AWSEC2Instance" {
+  count = "5"
+  ami = "ami-047dcdc46ac4f2e6b"
+  instance_type = "t2.micro"
+  key_name = "terraform"
+  security_groups = ["launch-wizard-1"]
+  tags = {
+   Name = "Terrafrom Server"
+  }
+}
+
+AWS Credentials
+Comments
+=========
+The Terraform language supports three different syntaxes for comments:
+a)# begins a single-line comment, ending at the end of the line.
+b)//also begins a single-line comment, as an alternative to #.
+c)/* and */ are start and end delimiters for a comment that might span over multiple lines
+Bash Scritpting
+--------------
+# --> single line represent
+<< --> Multi line represent
+
+java/Groovy Script
+------------------
+// --> single line represent
+
+/*  (start)
+
+*/ (end) --> Multi line represent
+
+Terraform
+--------
+// or # --> single line represent
+
+/*  (start)
+
+*/ (end) --> Multi line represent
+
+provider "aws" {
+  region = "ap-southeast-2"
+ # access_key = "AKIARCEVQ4RXLZT7MYE3"
+  //secret_key = "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"
+}
+
+resource "aws_instance" "AWSEC2Instance" {
+  count = "5"
+  ami = "ami-047dcdc46ac4f2e6b"
+  instance_type = "t2.micro"
+  key_name = "terraform"
+  security_groups = ["launch-wizard-1"]
+  tags = {
+   Name = "Terrafrom Server"
+  }
+}
+
+Environment Variables
+----------------------
+export AWS_ACCESS_KEY_ID="AKIARCEVQ4RXLZT7MYE3"
+export AWS_SECRET_ACCESS_KEY="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"
+terraform destroy
+export AWS_DEFAULT_REGION= "ap-southeast-2"
+provider "aws" {
+ region = "ap-southeast-2"
+}
+
+In real-time world, the project has more variables, it is diifficult maintain the variables in terraform script, 
+instead we will put the variables in a separate file called vars.tf as follows
+
+file Name: vars.tf
+
+variable "ami"{
+           default="ami-047dcdc46ac4f2e6b"
+}
+
+variable"instance_type"{
+          default= "t2.micro"
+}
+
+Variables..
+Now terraform looks like below
+
+provider "aws" {
+          region = "ap-southeast-2"
+}
+
+resource "aws_instance" "AWSEC2Instance" {
+          ami = "$(var.ami)"
+          instance_type = "$(var.instance_type)"
+          key_name = "terraform"
+          security_groups = ["launch-wizard-1"]
+ tags={
+  Name= "Terrafrom Server"
+ }
+}
+
+mkdir varsdemo
+cd varsdemo
+vi vars.tf
+variable "ami"{
+  default="ami-047dcdc46ac4f2e6b"
+}
+
+variable"instance_type"{
+ default= "t2.micro"
+}
+
+vi varsdemo.tf
+provider "aws" {
+          region = "ap-southeast-2"
+}
+
+resource "aws_instance" "AWSEC2Instance" {
+          ami = "$(var.ami)"
+          instance_type = "$(var.instance_type)"
+          key_name = "terraform"
+          security_groups = ["launch-wizard-1"]
+ tags={
+          Name= "Terrafrom Server"
+ }
+}
+
+ terraform plan
+  terraform init
+  ls -la inside .terraform folder will create
+   terraform apply -auto-approve
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
