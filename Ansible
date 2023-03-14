@@ -254,36 +254,38 @@ ansible-doc -l                                          --> for checking modules
 ansible-doc -l <module>                                 --> moredetail about module
 ansible-doc -l | grep "copy"                            -->
 
-ansible all -m shell -a "git --version"  via checking shell
-ansible all -m shell -a "date"
-ansible all -m shell -a "df -kh" checking file system of host machines
+ansible-doc shell                                         --> shell module list of space-delimited arguments
+ansible all -m shell -a "git --version"                   --> via checking shell module show git version in all machines
+ansible all -m shell -a "date"                            --> via checking shell module show date in all machines
+ansible all -m shell -a "df -kh"                          --> via checking shell module show file system in all machines
+ansible all -m shell -a "cat /etc/release"                --> via checking shell module show OS information in all machine
+ansible all -m shell  -b -a "yum install git -y"          -->  via checking shell module install git in all machine
+ansible appservers -m shell  -b -a "yum install git -y"   -->  via checking shell module install  git in group(appserver) machines
+ansible 172.89.12.13 -m shell  -b -a "yum install git -y" -->  via checking shell module install  git in particular ip machine
 
-ansible all -m shell  -b -a "yum install git -y"
-ansible appservers -m shell  -b -a "yum install git -y"
-ansible 172.89.12.13 -m shell  -b -a "yum install git -y"
+ansible all -m yum -a "name=git state=present"            -->
+ansible all -m yum -b -a "name=git state=absent"          -->
+ansible all -m yum -b -a "name=git state=latest"          -->
+ansible all -m yum -b -a "name=git-2.0.1 state=present"   -->        install git software
+ansible all -m yum -b -a "name=git state=absent"          -->        remove gitsoftware
+ansible all -m apt -a "name=git state=present"            -->        
 
-ansible all -m yum -a "name=git state=present"
-ansible all -m yum -b -a "name=git state=present"
-ansible all -m yum -b -a "name=git-2.0.1 state=present" install the software
-ansible all -m yum -b -a "name=git state=absent"  remove the software
-ansible all -m apt -a "name=git state=present"
-
-irresepective of underlying os which module you can use to manage apckages using package manager in ansible?
+irresepective of underlying os which module you can use to manage packages using package manager in ansible?
 
 package
  using ansible perform below configurations on appservers.
- 
  ansible appserver -m yum -b -a "name=httpd state=present"
  
  install httpd software
  ansible appserver -m yum -b -a "name=httpd state=present"
   ansible all -m yum -b -a "name=httpd state=present"
  copy index.html file
- ansible all -m copy -b -a "src=/home/ec2-user/index.html dest=/var/www/html/index.html"   copying file from source to destination
- ansible all -m copy -b -a "src=/home/ec2-user/index.html dest=/var/www/html/index.html remote_src: yes"
+ ansible all -m copy -b -a "src=/home/ec2-user/index.html dest=/var/www/html/index.html"    --> copying file from source to destination
+ ansible all -m copy -b -a "src=/home/ec2-user/index.html dest=/var/www/html/index.html remote_src: yes" --> with in the server copy file
  scp 
  start httpd service
-ansible-doc -l |grep "get_url"  download urls
+ansible-doc -l | grep "get_url"                                                                            --> download urls
+ansible all -b -m service -a "name=httpd state=started/restarted/stopped"
 
 - hosts: all
   tasks:
@@ -304,14 +306,19 @@ ansible-doc -l |grep "get_url"  download urls
 sudo ansible-playbook httpd.yml --syntax-check 
     
 how do u dry run ansible play book or what is dry in run in ansible?
-
+it is kind of mock run, it is like trail it is work or run, it is kind of simulation.
 ansible-playbook installhttpd.yml
 ansible-playbook installhttpd.yml --check
 
 what is verbose or how do run playbook in verbose?
+verbos is like kind of a debugation, it is going to give some additional information while executing playbook,
+it is going to give some additional logs while executing playbook.
 ansible-playbook installhttpd.yml -v single verbose
-ansible-playbook installhttpd.yml -vv  double verbose
+ansible-playbook installhttpd.yml -vv  double verbose -->it is going to give more detail
 
+ansible-playbook installhttpd.yml --step  --> confirmation for next tasks
+
+ansible all -m setup   ---> in task internally use module called setup.
 
 This playbbok will install HTTP server and start the server.
 ---
