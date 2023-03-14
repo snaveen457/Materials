@@ -140,7 +140,7 @@ vi createuser.yml
       shell: /bin/bash
       comment: "Ansible Management Account"
       expires: -1
-      Password:  "{{ 'Princy@#$2022' }}"
+      Password:  "{{ 'Princy@#$2022' | password_hash('sha512','A512') }}"
    - name: setup Sudo Access for ansible User
      copy:
        dest: /etc/sudoers.d/ansible
@@ -149,7 +149,7 @@ vi createuser.yml
    - name: Disable Password Authentication
      lineinfile:
           dest=/etc/ssh/sshd_config
-          regexp=' ^passwordAuthentication'
+          regexp='^passwordAuthentication'
           line="passwordAuthentication yes"
           state=present
           backup=yes
