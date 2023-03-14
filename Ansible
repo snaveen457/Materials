@@ -183,8 +183,6 @@ ssh-keygen     generate ssh key with ansible user in ansible server
 ls .ssh/
 id_rsa  id_rsa.pub known_hosts    ---> ssh key generated, without password and pem file you can use ssh key to connecting hosts.
 
-
-
  hosts: all
   tasks:
   - name: Create ansible User
@@ -222,20 +220,39 @@ id_rsa  id_rsa.pub known_hosts    ---> ssh key generated, without password and p
         state=restarted
 
 vi /etc/ansible/hosts 
+#172.31.22.204 ansible_user=ec2-user ansible_ssh_private_key_file=~/ans.pem
+#172.31.22.204 ansible_user=ansible ansible_password=Princy@#$2022
+172.31.22.204
 
+#172.31.28.220 ansible_user=ec2-user ansible_ssh_private_key_file=~/ans.pem
+#172.31.28.220 ansible_user=ansible ansible_password=Princy@#$2022
+172.31.28.220
 
+ansible all -m ping
+--------------------------------------------------------------------------------------
+Group the server
+==================
 [appserver] grouping server
-172.31.1.200
-172.31.1.0
+172.31.22.204
+172.31.28.220
 
+i have one server which doe's not have anygroup, where should i define that in host inventory?
+ungrouped servers define before any group header start.
+
+vi /etc/ansible/hosts   --> default host inventory path
+
+how to we made host inventory in different path?
+you can update in ansible.cfg file (or) ansible --inventory-file <innventory file path> -m <module>
+ansible -i  <innventory file path> -m <module>
 ansible --inventoryfile <path> -m <module>
 ansible -i <path> -m <module>
+-----------------------------------------------------------------------
 
-ansible <all/groupName/hostname> -m <module> -a <args>
-ansible all -m ping
-ansible-doc -l  for checking modules
-ansible-doc -l <module> moredetail about module
-ansible-doc -l | grep "copy"
+ansible <all/groupName/hostname> -m <module> -a <args>  --> this command for configuration using command also
+ansible all -m ping                                     --> all servers and modules will ping like ssh connetivity
+ansible-doc -l                                          --> for checking modules
+ansible-doc -l <module>                                 --> moredetail about module
+ansible-doc -l | grep "copy"                            -->
 
 ansible all -m shell -a "git --version"  via checking shell
 ansible all -m shell -a "date"
