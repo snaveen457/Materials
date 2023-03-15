@@ -420,6 +420,147 @@ install jenkins using ansible playbook
     debug:
      var: result.stdout
 
+ansible-doc -l | grep "jenkins" --> it will show plugins
+---------------------------------------------------------------
+
+Loops
+=====
+1) install wget,zip,unzip softwares
+- host: all
+  tasks:
+  - name: install wget
+    yum:
+     name: wget
+     state: present
+   - name: install zip
+    yum:
+     name: zip
+     state: present 
+   - name: install unzip
+    yum:
+     name: unzip
+     state: present
+
+using loops -->Instead of using a loop to supply multiple items 
+and specifying like name: "{{ item }}", use name: ['httpd', 'wget', 'vim', 'zip, 'unzip'] as follows
+----------------
+- host: all
+  tasks:
+  - name: install softwares
+    yum:
+     name: "{{item}}"
+     state: present
+    with_items:
+    - wget
+    - zip
+    - unzip
+Depricated with yum module
+
+Anothe way 
+--------------------------------
+ host: all
+  tasks:
+  - name: install softwares
+    yum:
+     name: ['wget','zip','unzip']
+     state: present
+    
+Create Naveen,princy users
+---------------------------------
+- hosts: all
+ tasks:
+- name: create Naveen user
+  user:
+    name: Naveen
+    create_home: yes
+    group: dev
+ - name: create princy user
+  user:
+    name: princy
+    create_home: yes
+    group: dev
+------------------------------
+- hosts: all
+ tasks:
+- name: create Naveen user
+  user:
+    name: "{{item}}"
+    create_home: yes
+    group: dev
+ with_items:
+ - Naveen
+ - princy
+----------------------------------------
+- hosts: all
+  tasks:
+- name: create Naveen user
+  user:
+    name: "{{item.username}}"
+    create_home: "{{item.hoeme}}"
+    group:  "{{item.group}}"
+ with_items:
+ - {"username": "Naveen","group": "dev", "home": "yes"}
+ - {"username": "princy","group": "admin", "home": "no"}
+-----------------------------------------------------------
+- hosts: all
+  tasks:
+- name: create Naveen user
+  user:
+    name: "{{item.username}}"
+    create_home: "{{item.hoeme}}"
+    group:  "{{item.group}}"
+ with_items:
+ - {"username": "Naveen","group": "dev", "home": "yes"}
+ - {"username": "princy","group": "admin", "home": "no"}
+- name: copy files
+  copy:
+   src: "{{item.src}}"
+   dest: "{{item.dest}}"
+   mode: "{{item.mode}}"
+   owner: "{{item.owner}}"
+ with_items:
+ - {"src": "/home/ansible/test.txt", "dest": "/tmp/test.txt", "mode": "0655", "owner": "ansible"}
+ - {"src": "/tmp/abc.txt", "dest": "/opt/abc.txt", "mode": "0655", "owner": "ansible"}
+------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
