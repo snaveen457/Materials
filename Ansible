@@ -128,6 +128,7 @@ userdel  username                      for deleting
  ps aux | grep 3714                    for checking ansible user
  
 pwd /home/ansible/git/ansible-scripts
+home/ansible/git/ansible-scripts/
 
 vi createuser.yml
 -------------------------------------------------------------------------------
@@ -522,10 +523,70 @@ Create Naveen,princy users
  - {"src": "/home/ansible/test.txt", "dest": "/tmp/test.txt", "mode": "0655", "owner": "ansible"}
  - {"src": "/tmp/abc.txt", "dest": "/opt/abc.txt", "mode": "0655", "owner": "ansible"}
 ------------------------------------------------------------------------------------------------
+conditions
+===========
+- hosts: all
+  tasks:
+  - name: install wget
+   yum:
+    name: wget
+    state: present
+    when: ansible_facts['os_family'] == "Redhat"
+  - name: install wget
+   yapt
+    name: wget
+    state: present
+    when: ansible_facts['os_family'] == "Debian"
+--------------------------------------------------------   
+conditionals2.yml
 
+- hosts: all
+  become: true
+  tasks: 
+    - name: Check if java is installed
+      shell: java -version 2>&1 | grep version | awk '{print $3}' | sed 's/"//g'
+      register: java_version
+      ignore_errors: True
+    - name: print java_version
+      debug:
+         msg: "{{java_version}}"
+    - name: install java if not already installed
+      yum:
+        name: java-1.8.0-openjdk
+        state: present
+      when: java_version.stdout ==""
+  --------------------------------------------------------------------------------      
+conditions3.yml
 
+- hosts: all
+  become: true
+  tasks:
+    - name: Check if java is installed
+      shell: java -version 2>&1 | grep version | awk '{print $3}' | sed 's/"//g'
+      register: java_version
+      ignore_errors: True
+    - name: print java_version
+      debug:
+         msg: "{{java_version}}"
+    - name: install java if not already installed
+      yum:
+        name: java-1.8.0-openjdk
+        state: present
+      when:
+      - ansible_facts['os_family'] == "AmazonLinux"
+      - java_version.stdout == ""
+-----------------------------------------------------------------------------------
+Variables
+==============
 
+Runtime Vars
+playbook vars --> Scope of the variables is with in the play book. we can refer version the tasks
+or templates which we are using the playbook.
 
+Group Vars
+db servers
+app servers
+Host Vars
 
 
 
