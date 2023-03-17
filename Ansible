@@ -585,8 +585,52 @@ or templates which we are using the playbook.
 
 Group Vars
 db servers
+abc
 app servers
+xyz
+
 Host Vars
+ ansible-playbook varsdemo.yml --extra-vars "test=abc"
+
+Ansible Vault
+===============
+A typical Ansible setup will involve needing some sort of secret to fully setup a server or application.Common types of "secret" include passwords, SSH keys, SSL certificates, API tokens and anything else you don't want the public to see.
+Since it's common to store Ansible configurations in version control, we need a way to store secrets securely.
+Ansible Vault is the answer to this. Ansible Vault can encrypt anything inside of a YAML file, using a password of your choice.
+
+ansible-vault create <filename>.yml --> it will create a file and encrypt
+ansible-vault encrypt <filename>.yml --> it will encrypt existing file
+ansible-vault view <filename>.yml
+ansible-vault edit <filename>.yml
+ansible-vault decrypt <filename>.yml
+ansible-vault rekey <filename>.yml  --> to update vault new password
+
+
+Step1: Create group variables for all groups.
+Add your password (Key value pair) in group variables yml
+vi /etc/ansible/group_vars/all.yml
+user_password: Princy@#$2022
+test: abc
+cat /etc/ansible/group_vars/all.yml
+Step 2: Encrypt existing group variables yml file using ansible vault
+The typical use case is to have a normal, plaintext variable file that we want to encrypt. Using
+ansible-vault, we can encrypt this and define the password needed to later decrypt it:
+ansible-vault encrypt /etc/ansible/group_vars/all.yml
+give vault password like Princy@123 after check cat /etc/ansible/group_vars/all.yml encrpted or not
+Step 3:
+Update your host inventory to refer password from group_vars/all.yml file make sure you use the same key name which you defined in group_vars/all.yml.
+Step 4: Execute ansible adhoc command ping to test the connectivity.
+We will get error since we are referring password from group_vars/all.yml which is encrypted using vault. So, while executing play book or adhoc commands we must pass ansible vault password what ever
+You have typed in while encrypting.
+verify configure yml file ansible-playbook creatssh.yml, will get error like this, 
+ERROR! Attempting to decrypt but no vault secrets found
+to be execute ansible-playbook creatssh.yml --ask-vault-pass, it will ask vault password and provide it will execute
+without giveing vault password create one file give the vault password
+vi vaultpass give password  vi vaultpass and execute 
+ansible-playbook creatssh.yml --vault-password-file vaultpass,
+my password need to update cat /etc/ansible/group_vars/all.yml
+ansible-vault view /etc/ansible/group_vars/all.yml  who knows the vault password that person need to login
+ansible-vault edit /etc/ansible/group_vars/all.yml edit file if you want
 
 
 
@@ -608,7 +652,79 @@ Host Vars
 
 
 
+Ansible Role --> role is nothing but set of tasks to configure a host to serve a certain purpose like configuration service.
+==================
+with more complexity in functionality it's very diffcult to maintain everything in a playbook.
+typically play book conatains.
+Tasks
+Handlers
+Vars
+template
+files
 
+-ves
+Readability
+Maintainbility
+sharability
+
+install httpd,jenkins
+
+installhttpd.yml
+---------------
+- hosts: all
+  gather_facts: no
+  become: true
+  vars:
+    package_name: httpd
+    name: naveen
+  tasks:
+  - name: install httpd
+    yum:
+      name: "{{package_name}}"
+      state: present
+    tags:
+    - install
+  - name: copy index.html
+    template:
+      src: /home/ansible/git/ansible-scripts/index.html
+      dest: /var/www/html/index.html
+    notify:
+    - start httpd service
+    tags:
+    - copy
+  - name: Debug message
+    debug:
+      msg: "After copy task name variable value: {{name}}"
+    tags:
+    - debug
+    - install
+  handlers:
+  - name: start httpd service
+    service:
+      name: "{{package_name}}"
+      state: started
+
+ansible-galaxy init <rolename>
+ansible-galaxy init httpd --> create role
+
+Rols Vars
+deafult 
+
+
+
+vi installhttpdRole.yml
+- hosts: all
+  become: true
+  roles:
+  - httpd
+ 
+ansible-playbook installhttpdRole.yml
+ansible-playbook installhttpdRole.yml --ask-vault-pass
+git clone https://github.com/MithunTechnologiesDevOps/AnsibleRoles.git
+
+
+dynamic inventory
+==================
 
 
 
