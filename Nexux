@@ -1,0 +1,678 @@
+
+
+
+
+1)what is build tool
+2)what is maven
+3)installation of maven in linux
+4)what is pom.xml in maven
+5)what is setting xml in maven
+6)types of maven repository
+7)maven life build life cycle
+8)creationof java and web application
+9)explore pom xml options
+
+Maven
+=========
+What is Build tool?
+jar java base application
+war web base application
+ear enterprise base application
+
+Types of build tool?
+Maven
+Gradle
+ANT
+
+What is maven?
+Maven is build tool and open source  it will generate jar java base application war web base application
+version 3+
+Apache team 
+===============================================================================================
+Installation of maven in centos / Amazon Linux
+step 1: First install the java
+         sudo yum install java-1.8.0-openjdk-deve1
+step 2: Download the maven zip or tar file under /opt directory
+step 3: unzip the maven zip file
+step 4: rename the maven file   
+step 5: to set the environment variable for maven
+go to cd /etc/profile.d
+create a new configuration file 'maven.sh'.
+export M2_HOME=/opt/maven
+export PATH=${M2_HOME}/bin:${PATH}
+give full permission to that file
+chmod 777 maven.sh
+step 6: load the maven.sh file in system level
+source maven.sh
+
+find /usr/lib/jvm/java-1.8* | head -n 3
+vi ~/.bash_profile
+source ~/.bash_profile
+
+mvn --version check version
+
+cp /opt/maven-web-application/target/maven-web-application.war /opt/tomcat/webapps
+cp /maven-web-application/target/maven-web-application.war /opt/tomcat/webapps
+=============================================================================================================
+What is maven repository& types of maven repository?
+a maven repository is a direcetory of packaged JAR file with pom.xml file. maven searches for dependieces in the repositories.
+3 types of repositories
+
+local repository
+central repository
+remotr repository
+
+Creation of java application using maven
+---------------------------------------------
+step 1: mvn archetype:generate
+step 2: Then ask select the project type: jar
+step 3: Select the Version then Enter example: 1.0
+step 4: Enter the groupid, here give the company name com.devopsbymurali
+step 5: Enter the artifactId, here give the project name Ex: java-project
+step 6: Enter the package, package name same as group id
+step 7: Asking versions(Snapshot means Current working or Under development)
+
+Maven Build LifeCycle
+-----------------------
+
+mvn validate --> project validate Build sucess or failure
+mvn compile  --> it will convert App.java file into App.class file
+mvn test     --> it will convert AppTest.java into AppTest.class file it will show all errors
+mvn package  --> it will generate jar file
+mvn verify   --> it will verify jar or war file
+mvn install  --> jar amd pem file store in .m2 directory
+mvn deploy   --> artifactory files jar or war store in remote repository nexus or jfrog
+
+what is the use of "mvn clean" command?
+deleteing target direcetory
+
+
+Creation of web application using maven
+---------------------------------------------
+step 1: mvn archetype:generate
+step 2: Then select the project type: war
+step 3: Select the Version then Enter example: 1.0
+step 4: Enter the groupid, here give the company name com.devopsbymurali
+step 5: Enter the artifactId, here give the project name Ex: web-application
+step 6: Enter the package, package name same as group id
+step 7: Asking versions(Snapshot means Current working or Under development)
+
+take one maven server and install maven
+mven --version
+mvn archetype:generate        it download all dependiece
+1986 java base application maven-archetype-quickstart  to create jar file
+1991 web application maven-archetype-webapp to create war file   {these numbers keep on change}
+ask version 5
+groupid here give the company name com.devopsbymurali
+Enter the artifactId, here give the project name Ex: web-application
+Enter the package, package name same as group id
+Asking versions(Snapshot means Current working or Under development)
+
+mvn validate --> project validate Build sucess or failure
+mvn compile  --> it will convert App.java file into App.class file
+mvn test     --> it will convert AppTest.java into AppTest.class file it will show all errors
+mvn package  --> it will generate jar file
+mvn verify   --> it will verify jar or war file
+mvn install  --> jar amd pem file store in .m2 directory
+mvn deploy   --> artifactory files jar or war store in remote repository nexus or jfrog
+
+Explore pom.xml options
+-------------------------------
+
+Explain about skip test cases
+
+mvn install -DskipTests
+mvn install -Dmaven.test.skip=true
+
+
+overview of jacoco plugin
+
+sonar qube 
+
+what is pom.xml?
+POM is Project Object Model
+it contains maven project and configuration information to build the project such as dependieces,
+build directorty, source direcetory,test source direcetory,plugin,goals etc.
+Maven reads the pom.xml file, then executon the goals.
+before maven 2, it was named as project.xml file. but , since maven 2 (also in maven 3), it is renamed as pom.xml .
+
+sample pom.xml
+<modelVersion>4.0.0</modelVersion>  
+  <groupId>com.javatpoint.application1</groupId>  
+  <artifactId>my-app</artifactId>  
+  <version>1</version> 
+  
+Mandatory fields in pom.xml?
+
+Project: it is the tool element of pom.xml
+modelVersion: it is the sub element of project. it specifies the modelVersion it should be set to 4.0.0
+groupid: it is the sub element of project. it specifies the id for the project group.
+artifactId: . it specifies the id for the artifact (project)
+version:it is the sub element of project, it specifies the versions of the artifact under given group
+
+
+============================================================================================================================================
+1)what is tomcat
+2)Types of roles availablein tomcat
+3)installation of tomcat in linux
+4)tomcat dashboard overview
+5)setup tomcat as service in linux
+6)Deploy the war file in tomcat
+7)tomcat key points
+
+Tomcat
+------------
+
+Tomcat is an opensource
+it is a web server and developed by apache software foundation
+Apache tomcat is purely java based application and server java servlets,jsp pages.
+in tomcat you can deploy the war file
+the default port number is 8080
+
+tomcat 7 Version  - java1.8
+tomcat 9&10 version- openjdk 11 
+
+Types of roles available in tomcat?
+two types
+1.Tomcat Manager application
+2.Host Manager application
+
+1.Tomcat Manager application
+manager-gui: allows access to the HTML GUI and the status pages
+manger-script: allows access to the text interface and the status pages
+manger-jmx: allows access to the JMX proxy and the status pages
+manger-status: allows access to the status pages only
+
+2.Host Manager application
+admin-gui: allows access to the HTML GUI and the status pages
+admin-script: allows access to the text interface and the status page
+
+Installation of tomcat in Amazon linux?
+
+we can insatll tomcat 7 using tar file.
+step 1: first install java         yum install java-1.8.0-openjdk-deve1 -y
+step 2: Download the tomcat tar file
+step 3: untar the file           tar -xvf apache
+step 4: rename it
+step 5: run the tomcat
+
+ls
+cd tomcat
+ls
+cd bin
+cd ..
+cd conf/
+cat logging.properties if you want change specific log path 
+cat server.xml    if you want change port number
+8005 for shutdown port number
+8080 for login port number i connector change port in sever.xml
+
+tomcat-users.xml  6 roles need to give if you want run GUI
+
+lib --> all libriaries
+webapps deploy in application
+
+
+
+
+
+
+  <role rolename="manager-gui"/>
+  <role rolename="manager-status"/>
+  <role rolename="manager-script"/>
+  <role rolename="manager-jmx"/>
+  <role rolename="admin-gui"/>
+  <role rolename="admin-script"/>
+  <user username="tomcat" password="tomcat" roles="manager-gui, admin-gui,manager-status,manager-script,manager-jmx"/>
+  
+  tomcat dashboard overview
+  -------------------------------
+  
+  
+  Setup tomcat as service in amazon linux
+  -----------------------------------------
+  
+  cd /etc/systemd/system 
+pwd
+/etc/systemd/system
+vi tomcat1.service
+
+https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.71/bin/apache-tomcat-9.0.71.tar.gz
+https://downloads.apache.org/tomcat/tomcat-9/v9.0.72/bin/apache-tomcat-9.0.72.tar.gz.sha512
+https://downloads.apache.org/tomcat/tomcat-9/v9.0.72/bin/apache-tomcat-9.0.72.zip.sha512
+https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.72/bin/apache-tomcat-9.0.72.tar.gz this will work
+
+[unit]
+Description=Tomcat 9.0.72 service
+After=network.target
+[Service]
+Type=forking
+User=root
+Group=root
+ExecStart=/opt/tomcat/bin/startup.sh
+Execstop=/opt/tomcat/bin/shutdown.sh
+[Install]
+WantedBy=multiu-user.target
+
+chmod 777 tomcat.service give full permission to file tomcat1.service
+
+systemctl enable tomcat.service    one time restart servive from root
+systemctl status tomcat.service it will check status
+
+cd /opt/tomcat/bin/ go and stop service
+./shutdown.sh
+
+systemctl start tomcat.service
+systemctl status tomcat.service
+
+
+context.xml how to edit
+go to 
+cd /opt/tomcat/webapps/Manager/META-INF/context.xml 
+in value give comment <!-- matter  --!>
+ after shutdown and restart the tomcat form bin directory
+ cd /opt/tomcat/bin/
+ sh shutdwon.sh
+ sh startup.sh
+ 
+
+Deploy the war file in tomcat
+------------------------------
+this we can execute from bin directory
+ln -s /opt/tomcat/bin/startup.sh /usr/bin/tomcatstart
+ln -s /opt/tomcat/bin/shutdown.sh /usr/bin/tomcatstop 
+
+chmod u=x *.sh all the files have execute permission
+
+https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.72/bin/apache-tomcat-9.0.72.tar.gz
+
+tomcat installation
+-------------------------------------------------------------------
+cd /opt
+sudo su -
+sudo amazon-linux-extras install java-openjdk11
+wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.72/bin/apache-tomcat-9.0.72.tar.gz
+tar -xvzf apache-tomcat-9.0.72.tar.gz
+mv apache-tomcat-9.0.72 tomcat
+cd /opt
+cd tomcat
+cd bin/
+sh startup.sh 
+chmod u=x *.sh all the .sh files have execute permission
+
+this we can execute from bin directory
+ln -s /opt/tomcat/bin/startup.sh /usr/bin/tomcatstart
+ln -s /opt/tomcat/bin/shutdown.sh /usr/bin/tomcatstop 
+cd /opt tomcatstart
+public ip and port number 8080 run in web browser
+
+context.xml how to edit
+go to 
+cd /opt/tomcat/webapps/Manager/META-INF/context.xml 
+in value give comment <!-- matter  -->
+ after shutdown and restart the tomcat form bin directory
+ cd /opt/tomcat/bin/
+ tomcatstop
+ tomcatstart
+ cd /opt/tomcat/conf/
+ vi tomcat-users.xml scroll down type I, staring element <tomcat-users  in between <!tomcat-users>
+ 
+  <role rolename="manager-gui"/>
+  <role rolename="manager-status"/>
+  <role rolename="manager-script"/>
+  <role rolename="manager-jmx"/>
+  <role rolename="admin-gui"/>
+  <role rolename="admin-script"/>
+  <user username="tomcat" password="tomcat" roles="manager-gui, admin-gui,manager-status,manager-script,manager-jmx"/>
+ tomcatstop
+ tomcatstart
+---------------------------------------------------------------------------------
+
+
+
+
+
+Sonarqube server port and context path change
+postgre SQL DB Server
+SonarQube Server Intergration with postgree SQLDB Server
+-----------------------------------------------------------------
+Sonarqube server port and context path change?
+
+change the port number by default - 9000
+change the context path by default - ?
+
+sonar
+
+conf/
+sonar.properties
+
+sudo su - sonar
+cd /opt/sonarqube-7.8
+pwd /opt/sonarqube-7.8
+ls
+cd conf/
+ls
+sonar.properties update the editor
+vi sonar.properties
+in webserver section 
+sonar.web.context= give path name /
+sonar.web.port= change port number
+
+cd ../bin/linux-x86-64/
+ls
+sonar.sh
+sh sonar.sh status check current status of sonar
+sh sonar.sh restart restart the sonar
+
+Installation of sonarqube in centos/Amazon linux
+------------------------------------------------------
+what is sonarqube?
+
+sonarQube is code quality tool
+ sonaQube is an open source platform
+ the default port number 9000
+ current LTS (long term version) version  8.9.10
+
+25+ support languages
+
+
+1)installation of sonar qube
+2)sonarqube dashboard overview
+3)setup sonarqube as service in linux
+4)creation of users in sonarqube 
+5)integrating the sonar qube as a maven
+6)sonar qube key points
+
+
+
+
+4GB RAM required
+
+
+Launch instance in AWS
+
+we can install sonarqube using zip file.
+step1: first install java
+yum install java-11-openjdk-devel -y
+yum install java-11-openjdk
+sudo amazon-linux-extras install java-openjdk11
+
+java -version
+
+step2: Download the sonarqube zip file
+
+https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-8.9.10.61524.zip
+
+go to cd /opt/
+
+wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-8.9.10.61524.zip
+
+step3: unzip the file
+
+unzip sonarqube-8.9.10.61524.zip
+
+step4: rename it
+mv sonarqube-8.9.10.61524 sonar
+
+step5: run the sonarqube
+cd sonar/
+ll
+cd /bin -->                we can start or stop using bin directory
+cd linux-x86-64/      inside sonar.sh will be available
+sonar.sh              we can start or stop using bin directory
+
+cd /conf
+vi sonar.properties  data base authentication if you want keep you can keep. if you want change port number and web host url change in this file.
+
+cd extensions/ if you want use extra plugin keep it here, default driver jdbc-driver
+
+cd lib --> related jar and war files will be available
+
+cd temp/  --> temporary if you want store anything it will use
+
+cd web/ --> gui information available
+
+real time sonarqube it will run on root, it will run on created user like sonar
+
+cd opt/                 go to opt direcetory
+useradd sonar            create user
+id sonar               it will show created or not
+passwd sonar password   give passwd to sonar user
+
+chown -R sonar:sonar sonar/              change permission root to sonar
+cd sonar/ 
+ll                                       it will show all direcetories
+su - sonar
+cd bin/
+ll
+cd linux-x86-64/
+vi sonar.sh              here run as user it will available, uncomment and give sonar name and save
+sh sonar.sh 
+sh sonar.sh status       check status
+sh sonar.sh start         start the sonar server
+sh sonar.sh status 
+
+cd /etc
+visudo                       give the sudo acces to sonar user
+sonar ALL=(ALL) NOPASSWD: ALL
+
+cd sonar/
+ll
+cd conf/
+vi sonar.properties
+give user name=sonar
+password=Princy@#$2022
+and save
+restart the sonar qube
+
+java need to install java-1.8*
+
+go to web give publicip and port number 9000
+
+give user name and passwd admin admin
+change password 
+
+tail -f access logs   live authentication logs
+
+cat ce.logs  data base correct or not
+
+es.log internal elastic sub logs check
+web.log web related logs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------------------------------------------
+postgre SQL DB Server?
+
+
+
+
+
+
+
+
+
+
+1)Nexus Overview
+2)Installation of nexus in linux
+3)Nexux Dashboard overview
+4)creation of users and roles in nexus
+5)integrating the nexus with maven
+6)nexus key points
+
+Nexus or SonatypeNexus
+==============
+Nexus is an OSS(OPen source software) its an artifactory repository, can be used to
+store the build artifacts and retrive the build artifacts whenever required.
+
+java
+----
+jar,war,ear
+
+Docker
+-------
+Docker images
+
+Node Js
+---------
+NPM package
+
+what is difference b/w Github and Nexus?
+github is SCM store Source code
+
+Nexus is store an build artifactory
+
+java
+
+Nexus 3.x --> java 1.8 need to insatll
+Nexuz 2.x -->
+
+
+create ec2 instance for nexus server
+
+login as aroot user and install java
+sudo su
+##Change dir to /opt
+cd /opt
+yum insatll wget -y 
+sudo amazon-linux-extras install java-openjdk11
+for this must and java-1.8*
+
+install nexus server in ec2
+sudo su -
+cd /opt
+yum install tar wget -y
+wget https://download.sonatype.com/nexus/3/nexus-3.45.1-01-unix.tar.gz
+ls it will show downloaded nexus
+tar -zxvf nexus-3.45.1-01-unix.tar.gz  it will extract
+ls it will show nexus direcetory and sona-type work directorty it will show
+mv nexus-3.45.1-01 nexus   rename name
+
+Nexus is not adivesed to run nexus service as a root user, so create a new user called nexus and gratnt
+sudo access to manage nexus service as follow
+
+useradd nexus
+visudo give the sudo access     [nexus ALL=(ALL)     NOPASSWD: ALL]
+
+need to change permission changed the user name and group name
+chown -R nexus:nexus /opt/nexus
+chown -R nexus:nexus /opt/sonatype-work
+chmod -R 775 /opt/nexus
+chmod -R 775 /opt/sonatype-work  
+
+pwd
+/opt
+ls
+cd nexus
+ls
+pwd
+/opt/nexus
+cd etc/
+ls
+cd ..
+
+
+Open /opt/nexus/bin/nexus.rc file and uncomment run_as_user parameter and set as nexus user
+vi /opt/nexus/bin/nexus.rc
+run_as_user="nexus"
+
+creae a nexus as a service
+
+ln -s /opt/nexus/bin/nexus /etc/init.d/nexus
+
+switch to the nexus user
+
+su - nexus
+
+enable the nexus service
+
+sudo systemctl enable nexus
+sudo systemctl start nexus
+sudo systemctl status nexus
+
+after access the nexus server with public ip and port number
+ 13.40.105.82:8081
+ enable security groups port number 8081
+ 
+http://13.40.105.82:8081/ -->Nexus 3.x
+http://13.40.105.82:8081/nexus --> Nexus 2.x
+
+-- nexux-3.15 ---> Default Credential are: admin/admin
+
+Sonatype Nexus Repository Manager OSS 3.45.1-01  
+Your admin user password is located in
+/opt/sonatype-work/nexus3/admin.password on the server.
+
+cat /opt/sonatype-work/nexus3/admin.password will get paswword
+0bb8188e-b4eb-4bf4-93aa-ff06a2594c02 instead of password will change another password Princy@#$2022
+
+Enable anonymous access
+it will login automatically
+
+how to disable Enable anonymous access?
+
+
+http://13.40.105.82:9980/naveen change port number
+
+cd /opt/nexus/etc/
+pwd
+/opt/nexus/etc/
+ls
+vi nexus-default.properties  go to this one edit port number
+application-port=9980
+application-host=0.0.0.0
+nexus-args=${jetty.etc}/jetty.xml,${jetty.etc}/jetty-http.xml,${jetty.etc}/jetty-requestlog.xml
+nexus-context-path=/naveen
+
+sudo systemctl restart nexus  after restart the service
+
+http://13.40.105.82:9980/naveen after able to login
+
+
+Create Repository
+----------------------
+go to gear icon
+
+http://13.40.105.82:9980/naveen/repository/flipkart-snapshot/
+
+http://13.40.105.82:9980/naveen/repository/flipkart-releases/
+
+Integrate Maven with Nexus
+----------------------------
+pom.xml  create nexus repo details
+
+
+<distributionManagement>
+nexus repo details
+</distributionManagement>
+
+Mavenhomedirectory
+conf
+settings.xml in that configure nexus credential
+
+
+
+
+
+
+
