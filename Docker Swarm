@@ -1,0 +1,314 @@
+Docker Swarm
+==================
+
+What is difference b/w Dockerfile & docker compose file?
+Docker file is used to create docker image. using docker file generally used to create docker image.
+Docker compose file used to create a one or more containers.
+
+container orchestration tools
+
+Docker swarm
+
+kubernetes
+
+Openshift
+
+
+what is Docker Swarm?
+Cluster management and orchestration feature embedded in docker engine.
+cluster of Docker engines or nodes
+one manger, and rest workers.
+
+Swarm Features?
+Cluster Management
+Decentralize design
+Declarative Service mode
+scaling
+Desired state reconciliation
+Multi-host network
+Service discovery --> one design pattern docker swarm has embedded discovery
+Load balancing
+secured by default
+rolling updates
+
+Cluster --> group of Servers
+
+Docker Swarm Cluster --> Group of Docker Servers. There will be a master and workers.
+
+Master --> Will Schedule the tasks (container)
+
+Masters --> 
+
+Workers -->
+
+
+3 machines
+
+1--> Master
+2 --> Workers
+
+user data
+
+#!/bin/bash
+sudo apt-get update
+sudo apt-get install curl -y
+sudo curl -fsSl get.docker.io | bash
+sudo usermod -aG docker ubuntu
+
+
+docker swarm port TCP-2377 cluster management communication
+docker swarm port TCP and UDP-7946  communication among nodes
+docker swarm port UDP-4789 for overlay network traffic
+
+what is docker swarm manager quarm?
+(n-1)/2
+2-1/2=0.5
+3-1/2=1
+odd number of machines in the master
+
+productio
+13- Docker Nodes
+3- Master
+10- worker Machine
+
+how many docker swarm cluster u have?
+
+DEV
+
+QA
+
+Prod
+
+sudo apt-get update
+sudo apt-get install curl -y
+sudo apt install docker.io -y
+sudo usermod -aG docker ubuntu
+systemctl start docker.service 
+
+
+
+docker swarm init          priviate ip it self
+docker swarm join --token SWMTKN-1-4mmk4548n49ddoc1rbk797eg2q2qleure2j0dk50k6rjcowe8w-5umufijkm6mtr9rs46g0kk5ny 172.31.39.93:2377
+
+docker swarm join-token worker : docker swarm join --token SWMTKN-1-4mmk4548n49ddoc1rbk797eg2q2qleure2j0dk50k6rjcowe8w-5umufijkm6mtr9rs46g0kk5ny 172.31.39.93:2377
+docker swarm join --token SWMTKN-1-508lvxik44mm2qbg4x0swuzfj5ki5hc0tu05kxvsrcb0enetxw-8xd3drpvvxsgbg7stfznibphw 172.31.39.93:2377
+docker swarm join --token SWMTKN-1-29mapg3e9kvy2487uto2euize49d66p9verfbev2k1c56rtq5j-561gbte8shmtys7y5k9lyzqzr 172.31.39.93:2377
+
+docker swarm join-token manager : docker swarm join --token SWMTKN-1-4mmk4548n49ddoc1rbk797eg2q2qleure2j0dk50k6rjcowe8w-4926csdq674mbyrnaa8gns450 172.31.39.93:2377
+docker swarm join --token SWMTKN-1-508lvxik44mm2qbg4x0swuzfj5ki5hc0tu05kxvsrcb0enetxw-axum3tjmfunpsbqlogggnqpo2 172.31.39.93:2377
+docker swarm join --token SWMTKN-1-29mapg3e9kvy2487uto2euize49d66p9verfbev2k1c56rtq5j-e2nmjzj2qwna5itwwn5ofynj5 172.31.39.93:2377
+
+docker node ls             for view how many nodes
+
+
+docker swarm join-token worker : docker swarm join --token SWMTKN-1-5ttly9mjt3zghroxhdltwvarrcofqvvoosgdbtxn6xyiakqqgh-2lhgmz7zdhahxzhxncvef0b1g 172.31.47.16:2377
+sudo docker node ls
+
+
+docker swarm join-token manager : docker swarm join --token SWMTKN-1-5ttly9mjt3zghroxhdltwvarrcofqvvoosgdbtxn6xyiakqqgh-2nhs1yzltud7jxvuwph6pfyos 172.31.47.16:2377
+
+docker swarm init --listen-addr=eth0 --advertise-addr$(curl http://13.40.107.210/latest/meta-data/public-ipv4) public ip
+
+docker swarm init --listen-addr=eth0 --advertise-addr$(curl http://172.31.47.16/latest/meta-data/public-ipv4) private ip
+
+docker run    not use in the cluster to create container
+
+in docker swarm we have to deploy our application as a service.
+
+Docker swarm service
+service is collection of one or more containers of same type(image).
+
+There are two types of services in docker swarm.
+
+1)replica mode --> (default mode) it will create 1 replica by default
+2)global mode
+
+docker service create --name <serviceName> -p <hostport>:<containerport> --replicas 1 <imagename>
+
+docker service create --name javawebappservice -p 8080:8080 457naveen/java-web-app
+
+docker service create --name mavenwebappservice -p 8080:8080 457naveen/maven-web-app
+
+docker service create --name springbootappservice -p 9090:8080 457naveen/spring-boot-mongo
+
+
+docker service ls  to see how many image services is there
+
+docker service ps jp46eiyf255vmv0hqelvfgp28  to see how many container services is there
+
+
+docker node ls
+
+
+docker service create --name <serviceName> -p <hostport>:<containerport> <imagename>
+
+replica(default)
+global
+
+docker service ls   how many service created
+
+docker node ls 3 node docker swarm cluster
+
+docker service scale <serviceName>=<noof replicas>
+
+docker service scale javawebappservice=3
+
+By default it will create overlay network
+
+ubuntu@ip-172-31-39-93:~$ docker network ls
+NETWORK ID     NAME              DRIVER    SCOPE
+a8a4f23b92ba   bridge            bridge    local
+fb2f49eb2ac7   docker_gwbridge   bridge    local
+5714d4d7dcd3   host              host      local
+pe27jok33145   ingress           overlay   swarm
+81212b797401   none              null      local
+
+ubuntu@ip-172-31-39-93:~$ docker service ls
+ID             NAME      MODE         REPLICAS   IMAGE                        PORTS
+pxyb1xtrmfhj   javasvc   replicated   3/3        prashhantss/java-web-app:1   *:7070->8080/tcp
+
+docker inspect pxyb1xtrmfhj
+
+
+
+
+global mode
+Each and every active node will have a copy of a container for global service. we can't scale up and scale down.
+when ever we add new node container will be automatically scheduled in that new node for global services.
+docker service create --name mavenwebapp --mode global -p 9090:8080 457naveen/maven-web-app:1
+docker service ls
+
+docker service scale javasvc=1
+
+docker node ps khbi6rtpkfbhbhk4k0h0t4ajj
+
+docker service ps javasvc
+
+Labels & Constraints
+--------------------
+docker service rm $(docker service ls -q)
+docker node ls
+docker inspect khbi6rtpkfbhbhk4k0h0t4ajj nodeid
+
+docker node update --label-add "type=appserver"  khbi6rtpkfbhbhk4k0h0t4ajj  giving label name to node
+
+docker inspect khbi6rtpkfbhbhk4k0h0t4ajj  for checking label name after giving label name to node
+
+docker node update --label-add "type=dbserver" ef6hq4y0kk07s8v02hw5xe4q6 giving label name to node
+
+docker inspect ef6hq4y0kk07s8v02hw5xe4q6
+
+docker node update --label-add "type=dbserver" x4t1utd9ui5k5jyivuzga00dn giving label name to node
+
+docker inspect x4t1utd9ui5k5jyivuzga00dn
+
+docker service create --name mavenwebapp --constrait "node.role==worker" --mode global -p 6060:8080 457naveen/maven-web-app
+
+docker service create --name javawebappservice --replica 3 --constraint "node.role==worker" -p 6060:8080 457naveen/java-web-app
+
+Drain the node            container should be not shcduled in the node
+
+
+docker node update khbi6rtpkfbhbhk4k0h0t4ajj --availability drain
+
+docker node update khbi6rtpkfbhbhk4k0h0t4ajj --availability active
+
+docker node update --label-add "type=appserver"   node id      to create label name in nodes
+
+docker service create --name javawebappservice --replicas 3 --constraint "node.labels.type==appserver" -p 8080:8080 457naveen/java-web-app:1
+
+docker servicce ls
+docker service ps javawebappservice  after giving one labelname only create 3 replicas
+
+docker node promote <nodename/id> promotion this worker machine has a master
+
+docker node demote <nodename/id> demote this master machine has a worker
+
+springboot & mongo    multiple services how can deploy
+
+
+service --> collection of one or more containers of same type (image)
+
+stack --> collection of services for some application
+
+
+docker stack ls  for seeing stacks
+
+docker stack deploy --compose-file docker-compose.yml springapp    for this docker compose file deploy in docker swarm
+
+docker network create -d overlay springappoverlay     to create overlay network
+
+docker stack ls                  for checking how many stacks and services
+
+docker stack services springapp  for checking what ever service manged by this task it will show
+
+docker stack ps springapp  it will running the what ever process
+
+docker stack rm springapp   removing stacks
+
+
+how many cluster have?
+
+
+how many docker nodes u have in production?
+3 -manager
+10-workers
+what is the configuration of u r nodes?
+
+128 gb ram
+64 core
+
+how many services u have in docker swarm?
+90 + services
+
+how many stacks u have?
+12 stacks or application
+
+how many containers you have?
+700 + containers
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
