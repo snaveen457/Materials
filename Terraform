@@ -6,9 +6,42 @@ Terraform
 4) Create IAM User
 5)First Terraform script
 6)Terraform commands
+--------------------------------------
+1) Introduction of Terraform
+==================================
+Terraform is an open-source, infrastructure as code softrware(IAC) tool, created by HashiCorp and written in the
+Go Programming language.
+infrastructure as code is the processof managing infrstructure in a file or files, rather than manually
+configuring resources in a user interface(UI).
+Here resources are nothing but virtual machines (ec2), Elastic IP, Security Groups,Network Interfaces..
+Terraform code is written in the Hashicorp Configuration Language (HCL) in files with the extension .tf
+Terraform allows users to use Hashicorp Configuration Language (HCL) to create the files containing definitions of their desired resources
+on almost any provider(AWS,GCP,Azure,Digital Ocean,OpenStack. ect) and automate the creation of those resources at the time of apply.
 
-Installation of Terraform
------------------------
+2) Diff b/w Terraform and clod formation
+=====================================
+Terraform
+------------
+Terraform is developed by Hashicorp
+it will work for many cloud providers like provider(AWS,GCP,Azure,Digital Ocean,OpenStack. ect) 
+Terraform uses Hashicorp Configuration Language (HCL), a language built by Hashicorp. it is fully compatible with JSON.
+
+Cloud Formation
+====================
+Cloud formation is developed by AWS
+Cloud formation will support only AWS
+AWS Cloud formation utilizes either JSON or YAML. Cloud formation has a limit of 51,000 bytes for the template body itself.
+
+Pre-Requisites
+=================
+Any cloud provider(AWS,GCP,Azure,Digital Ocean,OpenStack. ect)
+IAM user credential(Secret Key and Access Key)
+
+Add the following policies to IAM user if you are using AWS as cloud provider.
+AmazonEC2FullAccess.
+
+3) Installation of Terraform
+====================================
 terrform installation video on youtube link:
 https://www.youtube.com/watch?v=kxOR-WrK4y8
 
@@ -22,7 +55,7 @@ yum update -y
 yum install wget unzip vim -y
 
 #Download the terraform software.
-#Use https://www.terraform.io/downloads.html to download the terraform software.
+#Use https://www.terraform.io/downloads.html           to download the terraform specific version software.
 
 wget https://releases.hashicorp.com/terraform/1.3.3/terraform_1.3.3_linux_amd64.zip
 
@@ -33,9 +66,15 @@ unzip terraform_1.3.3_linux_amd64.zip -d /usr/local/bin/
 terraform -v (OR) terraform version 
 terrform -help for detail commands
 
-go to IAM user
+4) Create IAM user
+==================
+go to services, search IAM, click on users, create user,click on add user, give user name(Terraform),select and check programmatic access,
+click on next, go to attach existing policies, AmazonEC2fullAccess, Amazons3fullACcess,AmazonvpcfullACcess. click next,
+click on create user, it will show acces key and secret key.
 
 
+FirstTerraformScript.tf
+-----------------------
 
 provider "aws" {
   region = "ap-southeast-2"
