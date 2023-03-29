@@ -40,3 +40,178 @@ resource "aws_volume_attachment" "st1"{
   instance_id = aws_instance_os1.id
 }
 
+==========================================
+ami- id
+t2.micro
+SG: webport-allow 80
+terraform_key.pem
+public ip
+ssh -1 ec2-user -i terraform_key.pem public_ip
+sudo yum install httpd -y 
+sudo yum install php -y
+sudo systemctl start httpd
+sudo systemctl enable httpd
+--------------------------------
+w -- how many users login
+rpm -q php
+rpm -q httpd
+--------------------
+web.tf
+==========================
+
+provider "aws" {
+  region                   = "ap-south-1"
+  profile                  = "default"
+}
+resource "aws_instance" "webos1" {
+  ami              = "ami_id"
+  instance_type    = "t2.micro"
+  security_groups  = [ "webport-allow" ]
+  key_name         = "terraform_key"
+  
+  tags = {
+    Name = "Web Server by TF"
+  }
+
+resource "null_resource" "nullremote1"
+
+connection {
+    type        = "ssh"
+    user        = "ec2-user"
+    private_key = file("/give path/terraform_key.pem")
+    host        = aws_instance.webos1.public_ip
+  }
+provisioner "remote-exec" {
+    inline = [
+      "sudo yum install httpd -y",
+      "sudo yum install php -y",
+      "sudo systemctl start httpd",
+      "sudo systemctl enable httpd"
+    ]
+  }
+
+---------------------------------------------------
+terraform apply
+rpm -q php
+rpm -q httpd
+sudo fdisk 
+----------------------------------------------
+
+provider "aws" {
+  region                   = "ap-south-1"
+  profile                  = "default"
+}
+resource "aws_instance" "webos1" {
+  ami              = "ami_id"
+  instance_type    = "t2.micro"
+  security_groups  = [ "webport-allow" ]
+  key_name         = "terraform_key"
+  
+  tags = {
+    Name = "Web Server by TF"
+  }
+
+resource "null_resource" "nullremote1"
+
+connection {
+    type        = "ssh"
+    user        = "ec2-user"
+    private_key = file("/give path/terraform_key.pem")
+    host        = aws_instance.webos1.public_ip
+  }
+provisioner "remote-exec" {
+    inline = [
+      "sudo yum install httpd -y",
+      "sudo yum install php -y",
+      "sudo systemctl start httpd",
+      "sudo systemctl enable httpd"
+    ]
+  }
+  resource "aws_ebs_volume" "example" {
+availability_zone = aws_instance.webos1.availability_zone
+size              = 1
+
+tags = {
+  Name = "Web Server HD by TF"
+  }
+}  
+resource "aws_volume_attachment" "ebs_att"{
+  device_name = "/dev/sdc"
+  volme_id    = aws_ebs_volume.example.id
+  instance_id = aws_instance.webos1.id
+ }
+}
+
+resource "null_resource" "nullremote2" {
+
+connection {
+    type        = "ssh"
+    user        = "ec2-user"
+    private_key = file("/give path/terraform_key.pem")
+    host        = aws_instance.webos1.public_ip
+  }
+provisioner "remote-exec" {
+    inline = [
+      "sudo mkfs.ext4 /dev/xvdc",
+      "sudo mount /dev/xvdc /var/www/html",
+    ]
+  }
+}
+
+resource "null_resource" "nullremote4" {
+
+connection {
+    type        = "ssh"
+    user        = "ec2-user"
+    private_key = file("/give path/terraform_key.pem")
+    host        = aws_instance.webos1.public_ip
+  }
+provisioner "remote-exec" {
+    inline = [
+      "sudo yum install git -y",
+      "sudo git clone link ",
+    ]
+  }
+}
+
+resource "null_resource" "nullremote5" {
+
+provisioner "local-exec" {
+   command = "chrome http://13.232.50.58/web/index.php "
+  }
+}
+
+terraform-apply -auto-approve
+-----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
