@@ -1,2 +1,42 @@
 Terraform
 ===================
+provider "aws" {
+
+region = "ap-south-1"
+profile = "default"
+
+}
+resource "aws_instance" "os1" {
+ami = "ami id"
+instance_type = "t2.micro"
+tags = {
+   Name = "my first TF OS 11"
+   }
+}
+
+output "my_public_ip_is" {
+value = aws_instance.os1.my_public_ip
+}
+
+output "my_az_is" {
+value = aws_instance.os1.availability_zone
+}
+
+resource "aws_ebs_volume" "st1" {
+availability_zone = aws_instance.os1.availability_zone
+size              = 10
+
+tags = {
+  Name = "Linuxworld HD new"
+  }
+}
+output "02"{
+value = aws_ebs_volume.st1
+}
+
+resource "aws_volume_attachment" "st1"{
+  device_name = "/dev/sdh"
+  volme id    = aws_ebs_volume.st1
+  instance_id = aws_instance_os1.id
+}
+
