@@ -182,7 +182,157 @@ provisioner "local-exec" {
 }
 
 terraform-apply -auto-approve
------------------------------------------------------------------------
+-------------------------------------------------------------------
+mkdir AWS-WS1
+CD AWS-WS1
+vi provider.tf
+
+provider.tf
+------------
+provider "aws" {
+  region                   = "ap-south-1"
+  profile                  = "default"
+}
+
+---------------------------------------------
+vi ec2.tf
+-----------
+resource "aws_instance" "webos1" {
+  ami              = "ami_id"
+  instance_type    = "t2.micro"
+  security_groups  = [ "webport-allow" ]
+  key_name         = "terraform_key"
+  
+  tags = {
+    Name = "Web Server by TF"
+  }
+
+}
+-----------------------------------------------
+terrform init
+terraform plan 
+-----------------------------------------------
+vi block.tf
+-------------
+resource "aws_ebs_volume" "example" {
+  availability_zone = aws_instance.webos1.availability_zone
+  size              = 1
+
+  tags = {
+    Name = "Web Server HD by TF"
+  }
+}  
+----------------------------------------------------------
+vi attach_block.tf
+------------------
+resource "aws_volume_attachment" "ebs_att"{
+  device_name  = "/dev/sdc"
+  volme_id     = aws_ebs_volume.example.id
+  instance_id  = aws_instance.webos1.id
+  force_detach = true
+ }
+}
+---------------------------------------------
+terraform plan
+terraform apply
+.tfstate (Terraform state) --> what is currently available to get all the information to store in one local file that file is called Terraform state
+1) Desired State --> what is instruct code
+2) Current state  --> what is there right now, all ready created or already available is called current state
+------------------------------------
+vi output.tf
+------------------
+output "myip"{
+value = aws_instance.webos1.public_ip
+}
+---------------------------------------
+terraform apply  --> it will print public ip
+teraform refresh  --> they go to cloud retrive all the information about resources
+-------------------------------------------------------------
+vi appache.tf
+--------------
+resource "null_resource" "nullremote1"
+depends_on = [
+  aws_volume_attachment.ebs_att
+]
+connection {
+    type        = "ssh"
+    user        = "ec2-user"
+    private_key = file("/ec2 give path/terraform_key.pem")
+    host        = aws_instance.webos1.public_ip
+  }
+provisioner "remote-exec" {
+    inline = [
+      "sudo yum install httpd -y",
+      "sudo yum install php -y",
+      "sudo systemctl start httpd",
+      "sudo systemctl enable httpd"
+      "sudo mkfs.ext4 /dev/xvdc",
+      "sudo mount /dev/xvdc /var/www/html",
+      "sudo yum install git -y",
+      "sudo git clone link /var/www/html" 
+    ]
+  }  
+}
+----------------------------------------------
+terraform init --> it will create null resources, null means no cloud, no aws, no gcp, no azure.(independent plugin)
+--------------------------------------------------------------------------------------------------------------------------------
+Multicloud Terraform
+----------------------
+datatypes
+-------------
+provider.tf
+------------
+provider "aws" {
+  region                   = "ap-south-1"
+  profile                  = "default"
+}
+provider "google" {
+  project                 = "lwteraproject1"
+  region                  = "ap-south-1"
+  credentials             = "lwteraproject-key.json"
+}
+
+-------------------------------------------
+variables.tf
+------------
+variable "x"{
+#   default = "hello"
+    type=string
+}
+output "o1"{
+value = var.x
+}
+-------------------------
+variable "x"{
+   default = "t2.micro"
+    type=string
+}
+output "o1"{
+value = var.x
+}
+
+
+variable "x"{}
+ output "o1"{
+   value = var.x
+}
+
+----------------------------------------------
+aws_main.tf
+-----------
+resource "aws_instance" "web" {
+  ami              = "ami_id"
+  instance_type    = var.x
+  
+}
+---------------------------------------------
+terraform apply -var="x=t2.micro"
+--------------------------------------
+terraform.tfvars
+---------------------
+x="t2.large"
+---------------------
+terraform apply -var-file=c.tfvars
 
 
 
