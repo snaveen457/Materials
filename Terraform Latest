@@ -490,19 +490,120 @@ mytype = "t2.micro"
 
 }
 -----------------------------
+Function
+=========
+mkdir f
+cd f
+vi.tf
+-------
+variable "aws_region" {
+    default = "ap-south-1"
+}
 
+variable "ami" {
+  type = map
+  default = {
+    "us-east-1" = "ami-222222"
+    "us-west-1" = "ami-333333"
+    "ap-south-1" = "ami-111111"
+}
+}
 
+resource "aws_instance" "web" {
+  ami              = lookup( var.ami , var.region, "ami-444444" )
+  instance_type    = "t2.micro"
+  
+  tags = {
+    Name = "Web Server by TF"
+  }
 
+output "o1" {
+value = lookup( var.ami , var.region, "ami-444444" )
+}
 
+terraform apply
+--------------------------------------------------------
+SG
+==
+mkdir sg
+cd sg
+------
+sg.tf
+----
+provider "aws" {
+  region = "ap-south-1"
+  profile = "default"
+}
 
+resource "aws_security_group" "s1" {
+  name        = "mysg"
+ingress {
+    from_port        = 80
+    to_port          = 80
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+}
+resource "aws_security_group" "s2" {
+  name        = "mysg"
+ingress {
+    from_port        = 81
+    to_port          = 81
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+}
+resource "aws_security_group" "s3" {
+  name        = "mysg"
+ingress {
+    from_port        = 8080
+    to_port          = 8080
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+}
+terraform init
+---------------------------------------
+dynamic blocks
+=================
+provider "aws" {
+  region = "ap-south-1"
+  profile = "default"
+}
 
-
-
-
-
-
-
-
+variable "sgports" {
+  type = list
+  default = [ 80,81,8080,8081 ]
+}
+resource "aws_security_group" "s1" {
+  name        = "mysg"
+dynamic "ingress" {
+   for_each = var.sgports
+   content {
+          from_port        = ingress.value
+          to_port          = ingress.value
+          protocol         = "tcp"
+          cidr_blocks      = ["0.0.0.0/0"]
+          }
+              }
+}
+----------------------------------------------------
+Remote State
+=============
+s.tf
+----
+provider "aws"{
+     region = "ap-south-1"
+     profile = "default"
+}
+resource "aws_instance" "web" {
+  ami           = "ami_id"
+  instance_type = "t2.micro"
+tags = {
+    Name = "HelloWorld"
+  }
+}
+-------------------------------------------
 
 
 
