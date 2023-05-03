@@ -1,8 +1,10 @@
 Terraform
-===================
+==================
 provider "aws" {
 
 region = "ap-south-1"
+access_key = ""
+secret_key = ""
 profile = "default"
 
 }
@@ -40,6 +42,25 @@ resource "aws_volume_attachment" "st1"{
   instance_id = aws_instance_os1.id
 }
 
+provider "aws" {
+
+region = "ap-south-1"
+access_key = "AKIAZJDVQQJ6G2SGXN74"
+secret_key = "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"
+
+
+}
+resource "aws_instance" "os1" {
+ami = "ami-0c768662cc797cd75"
+instance_type = "t2.micro"
+tags = {
+   Name = "my first TF OS 1"
+   }
+}
+-----------
+vi first.tf
+terraform init
+terraform apply first.tf
 ==========================================
 ami- id
 t2.micro
