@@ -57,7 +57,7 @@ tags = {
    Name = "my first TF OS 1"
    }
 }
------------
+---------------------------------------------------------
 vi first.tf
 terraform init
 terraform apply first.tf
@@ -144,6 +144,18 @@ value = aws_volume_attachment.ebs_att
 }
 
 --------------------------------------------------------
+-----------------------------------------------------
+ami- id
+t2.micro
+SG: webport-allow 80
+terraform_key.pem
+public ip
+ssh -1 ec2-user -i terraform_key.pem public_ip
+sudo yum install httpd -y 
+sudo yum install php -y
+sudo systemctl start httpd
+sudo systemctl enable httpd
+-------------------------------
 
 web.tf
 ==========================
