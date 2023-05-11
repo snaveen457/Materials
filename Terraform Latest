@@ -160,38 +160,96 @@ sudo systemctl enable httpd
 web.tf
 ==========================
 
-provider "aws" {
-  region                   = "ap-south-1"
-  profile                  = "default"
+provider "aws"{
+  region              = "ap-south-1"
 }
+
 resource "aws_instance" "webos1" {
-  ami              = "ami_id"
-  instance_type    = "t2.micro"
-  security_groups  = [ "webport-allow" ]
-  key_name         = "terraform_key"
-  
+  ami                 = "ami-0b08bfc6ff7069aff"
+  instance_type       = "t2.micro"
+  security_groups     = ["launch-wizard-1"]
+  key_name            = "terraform1"
+
   tags = {
-    Name = "Web Server by TF"
+    Name  = "web server by TF1"
   }
 
-resource "null_resource" "nullremote1"
-
-connection {
+  connection {
     type        = "ssh"
     user        = "ec2-user"
-    private_key = file("/give path/terraform_key.pem")
-    host        = aws_instance.webos1.public_ip
+    private_key = file("/root/terraform2.pem")
+    host        = self.public_ip
   }
-provisioner "remote-exec" {
+
+  provisioner "remote-exec" {
     inline = [
       "sudo yum install httpd -y",
       "sudo yum install php -y",
       "sudo systemctl start httpd",
-      "sudo systemctl enable httpd"
+      "sudo systemctl enable httpd",
+      "echo 'httpd version:' && httpd -v",
+      "echo 'php version:' && php -v",
     ]
   }
+}
 
----------------------------------------------------
+resource "null_resource" "nullremote1" {
+  triggers = {
+    instance_id = aws_instance.webos1.id
+  }
+  depends_on = [aws_instance.webos1]
+}
+
+resource "aws_ebs_volume" "example" {
+  availability_zone = aws_instance.webos1.availability_zone
+  size              = 1
+
+tags = {
+  Name = "Web Server HD by TF1"
+  }
+}  
+
+resource "aws_volume_attachment" "ebs_att" { 
+  device_name = "/dev/sdc"
+  volume_id    = aws_ebs_volume.example.id
+  instance_id = aws_instance.webos1.id
+ }
+
+resource "null_resource" "nullremote2" {
+
+connection {
+    type        = "ssh"
+    user        = "ec2-user"
+    private_key = file("/root/terraform2.pem")
+    host        = aws_instance.webos1.public_ip
+  }
+provisioner "remote-exec" {
+    inline = [
+      "sudo mkfs.ext4 /dev/xvdc",
+      "sudo mount /dev/xvdc /var/www/html",
+    ]
+      on_failure = continue
+  }
+}
+
+
+resource "null_resource" "nullremote3" {
+
+connection {
+    type        = "ssh"
+    user        = "ec2-user"
+    private_key = file("/root/terraform2.pem")
+    host        = aws_instance.webos1.public_ip
+  }
+provisioner "remote-exec" {
+    inline = [
+      "sudo yum install git -y",
+      "sudo git clone https://github.com/snaveen457/naveenM.git var/www/html", 
+    ]
+  }
+}
+
+===============================================================================
 terraform apply
 rpm -q php
 rpm -q httpd
