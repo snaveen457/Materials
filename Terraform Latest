@@ -205,7 +205,7 @@ resource "aws_ebs_volume" "example" {
   size              = 1
 
 tags = {
-  Name = "Web Server HD by TF1"
+  Name = "Web Server HD by TF11"
   }
 }  
 
@@ -248,6 +248,7 @@ provisioner "remote-exec" {
     ]
   }
 }
+
 
 ===============================================================================
 terraform apply
@@ -341,7 +342,7 @@ provisioner "local-exec" {
 }
 
 terraform-apply -auto-approve
--------------------------------------------------------------------
+=======================================================================================================
 mkdir AWS-WS1
 CD AWS-WS1
 vi provider.tf
