@@ -203,7 +203,7 @@ provider "aws"{
 }
 
 resource "aws_instance" "webos1" {
-  ami                 = "ami-0b08bfc6ff7069aff"
+  ami                 = ""
   instance_type       = "t2.micro"
   security_groups     = ["launch-wizard-1"]
   key_name            = "terraform1"
@@ -795,8 +795,8 @@ provider "aws"{
      profile = "default"
 }
 resource "aws_instance" "web" {
-  ami           = "ami_id"
-  instance_type = "var.mytype"
+  ami           = ""
+  instance_type = var.mytype
 tags = {
     Name = "HelloWorld"
   }
@@ -804,7 +804,7 @@ tags = {
 -----------------------------------
 var.tf
 ------
-variable "mytype"{
+variable "mytype" {
  default = t2.small
 }
 ------------------------------
@@ -817,7 +817,7 @@ vi dev.tf
 ------
 module "mydevm" {
 
-source = "../modules/ec2"
+source = "/root/modules/ec2"
 mytype = "t2.micro"
 
 }
@@ -831,7 +831,7 @@ cd prod
  ------------
  module "myprod" {
 
-source = "../modules/ec2"
+source = "/root/modules/ec2"
 mytype = "t2.micro"
 
 }
