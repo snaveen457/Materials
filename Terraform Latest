@@ -98,6 +98,9 @@ output "myvalue"{
 ----------------------------------------
 aws configure list-profiles
 --------------------------------------------------
+vi first.tf
+-----------
+
 provider "aws" {
 
 region = "ap-south-1"
@@ -142,6 +145,41 @@ resource "aws_volume_attachment" "ebs_att" {
 output "o3" {
 value = aws_volume_attachment.ebs_att
 }
+====================================================================================================================
+
+vi ssh.tf
+---------
+
+provider "aws" {
+  region = "ap-south-1"
+}
+
+resource "aws_instance" "p1" {
+  ami             = "ami-0b08bfc6ff7069aff"
+  instance_type   = "t2.micro"
+  security_groups = ["launch-wizard-1"]
+  key_name        = "terraform1"
+  tags = {
+    Environment = "dev"
+    Name        = "dev-1"
+  }
+  connection {
+    type        = "ssh"
+    user        = "ec2-user"
+    private_key = file("/root/terraform2.pem")
+    host        = aws_instance.p1.public_ip
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo yum install httpd -y",
+      "sudo yum install php -y",
+      "sudo systemctl start httpd",
+    ]
+  }
+
+}
+=====================================================================================================================================
 
 --------------------------------------------------------
 -----------------------------------------------------
@@ -158,7 +196,7 @@ sudo systemctl enable httpd
 -------------------------------
 
 web.tf
-==========================
+===========================================================================================================
 
 provider "aws"{
   region              = "ap-south-1"
@@ -249,8 +287,8 @@ provisioner "remote-exec" {
   }
 }
 
+===========================================================================================================================================================
 
-===============================================================================
 terraform apply
 rpm -q php
 rpm -q httpd
@@ -433,6 +471,76 @@ provisioner "remote-exec" {
     ]
   }  
 }
+
+==================================================================================================================================================================
+vi provider.tf
+---------------
+provider "aws" {
+  region                   = "ap-south-1"
+  profile                  = "default"
+}
+
+vi ec2.tf
+---------
+resource "aws_instance" "webos1" {
+  ami                 = "ami-0b08bfc6ff7069aff"
+  instance_type       = "t2.micro"
+  security_groups     = ["launch-wizard-1"]
+  key_name            = "terraform1"
+
+  tags = {
+    Name  = "web server by TF11"
+  }
+}
+
+vi output.tf
+------------
+output "myip"{
+value = aws_instance.webos1.public_ip
+}
+
+vi block.tf
+------------
+resource "aws_ebs_volume" "example" {
+  availability_zone = aws_instance.webos1.availability_zone
+  size              = 1
+
+tags = {
+  Name = "Web Server HD by TF11"
+  }
+}
+
+vi attach_block.tf
+------------------
+resource "aws_volume_attachment" "ebs_att" {
+  device_name = "/dev/sdc"
+  volume_id    = aws_ebs_volume.example.id
+  instance_id = aws_instance.webos1.id
+  force_detach = true
+}
+
+vi apache.tf
+------------
+resource "null_resource" "nullremote1" {
+
+connection {
+    type        = "ssh"
+    user        = "ec2-user"
+    private_key = file("/root/terraform2.pem")
+    host        = aws_instance.webos1.public_ip
+  }
+provisioner "remote-exec" {
+    inline = [
+      "sudo yum install httpd -y",
+      "sudo yum install php -y",
+      "sudo systemctl start httpd",
+      "sudo systemctl enable httpd",
+    ]
+  }
+}
+
+================================================================================================================================================================
+
 ----------------------------------------------
 terraform init --> it will create null resources, null means no cloud, no aws, no gcp, no azure.(independent plugin)
 --------------------------------------------------------------------------------------------------------------------------------
@@ -497,7 +605,7 @@ terraform apply -var-file=c.tfvars
 vpc
 =====
 1. create network/vpc/office:
-name
+give name
 cidr/n/w name: 10.0.0.0/16
 2. create igw
 name
@@ -514,7 +622,7 @@ cd vpc
 ------
 providers.tf
 ------------
-provider "aws"{
+provider "aws" {
      region = var.aws_region
      profile = "default"
 }
@@ -531,7 +639,7 @@ variable "vpc_cidr" {
 
 variable "subnets_cidr" {
     type = list
-    default = [ "10.0.1.0/24" , "10.0.2.0/24" , ]
+    default = [ "10.0.1.0/24" , "10.0.2.0/24" ]
 }
 
 variable "azs" {
@@ -546,6 +654,7 @@ resource "aws_vpc" "main" {
   tags = {
     Name = "myvpc"
   } 
+}
 resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.main.id
 
@@ -557,11 +666,11 @@ resource "aws_internet_gateway" "gw" {
 resource "aws_subnet" "main" {
   count = length(var.subnets_cidr)
   vpc_id     = aws_vpc.main.id
-  cidr_block = element(var.subnet_cidr, count.index )
-  availability_zone = element(var.azs , count.index )
+  cidr_block = element ( var.subnets_cidr, count.index )
+  availability_zone = element ( var.azs, count.index )
   map_public_ip_on_launch = true
 tags = {
-    Name = "subnet -${count.index + 1}"
+    Name = "subnet-${count.index + 1}"
   }
 }
 
@@ -578,18 +687,95 @@ route {
 
 resource "aws_route_table_association" "a" {
   count = length(var.subnets_cidr)
-  subnet_id      = element(aws_subnet.main.*.id count.index)
+  subnet_id      = element(aws_subnet.main.*.id, count.index)
+  route_table_id = aws_route_table.example.id
+}
+==================================================================================================================================================================
+vi provider.tf
+--------------
+provider "aws" {
+     region = var.aws_region
+     profile = "default"
+}
+
+vi variables.tf
+---------------
+variable "aws_region" {
+    default = "ap-south-1"
+}
+
+variable "vpc_cidr" {
+    default = "10.0.0.0/16"
+}
+
+variable "subnets_cidr" {
+    type = list
+    default = [ "10.0.1.0/24" , "10.0.2.0/24" ]
+}
+
+variable "azs" {
+    default = [ "ap-south-1a" , "ap-south-1b" ]
+}
+
+
+vi vpc.tf
+----------
+
+resource "aws_vpc" "main" {
+  cidr_block       = var.vpc_cidr
+  tags = {
+    Name = "myvpc"
+  }
+}
+resource "aws_internet_gateway" "gw" {
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name = "myigw"
+  }
+}
+
+resource "aws_subnet" "main" {
+  count = length(var.subnets_cidr)
+  vpc_id     = aws_vpc.main.id
+  cidr_block = element ( var.subnets_cidr, count.index )
+  availability_zone = element ( var.azs , count.index )
+   map_public_ip_on_launch = true
+tags = {
+    Name = "subnet-${count.index + 1}"
+  }
+}
+
+
+resource "aws_route_table" "example" {
+  vpc_id = aws_vpc.main.id
+
+route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.gw.id
+  }
+
+ tags = {
+    Name = "MypublicRT"
+  }
+}  
+
+resource "aws_route_table_association" "a" {
+  count = length(var.subnets_cidr)
+  subnet_id      = element(aws_subnet.main.*.id, count.index)
   route_table_id = aws_route_table.example.id
 }
 
+
+==================================================================================================================================================================
 f.tf
 ----
 output "o1" {
-value = length["a", "b", "c" ]
+value = length(["a", "b", "c" ])
 }
 
 output "o2" {
-value = index("a", "b", "c"], "b)"
+value = index([a", "b", "c"], "b")
 }
 
 output "o3" {
