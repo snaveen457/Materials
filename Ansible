@@ -71,7 +71,7 @@ Sample:
 Ansible configuration
 ------------------------
 Create 3 servers 1 for ansible servers 2 for hosts
-create Ansible user in server, give user name like ansible,sudo useradd ansible, and give password,sudo passwd ansible,Password Princy@#$2022
+create Ansible user in server, give user name like ansible,sudo useradd ansible, and give password,sudo passwd ansible,Password Princy@#$2023
 bydafult password based authentication not enable in aws,so we have to enable, go to sudo vi /etc/ssh/sshd_config
  keep like this # To disable tunneled clear text passwords, change to no here!
 PasswordAuthentication yes
@@ -89,9 +89,10 @@ Update package Manager
 sudo yum update -y
 install EPEL Repository on RHEL
 sudo dnf -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+sudo amazon-linux-extras install ansible2 -y
 confirm EPEL installation
 sudo dnf repolist epel
-Ansible Towe user Ansible playbook to deploy itself so we also need ansible installed.
+Ansible To we user Ansible playbook to deploy itself so we also need ansible installed.
 sudo yum -y install ansible vim curl
 
 sudo amazon-linux-extras install ansible2
