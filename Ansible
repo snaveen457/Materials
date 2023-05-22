@@ -398,6 +398,38 @@ playbook: handlers.yml
     hosts (2):
       172.31.28.220
       172.31.22.204
+     
+     =====================================================================
+- hosts: all
+  become: true
+  gather_facts: no
+  vars:
+    package_name: httpd
+    name: naveen
+  tasks:
+    - name: Install httpd
+      yum:
+        name: "{{package_name}}"
+        state: present
+
+    - name: Copy index.html
+      template:
+        src: /home/ansible/index.html
+        dest: /var/www/html/index.html
+      notify:
+        - Start httpd service
+
+    - name: Debug message
+      debug:
+        msg: "After Copy Task name variable value: {{name}}"
+
+  handlers:
+    - name: Start httpd service
+      service:
+        name: "{{package_name}}"
+        state: started
+        =====================================================================================================
+      
 ----------------------------------------------------------------------------------
 TAGS
 =====
@@ -409,6 +441,11 @@ ansible@ip-172-31-19-21 ansible-scripts]$ ansible-playbook TAGS.yml --list-tags
 playbook: TAGS.yml
    play #1 (all): all    TAGS: []
       TASK TAGS: [copy, debug, install]
+  
+  ansible-playbook sampleplaybook.yaml --list-tags: It will display all available tags in specified playbook.
+  ansible-playbook sampleplaybook.yml --tags "install,start" : This command will run the tags install and start.
+  ansible-playbook sampleplaybook.yml --skip-tags "install": This command will skip the tags specified tags, install.
+
 ansible-playbook TAGS.yml --tags "debug,copy" --> 
 ansible-playbook TAGS.yml --skip-tags "debug" -->
 
@@ -459,7 +496,7 @@ install jenkins using ansible playbook
     debug:
      var: result.stdout
 
-ansible-doc -l | grep "jenkins" --> it will show plugins
+ansible-doc -l | grep "jenkins" --> it will show jenkins_plugins
 ---------------------------------------------------------------
 
 Loops
