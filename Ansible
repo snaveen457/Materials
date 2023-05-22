@@ -95,6 +95,14 @@ sudo dnf repolist epel
 Ansible To we user Ansible playbook to deploy itself so we also need ansible installed.
 sudo yum -y install ansible vim curl
 
+sudo yum install python3 -y
+python3 --version
+sudo yum -y install python3-pip
+pip3 install ansible --user
+ansible --version
+
+
+
 sudo amazon-linux-extras install ansible2
 ansible --version
 python --version
@@ -115,15 +123,15 @@ vi /etc/ansible/hosts
 172.31.1.200 ansible_user=ec2-user
 172.31.1.0 ansible_user=ec2-user
 
-vi ~/ddddd.pem
+vi ~/ansiblep.pem
 add the key
 vi /etc/ansible/hosts
-172.31.1.200 ansible_user=ec2-user ansible_ssh_private_key_file=~/ddddd.pem
-172.31.1.0 ansible_user=ec2-user ansible_ssh_private_key_file=~/ddddd.pem
+172.31.1.200 ansible_user=ec2-user ansible_ssh_private_key_file=~/ansiblep.pem
+172.31.1.0 ansible_user=ec2-user ansible_ssh_private_key_file=~/ansiblp.pem
 
 check this command later    ansible all -m ping
 the private key have wide permissions
-chmod 400 ~/ddddd.pem
+chmod 400 ~/ansiblep.pem
 now  will able to do access ssh connection
 ---------------------------------------------------------------------------
 cat /etc/passwd                        for checking users
@@ -144,7 +152,7 @@ vi createuser.yml
       shell: /bin/bash
       comment: "Ansible Management Account"
       expires: -1
-      password: "{{ 'Princy@#$2022' | password_hash('sha512','A512') }}"
+      password: "{{ 'Princy@#$2023' | password_hash('sha512','A512') }}"
   - name: setup Sudo Access for ansible User
     copy:
       dest: /etc/sudoers.d/ansible
@@ -177,8 +185,8 @@ vi /etc/ansible/hosts
 #172.31.1.0 ansible_user=ec2-user ansible_ssh_private_key_file=~/ansible.pem
 
 vi /etc/ansible/hosts
-172.31.1.200 ansible_user=ansible ansible_password=Princy@#$2024
-172.31.1.0 ansible_user=ansible ansible_password=Princy@#$2024
+172.31.1.200 ansible_user=ansible ansible_password=Princy@#$2023
+172.31.1.0 ansible_user=ansible ansible_password=Princy@#$2023
 ansible all -m ping        make a shh connection
 ---------------------------------------------------------------------------------
 ssh-keygen in ansible server user
@@ -187,7 +195,7 @@ ssh-keygen     generate ssh key with ansible user in ansible server
 ls .ssh/
 id_rsa  id_rsa.pub known_hosts    ---> ssh key generated, without password and pem file you can use ssh key to connecting hosts.
 
- hosts: all
+- hosts: all
   tasks:
   - name: Create ansible User
     user: 
@@ -196,12 +204,12 @@ id_rsa  id_rsa.pub known_hosts    ---> ssh key generated, without password and p
       shell: /bin/bash
       comment: "Ansible Management Account"
       expires: -1
-      password: "{{ 'Princy@#$2024' | password_hash('sha512','A512') }}"
+      password: "{{ 'Princy@#$2023' | password_hash('sha512','A512') }}"
   - name: Deploy Local user SSH Key
     authorized_key:
        user: ansible
        state: present
-       mange_dir: true
+       manage_dir: true
        key: "{{ lookup('file', '/home/ansible/.ssh/id_rsa.pub') }}"
   - name: setup Sudo Access for ansible User
     copy:
@@ -262,7 +270,7 @@ ansible-doc shell                                         --> shell module list 
 ansible all -m shell -a "git --version"                   --> via checking shell module show git version in all machines
 ansible all -m shell -a "date"                            --> via checking shell module show date in all machines
 ansible all -m shell -a "df -kh"                          --> via checking shell module show file system in all machines
-ansible all -m shell -a "cat /etc/release"                --> via checking shell module show OS information in all machine
+ansible all -m shell -a "cat /etc/*release*"                --> via checking shell module show OS information in all machine
 ansible all -m shell  -b -a "yum install git -y"          -->  via checking shell module install git in all machine
 ansible appservers -m shell  -b -a "yum install git -y"   -->  via checking shell module install  git in group(appserver) machines
 ansible 172.89.12.13 -m shell  -b -a "yum install git -y" -->  via checking shell module install  git in particular ip machine
@@ -293,19 +301,20 @@ ansible all -b -m service -a "name=httpd state=started/restarted/stopped"
 
 - hosts: all
   tasks:
-  - name: install httpd
-    yum:
-      name: httpd
-      state: present
-   - name: copy index.html
-     copy:
-       src: index.html
-       dest: /var/www/html/index.html
-    - name: start https service
+    - name: Install httpd
+      yum:
+        name: httpd
+        state: present
+
+    - name: Copy index.html
+      copy:
+        src: /home/ansible/index.html
+        dest: /var/www/html/index.html
+
+    - name: Start httpd service
       service:
         name: httpd
         state: started
-  
   
 sudo ansible-playbook httpd.yml --syntax-check 
     
@@ -336,11 +345,37 @@ service: name=httpd enabled=yes state=started
 ---------------------------------------------------------------------------------
 Handlers
 ===========
-tasks ---> task will by default execute one the other
+tasks ---> task will by default execute one after the other.
 Handlers --> Handlers also special kind of tasks, handlers will not execute by default.
 some task has to notify the handler.then handlers will be executed at the end of the play(After executing all the tasks).
 the task which notified the handler should be changed then only handler will be executed.
 
+=======================================================================
+- hosts: all
+  become: true
+  gather_facts: no
+  tasks:
+    - name: Install httpd
+      yum:
+        name: httpd
+        state: present
+
+    - name: Copy index.html
+      copy:
+        src: /home/ansible/index.html
+        dest: /var/www/html/index.html
+      notify:
+        - Start httpd service
+    - name: Debug message
+      debug:
+        msg: "After Copy Task"
+  handlers:
+    - name: Start httpd service
+      service:
+        name: httpd
+        state: started
+ ================================================================================================
+        
 Templates -->
 =================
 Runtime variables
