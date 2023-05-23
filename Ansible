@@ -685,9 +685,31 @@ Runtime Vars
 playbook vars --> Scope of the variables is with in the play book. we can refer version the tasks
 or templates which we are using the playbook.
 
-Group Vars
+---
+- hosts: all
+  tasks:
+    - name: vars demo
+      debug:
+        msg: "var test value: {{ test }}"
+
+    - name: copy file
+      template:
+        src: test.txt
+        dest: /tmp/test.txt
+
+    - name: cat the file
+      shell: "cat /tmp/test.txt"
+      register: output
+
+    - name: print file content
+      debug:
+        msg: "file content {{ output.stdout }}"
+
+
+Group Vars --> where ever you  have host inventory with in that create folder called group_vars.
 db servers
 abc
+
 app servers
 xyz
 
