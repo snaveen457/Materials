@@ -729,11 +729,12 @@ ansible-vault edit <filename>.yml
 ansible-vault decrypt <filename>.yml
 ansible-vault rekey <filename>.yml  --> to update vault new password
 
+sudo vi /etc/ansible/group_vars/all.yml
 
 Step1: Create group variables for all groups.
 Add your password (Key value pair) in group variables yml
 vi /etc/ansible/group_vars/all.yml
-user_password: Princy@#$2022
+user_password: Princy@#$2023
 test: abc
 cat /etc/ansible/group_vars/all.yml
 Step 2: Encrypt existing group variables yml file using ansible vault
@@ -741,6 +742,8 @@ The typical use case is to have a normal, plaintext variable file that we want t
 ansible-vault, we can encrypt this and define the password needed to later decrypt it:
 ansible-vault encrypt /etc/ansible/group_vars/all.yml
 give vault password like Princy@123 after check cat /etc/ansible/group_vars/all.yml encrpted or not
+sudo chmod u+w /etc/ansible/group_vars/all.yml
+
 Step 3:
 Update your host inventory to refer password from group_vars/all.yml file make sure you use the same key name which you defined in group_vars/all.yml.
 Step 4: Execute ansible adhoc command ping to test the connectivity.
@@ -849,13 +852,14 @@ git clone https://github.com/MithunTechnologiesDevOps/AnsibleRoles.git
 
 dynamic inventory
 ==================
-
-
-
-
-
-
-
+terraform install
+-----------------
+sudo yum install -y yum-utils
+sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+sudo yum -y install terraform
+export PATH=$PATH:/usr/local/bin
+vi .bashrc
+source .bashrc
 
 
 
