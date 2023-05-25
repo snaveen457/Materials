@@ -727,7 +727,7 @@ ansible-vault encrypt <filename>.yml --> it will encrypt existing file
 ansible-vault view <filename>.yml
 ansible-vault edit <filename>.yml
 ansible-vault decrypt <filename>.yml
-ansible-vault rekey <filename>.yml  --> to update vault new password
+ansible-vault rekey <filename>.yml  --> to update vault new password means changing password.
 
 sudo vi /etc/ansible/group_vars/all.yml
 
@@ -754,10 +754,11 @@ ERROR! Attempting to decrypt but no vault secrets found
 to be execute ansible-playbook creatssh.yml --ask-vault-pass, it will ask vault password and provide it will execute
 without giveing vault password create one file give the vault password
 vi vaultpass give password  vi vaultpass and execute 
-ansible-playbook creatssh.yml --vault-password-file vaultpass,
+ansible-playbook creatssh.yml --vault-password-file=~/vaultpass,
 my password need to update cat /etc/ansible/group_vars/all.yml
 ansible-vault view /etc/ansible/group_vars/all.yml  who knows the vault password that person need to login
 ansible-vault edit /etc/ansible/group_vars/all.yml edit file if you want
+
 
 
 
