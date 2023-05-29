@@ -834,7 +834,11 @@ installhttpd.yml
 
 ansible-galaxy init <rolename>
 ansible-galaxy init httpd --> create role
-
+ls httpd/  --> predifined structure
+README.md defaults(main.yml) files handlers meta tasks templates tests vars(main.yml)
+sudo yum install tree -y
+ tree httpd/
+ 
 Rols Vars
 deafult 
 
@@ -848,7 +852,7 @@ vi installhttpdRole.yml
  
 ansible-playbook installhttpdRole.yml
 ansible-playbook installhttpdRole.yml --ask-vault-pass
-git clone https://github.com/MithunTechnologiesDevOps/AnsibleRoles.git
+git clone https://github.com/MithunTechnologiesDevOps/AnsibleRoles.git  
 
 
 dynamic inventory
