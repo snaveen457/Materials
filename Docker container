@@ -1,1 +1,144 @@
+Image commands:
 
+docker save <ImageName> -o <fileName>.tar
+docker load -i <filename>.tar
+
+
+Container commands:
+==================
+
+docker create --name <containerName> <ImageName>        To create a container
+ex:
+docker create --name mavenwebapp 457naveen/maven-web-app:1 
+
+docker run --name <containerName> <ImageName>
+
+docker run 
+docker run -d --name <containerName> <ImageName>
+
+what is the difference b/w docker create and docker run?
+Docker create will just create a container but it will not start. Docker run will create and start the container.
+
+docker ps                                                     for checking container
+
+docker rmi -f $(docker images -q) for deleteing all images
+
+docker create --name mavenwebapp 457naveen/maven-web-app:1     pulling the image from registry
+
+
+#List Running containers
+docker ps or docker container ls                                         for checking container
+
+#List all Containers
+docker ps -a  or  docker container ls -a                                 for checking container whether running or not
+
+docker run --name mavenwebapp 457naveen/maven-web-app:1                  for run the container
+
+docker start 567251752c7d                                                for container start
+
+docker ps                                                                container is running
+
+docker inspect mavenwebapp                                               for checking all details like IP(172.17.0.2) and container
+
+sudo apt install net-tools -y                                            netstart downloaded
+
+ sudo netstat -tulnp                                                     listening any servers command
+ 
+ what is port binding/port forward/port mapping?
+ we can not to the port binding and port mapping for running containers.
+ 
+ docker run -d -p <hostport8080>:<containerport8080> --name <containerName> <ImageName>
+ 
+ docker run --name mavenwebapp -p 8080:8080 457naveen/maven-web-app:1 
+ 
+docker run --name mavenwebapp -p 8080:8080 457naveen/maven-web-app:1      container process is interactive mode
+
+ docker ps -a
+ 
+ docker start container id
+ 
+ sudo netstat -tulnp                                                      listening ports will show
+ 
+ docker run -d --name javawebapp -p 7070:8080 457naveen/java-web-app:1
+ 
+ 
+ how many containers can be created in one server?
+ Depends on your server resources(cpu,memory..etc)
+ 
+ docker stop <Containerid/name>
+ 
+ docker start <Containerid/name>
+ 
+ docker rm <Containerid/name>
+ 
+ docker kill <Containerid/name>
+ 
+ docker restart <Containerid/name>
+ 
+ docker rename <Containerid/nameold> <Newname>
+ 
+ sudo ls /var/lid/docker                                            docker container information path
+ 
+ docker run -d -p 7070:8080 8309297e3d89               for create container from image
+ 
+ what is difference b/w docker stop and docker kill?
+ docker kill forcefuly kill the process
+ docker stop gracefully stopped
+ 
+ docker pause <Containerid/name>
+ 
+ docker unpause <Containerid/name>
+ 
+ docker rename <Containerid/name>
+ 
+ how to troublshoot you application which is running as container
+ 
+ docker top <containerid/name>                                what process in container
+ 
+ docker stats  <containerid/name>                              cpu memory consumption taking
+ 
+ docker logs  <containerid/name>                              display our container/application logs what ever has been send to stdout  and stderror
+ 
+ docker logs <containerid/name> --tail 10
+ 
+ docker logs -f <containerid/name>
+ 
+ docker exec <containerid/name> 
+ 
+ docker exec -it <containerid/name> bash                    inside the container
+ 
+ docker commit <containerid> <ImageName>                    retaine your changes from your conmtainer  
+
+can we run multiple process inside a single container?
+technically yes, the whole purpose of container is isolation 
+
+docker attach  <containerid/name>                               it will attach container process to host shell 
+
+docker cp <source file> <containerID/Name:Destinationpath>                            using which we can copy the files from docker host to conatiner and containe to host
+
+
+docker cp <containerID/Name:Sourcefile> <Destinationpath>
+
+ what is difference b/w COPY and docker cp ?
+ 
+ COPY is used to copy file to the image while creating an image in a docker file instruction we can copy files to the image
+ docker cp we can copy files to the container to the system
+ 
+ docker exec a7e29fae1077 ls 
+ 
+ docker exec a7e29fae1077 ps                    going to conatiner inside
+ 
+ docker exec -it a7e29fae1077 sh
+ 
+  docker exec -it a7e29fae1077 ls logs
+ 
+ docker cp a7e29fae1077:/usr/local/tomcat/logs/catalina.2023-01-09.log container.log      we can copy the file
+ 
+ ls
+ 
+ cat container.log 
+ 
+ 
+ docker cp container.log a7e29fae1077:/usr/local/tomcat/  to copy system to the container 
+ 
+ docker exec a7e29fae1077 ls  to see the data inside container
