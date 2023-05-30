@@ -1,1 +1,83 @@
 
+Docker Networks
+
+
+Monolothic Application or Archetecture
+In Monolothic Application will be build and deployed and maintain as a single entity(code Base)
+
+Flipkart
+
+login
+Registration
+checkout                 Single Code Base(Git)
+payments                                 -----> Single Application Package(war/ear)
+orders                                                                          --->Deploy this package in App Server
+profile
+
+Drawback 
+1)code Maintaince
+2)Scaling
+
+
+Micro Services Application or Archetecture
+
+Micro Services Application is nothing collection multiple small application(Services) which are related.
+
+flipkart
+
+Login            --->Git Repo  --> Login.jar          --->Docker Image   --> Container
+                     src
+					 *,javawebapp
+					 Dockerfile
+
+Registration     --->Git Repo  --> Registration.jar   --->Docker Image   --> Container
+Checkout         --->Git Repo  --> Checkout.jar       --->Docker Image   --> Container
+payments         --->Git Repo  --> Payments.jar       --->Docker Image   --> Container
+orders           --->Git Repo  --> orders.jar         --->Docker Image   --> Container
+profile          --->Git Repo  --> profile.jar        --->Docker Image   --> Container
+
+Containerzation shines for microservice Archetecture.
+
+Docker, core os, Rocket (RKT)  containerzation tool names.
+
+Challanges
+=============
+
+1) Build & Deployment.
+CI/CD Tool to Build & Deploy
+
+2)Infrastructure Cost & Challenges in configuration 
+Containerzation
+
+3)Communication b/w Micro Services 
+Docker Networks
+
+docker network ls                                             it will show docker networks
+
+
+
+
+docker network create -d bridge flipkartbridge       creating own network
+
+custom bridge network creating network manually   (communication can happen only using IP'S 
+and also Names(hostname) containers can communicate with each other using names(host)& also IP
+
+default bridge network automatically creted ( communication can happen only using IP'S 
+containers can't communicate with each other using name(host)
+
+
+docker exec -it javawebapp(containername) bash   it was going to inside the containername
+ ping mavenwebapp(containername) for checking communication two different containers
+ ping 172.17.0.3 using ip it will able to ping
+ 
+ 
+ docker run -d --name (containername) -p 8080:8080 --network flipkartbridge(Networkname) 457naveen/javawebapp
+ 
+ docker inspect containername
+ 
+ host
+ ==========
+ docker run -d --name javawebapp --network host 457naveen/javawebapp   creating host network container doen't have ip you can acces using host ip.
+ 
+ 
+ 
