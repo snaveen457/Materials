@@ -1,1 +1,129 @@
 
+Docker Compose
+====================
+
+Docker compose is a tool using which we can define & deploy multi/single container applications.
+
+it's a yaml file.
+
+
+
+What is difference b/w Dockerfile & docker compose file?
+Docker file is used to create docker image. using docker file generally used to create docker image.
+Docker compose file used to create a one or more containers.
+
+yaml purely based on idendation.
+
+Project:
+  groupId: com.com
+  dependencies:
+  - dependency:
+     groupId: javax.servlet
+	 artifactId: javax.servlet-api
+	 version:3.1.0
+  - dependency:
+     groupId: org.springframework
+	 artifactId: spring-context
+	 version:3.1.0	 
+tttttttttt
+
+---------------------------------------
+Version: '3.2'
+
+Services:
+   Springapp:
+     image: 457naveen/spring-boot-mongo:1
+     Ports:
+     - 8080:8080	 
+     networks:
+     - springappnetwork
+     environment:
+     - MONGO_DB_HOSTNAME=mongo
+     - MONGO_DB_USERNAME=devdb
+     - MONGO_DB_PASSWORD=devdb@123 
+     container_name: springappcontainer
+	 
+ mongo:
+    image: mongo
+    environment:
+    - MONGO_INITDB_ROOT_USERNAME=devdb
+    - MONGO_INITDB_ROOT_PASSWORD=devdb@123
+    Volumes:
+    - mongodbvol:/data/db
+    networks:
+    - springappnetwork   
+	
+Volumes:
+  mongodbvol:
+    driver: local
+	
+networks:
+springappnetwork:
+driver: bridge
+
+
+
+
+Version: '3.2'
+
+Services:
+   Springapp:
+     image: 457naveen/spring-boot-mongo:1
+     Ports:
+     - 8080:8080	 
+     networks:
+     - springappnetwork
+     environment:
+     - MONGO_DB_HOSTNAME=mongo
+     - MONGO_DB_USERNAME=devdb
+     - MONGO_DB_PASSWORD=devdb@123 
+     container_name: springappcontainer
+	 
+ mongo:
+    image: mongo
+    environment:
+    - MONGO_INITDB_ROOT_USERNAME=devdb
+    - MONGO_INITDB_ROOT_PASSWORD=devdb@123
+    Volumes:
+    - mongodbvol:/data/db
+    networks:
+    - springappnetwork   
+	
+Volumes:
+  mongodbvol:
+    external: true
+	
+networks:
+springappnetwork:
+external: true
+
+
+
+
+
+default name: docker-compose.yml or docker-compose.yaml
+
+vi docker-compose.yml
+
+sudo apt install docker-compose              to install this software
+sudo chmod 777 docker-compose
+
+sudo chmod +x/usr/local/bin/docker-compose
+
+
+docker-compose config 
+
+docker-compose create
+docker-compose up -d   to excute the detach mode of docker compose file
+docker-compose down
+docker-compose stop
+docker-compose restart
+docker-compose -f docker-compose-springapp.yml up -d
+
+docker-compose -f docker-compose.yml -f docker-compose-dev.yml config
+
+docker-compose -f docker-compose.yml -f docker-compose-dev.yml up -d
+
+docker-compose -f docker-compose.yml -f docker-compose-qa.yml up -d
+
+docker-compose -f docker-compose.yml -f docker-compose-prod.yml up -d
