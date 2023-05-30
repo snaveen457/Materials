@@ -1,1 +1,256 @@
+Dockerfile --> Dockerfile is file which will have instructions to create an image.
+docker deamon will process these commands from top to bottom.we will user docker DSL(Domain specific keyword) keyword in docker file.
+---------------------------------------------------------------------------------------------------------------
+FROM --> Indicates Base image on top it we can create our own image.
+
+FROM <IMAGENAME>
+
+EX:
+FROM tomcat:jdk8.0.1
+FROM dtr.tcs.com/java:1.8-jdk8
+-------------------------------------------------------------------------------------------------------------------
+MAINTAINER --> Author/Owner of the docker file/image.
+
+ex: 
+MAINTAINER Naveen <snaveenapt457@gmail.com>
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+COPY --> Is used to copy local files/folders (file which are part of your server where are u creating an image) to image while creating an image.
+EX:
+
+COPY <SOURCE> <Destination>
+
+COPY target/maven-web-app.war /usr/local/tomcat/webapps/maven-web-app.war
+
+COPY . .
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+ADD --> ADD also copy files to image. ADD can copy local files and also it can download files from remote https(s) locations while creating an image.
+if we are adding or downloading tar files(*.tar) it will add and also it will extract that file in image.
+
+ADD <Sourcefilepath> <DESTINATION>
+
+ADD <URL> <DESTINATION>
+
+what is difference b/w docker ADD & COPy?
+
+------------------------------------------------------------------------------------------------------------------------------
+RUN --> Using RUN we can executes commands on top of base image. RUN instructions will be executed while creating an image.
+Run instructions can be used to install/setup required softwares/configurations while creating image.
+we can have n number RUN instructions in docker file. all these instructions will be executed from top to bottom.
+
+RUN mkdir /app
+RUN yum install java
+RUN curl 
+
+-------------------------------------------------------------------------------------------------------------------------
+CMD --> Using CMD we can execute commands.  CMD instructions/command will be executed while creating container.
+use case: CMD can be used to start the process(Applicaton) inside container while creating a container.
+we can have more than one CMD instructions in docker file. docker will process/execute only one CMD(Recent/Last CMD).
+
+
+
+What is difference b/w RUN and CMD?
+RUN instructions will be executed while creating an image.
+    we can have n number RUN instructions in docker file.
+    all these instructions will be executed from top to bottom.
+
+CMD instructions/command will be executed while creating container.
+    we can have more than one CMD instructions in docker file. 
+    docker will process/execute only one CMD(Recent/Last CMD).
+
+-----------------------------------------------------------------------------------------------------------
+ENTRYPOINT --> ENTRYPOINT Instruction also will be executed while creating a container. 
+we can set an entry point(command) for our container which we want to excute.docker will process/execute only one ENTRYPOINT(Recent/Last ENTRYPOINT).
+
+what is the difference b/w CMD and ENTRYPOINT?
+CMD                commands can be overridden(I can change container) while creating a container. 
+ENTRYPOINT         where as ENTRYPOINT can't be overridden while creating container.
+
+mkdir dockerfiles_lab
+cd dockerfiles_lab
+vi Dockerfile
+
+FROM centos
+RUN echo "RUN One"
+RUN mkdir /app
+RUN echo "Run Two"
+RUN yum install unzip -y
+CMD ["echo", "Welcome From CMD"]
+
+docker build -t imageone .
+
+sudo apt-get remove unzip -y             to remove unzip file
+
+docker run imageone                   it will show ouput Welcome From CMD 
+
+docker ps                                  after creating container will be not start
+
+docker start containerID                     container will start and automatically stop becacuse of in docker file using echo
+
+FROM centos
+RUN echo "RUN One"
+RUN mkdir /app
+RUN echo "Run Two"
+RUN yum install unzip -y
+CMD ["echo", "Welcome From CMD"]
+CMD date                               
+if you give one more CMD it will take latest one that is date CMD
+
+docker run imageone ls                 list the directories
+
+FROM centos
+RUN echo "RUN One"
+RUN mkdir /app
+RUN echo "Run Two"
+RUN yum install unzip -y
+ENTRYPOINT ["echo", "Welcome From ENTRYPOINT"]
+
+docker build -t imagetwo .  
+docker run imagetwo
+
+docker run imagetwo ls                    it will show Welcome From ENTRYPOINT ls
+
+
+
+how can see layeers of image?
+docker history imagename
+
+can we have both CMD & ENTRYPOINT?
+it will show both 
+----------------------------------------------------------------------------------------
+ENV --> we can set environment variables using ENV. These variables can be accessable in
+image(while creating image) and also we can access in container.
+
+ENV <KEY> <VALUE>
+ENV CATALINA_HOME /usr/local/tomcat
+
+docker exec -it mavenwebapp bash     going to inside container and give key get value
+$CATALINA_HOME                       bash: /usr/local/tomcat: Is a directory
+
+docker exec mavenwebapp pwd
+
+docker exec -it mavenwebapp bash
+root@c028f6e15d02:/usr/local/tomcat# echo $CATALINA_HOME
+/usr/local/tomcat
+
+root@c028f6e15d02:/usr/local/tomcat# echo $PATH
+/usr/local/tomcat/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+docker inspect 457naveen/maven-web-app:1       we can see ENV variables
+---------------------------------------------------------------------------------------------------------
+
+LABEL --> LABELS are key value pair which we can add to the image.
+
+LABEL branchName feature
+
+Vi Dockerfile
+FROM centos
+RUN echo "Run One"
+RUN mkdir /app
+RUN echo "Run Two"
+RUN yum install unzip -y
+CMD ["echo", "Welcome From CMD"]
+CMD date
+LABEL branch develop
+
+docker build -t imageone .
+docker inspect imageone                        for seeing branch details in image
+---------------------------------------------------------------------------------------------------------------------------
+ARG --> is like a varible which we can define and reffer in docker file.
+at run time (while creating an image) also we can pass arguments.
+ARG can be accessable only while creating an image. we can not refer/access in container
+
+FROM ubuntu
+RUN echo "RUN One"
+RUN mkdir /app
+RUN echo "Run Two"
+RUN apt update -y
+RUN apt install unzip -y
+ENTRYPOINT ["echo", "Welcome From ENTRYPOINT"]
+CMD date
+ARG branch=develop
+LABEL branchname $develop
+
+docker build -t imageone --build-arg branch=develop .
+
+docker build -t imageone --build-arg branch=feature/login .
+
+docker inspect imageone
+
+what is difference b/w ENV & ARG?
+ENV we can set environment variables using ENV. These variables can be accessable in image(while creating image) and also we can access in container.
+ARG ARG can be accessable only while creating an image. we can not refer/access in container
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+USER  --> we can set an user for a container or a image. The instructions will be executed as whatever user we have set using USER.
+
+USER <USERNAME>
+
+docker run -d --name jenkins -p 9090:8080 jenkin/jenkins:lts
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+WORKDIR --> Using this we can set a working directory for an image/container.
+ex:
+WORKDIR <DirPath>
+WORKDIR /usr/local/tomcat
+ 
+docker exec mavenwebapp pwd              it will show working directory path
+------------------------------------------------------------------------------------------------
+EXPOSE --> EXPOSE indicates on which port our container is lisneting. 
+it's like documentation using this we can understanding what port is used.
+
+
+
+
+----------------------------------------------------------------------------------------------
+VOLUME
+
+using docker it self 
+u have to clone u r code, u have to build your code.
+
+what is shell form and executable form in docker?
+
+RUN,CMD,ENTRYPOINT Instructions can be defined in shell form or executable form?
+
+shell from  
+==================
+RUN <CMD> <ARGS>
+CMD <CMD> <ARGS>
+ENTRYPOINT <CMD> <ARGS>
+
+EX:
+RUN mkdir -p /usr/test
+/bin/bash -c mkdir -p /usr/test
+
+CMD java -jar app.jar
+/bin/bash -c java -jar app.jar
+
+CMD sh test.sh
+/bin/bash -c sh test.sh
+
+ENTRYPOINT java -jar app.jar
+/bin/bash -c java -jar app.jar
+
+it will be executed as
+/bin/<shell> -c <command>
+
+Executable form
+====================
+
+RUN ["CMD" ,"ARG1","ARG2"]
+CMD ["CMD" ,"ARG1","ARG2"]
+ENTRYPOINT ["CMD" ,"ARG1","ARG2"]
+
+EX:
+
+RUN ["mkdir" , "p" ,"/usr/test"]
+bin/mkdir -p /usr/test
+
+CMD["java", "-jar", "app.jar"]
+/bin/java -jar app.jar
+CMD ["sh" , "test.sh"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
+/bin/java -jar app.jar
+
+/bin/<executable> <args>
 
