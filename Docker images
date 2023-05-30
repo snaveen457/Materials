@@ -1,1 +1,310 @@
+Registry --> collection of one or more repositories
+Registry --> collection of one or more version same type(image)
+
+
+sudo curl -fsSL get.docker.com | /bin/bash                                              for download docker in ubuntu
+
+sudo apt update                                                                         for update OS
+
+sudo apt install docker.io                                                              for install docker
+
+docker info                                                                             to see the details
+
+sudo docker info                                                                         to see the details
+
+sudo usermod -aG docker ubuntu or $USER                                                  adding users to the group
+
+exit                                                                                     After adding we need to come out from login
+
+docker info                                                                              After adding docker commands will show 
+
+docker version                                                                            it will show docker CLI and dOCKER DEAMON
+docker --version                                                                          it will show docker version
+
+
+for build server required 
+git clone https://github.com/snaveen457/maven-web-application.git                             cloneing the project
+
+ls                                                                                       for checking folders
+maven-web-application                 folder it will show
+
+cd maven-web-application  entering into that folder
+
+vi Dockerfile
+FROM tomcat:8.0.20-jre8
+COPY target/maven-web-application*.war /usr/local/tomcat/webapps/maven-web-application.war
+
+DefaultName of Docker file: Dockerfile
+
+docker build -t(tag) <Reg/Repo>:<Tag>  <dockerbuildcontext>or <.>                               for build image 
+
+docker build -t 457naveen/maven-web-application:1 .                                      to create image
+docker build -t 172.89.89.90:8083/maven-web-application:1 .                              for public repository
+
+
+Dockerfile --> Image (Registies) --> container -->Networks --> Volumes
+--------------------------------------------------------------------------------
+Image commands
+
+docker build -t <Registry/Repository:tag>  <dockerbuildcontext>
+ex:
+docker build -t 457naveen/maven-web-app:1 .                     need to create application package
+docker build -t 178.90.89.92:8083/maven-web-app:1 .
+docker build -t ecr.1243789.aws.com/maven-web-app:1 .
+
+sudo apt install maven                                                        install maven also java
+
+java --version
+mvn --version
+mvn clean package                             build we are creating application package
+
+ls target/   for verifing application package
+
+docker build -t 457naveen/maven-web-app:1 .                                               later create image
+
+for Deploying application you can install another instance and install docker
+
+sudo yum update -y 
+
+sudo yum install docker -y 
+
+docker info
+
+sudo docker info
+
+sudo service docker status
+
+sudo service docker start                                                                 after start docker service 
+
+docker info  it will not show after add username to group
+
+sudo usermod -aG docker $USER                                                  adding users to the group
+
+docker images        
+                                                                     for seeing images
+docker push <imagename>          
+docker push 457naveen/maven-web-app:1                         for pushing image to docker hub 
+                                                                        for pushing image to docker repository														  
+docker pull 457naveen/maven-web-app:1   
+
+docker login -u 457naveen                                    need authentication
+docker push 457naveen/maven-web-app:1                        after authnticate need to push
+
+docker run -d -p 8080:8080 --name mavenwebapp 457naveen/maven-web-app:1  in deplyoment server need to be run
+
+docker ps for checking containers
+
+
+http://18.134.205.220:8080/maven-web-application/  with public ip need to be run in broswer
+
+docker pull 457naveen/maven-web-app:1 
+
+
+Password need to give
+
+docker pull 457naveen/maven-web-app:1
+
+docker images or docker image ls                                                           for seeing image
+
+#Authentication with Repo
+
+docker login -u <username> -p <password> <RegistryURL>                                      docker login 
+EX:
+docker login -u 457naveen -p <password>
+
+docker login -u admin -p admin123 178.90.89.92:8083
+docker login -u admin -p admin123 ecr.1243789.aws.com
+
+docker image inspect <imageId/Name>                                                          more details of image
+or
+docker inspect <ImageId/Name>
+
+docker image inspect 457naveen/maven-web-app:1
+docker inspect 457naveen/maven-web-app:1
+
+docker rmi <ImageId/Name>                                                                     for delete image 
+docker rmi $(docker images -q)                       for deleting all images                                          for delete all the images
+
+
+Image commands
+
+docker build -t <Registry/Repository:tag>  <dockerbuildcontext>
+ex:
+docker build -t 457naveen/maven-web-app:1 .                     need to create application package
+docker build -t 178.90.89.92:8083/maven-web-app:1 .
+docker build -t ecr.1243789.aws.com/maven-web-app:1 .
+
+#List images
+docker images or docker image ls 
+
+docker push <imagename>          
+docker push 457naveen/maven-web-app:1
+docker push ecr.1243789.aws.com/maven-web-app:1
+
+docker pull 
+docker pull 457naveen/maven-web-app:1
+docker pull ecr.1243789.aws.com/maven-web-app:1
+
+#Authentication with Repo
+
+docker login
+docker login -u <username> -p <password> <RegistryURL>                                      docker login 
+EX:
+docker login -u 457naveen -p <password>
+
+docker login -u admin -p admin123 178.90.89.92:8083                                      private registry
+docker login -u admin -p admin123 ecr.1243789.aws.com
+
+
+docker image inspect <imageId/Name>                                                          more details of image
+or
+docker inspect <ImageId/Name>
+
+docker image inspect 457naveen/maven-web-app:1
+docker inspect 457naveen/maven-web-app:1
+
+
+docker build -t 457naveen/maven-web-app:4 --no-cache   if you want give cache
+
+docker rmi <ImageId/Name>                                                                     for delete image 
+docker rmi $(docker images -q)                                                                for delete all the images
+
+
+Login any server
+ls it will show maven project
+
+cd maven-web-application 
+ls 
+
+
+docker build -t 457naveen/maven-web-app:2 . 
+
+docker client
+
+
+cd..
+docker build -t 457naveen/maven-web-app:2 .                       if we execute like this (unable to prepare context: unable to evaluate symlinks in Dockerfile path: lstat /home/ubuntu/Dockerfile: no such file or directory)
+
+docker build -t 457naveen/maven-web-app:2 ~/maven-web-application/  insteaed of dot his giving build context 
+
+cp ~/maven-web-application/Dockerfile . copying docker file from that folder
+
+ls it will show dockerfile
+
+rm maven-web-application/Dockerfile
+
+docker build -t 457naveen/maven-web-app:2 ~/maven-web-application/              try to create image it will show no docker file in the build context
+
+
+docker build -t 457naveen/maven-web-app:2  -f Dockerfile ~/maven-web-application/  success fully created image
+
+
+docker build -t 457naveen/maven-web-app:2 ~/maven-web-application/  try to access 
+
+ls maven-web-application/
+
+docker build -t 457naveen/maven-web-app:2  -f Dockerfile ~/maven-web-application/ 
+
+docker build -t 457naveen/maven-web-app:2 .                                        COPY failed: no source files were specified
+
+ls
+
+mv Dockerfile  maven-web-application/                   moving docker file
+
+ls
+
+cd maven-web-application/   it will show docker file
+
+
+docker build -t 457naveen/maven-web-app:2 .  override
+
+ls /var/lib/docker/                          ls: cannot open directory '/var/lib/docker/': Permission denied
+
+sudo ls /var/lib/docker                                 working folder of docker (buildkit  containers  image  network  overlay2  plugins  runtimes  swarm  tmp  trust  volumes)
+
+how can see the layesr of image?
+docker history image name:tag
+
+image is basically layer archectecture each image 
+
+
+docker history 457naveen/maven-web-app:1                it will show layerformat of image
+
+
+docker inspect 457naveen/maven-web-app:1                it will show complete information
+
+
+docker logout                   
+
+docker images -q                                   it will show image id'see
+
+docker rmi $(docker images -q)
+
+docker rmi -f $(docker images -q)
+
+docker images 
+
+docker ps or docker container ls    for checking containe
+
+docker run -d --name mavenwebapp -p 8080:8080 457naveen/maven-web-app:1
+
+docker ps 
+
+docker rmi 457naveen/maven-web-app for delete image
+
+docker rmi -f 457naveen/maven-web-app                               for delete repository and tag reference
+
+what is dangling image?
+an image which doesn't have repository details, which is not tagged.
+
+docker tag <ImageID> <Regi/Repo:Version>
+
+docker images -f dangling=true                         for showing dangling image
+docker tag ImageiD 457naveen/maven-web-app             for re tag name 
+
+docker rm -f mavenwebapp   removing container
+
+docker rmi -f <imagename> removing image
+
+
+docker system prune     
+this will remove:
+-all stopped containers
+-all networks not used by at least one container
+-all dangling images
+-all dangling build cache 
+
+docker image prune
+wARNING! This will remove all dangling images.
+
+docker container prune
+WARNING! This will remove all stopped containers.
+
+docker volume prune
+WARNING! This will remove all local volumes not used by at least one container.
+
+
+Private repositories
+------------------------
+nexus
+Jfrog
+DTR
+ecr --> elastic Conatiner Registry  it will mainatin images in aws ecr services 
+
+What is Docker Registry and what is docker repository?
+Registry is collection of repositories and collection of different verions of same image.
+
+Build Server
+docker build -t <Register/repo:veersion>
+
+docker login
+
+docker push <Reigst/repo:version>
+
+Deployment 
+
+docker login
+
+docker pull it will execute only pull the image from docker hub
+docker run  it will execute pull and download the image from docker hub
 
