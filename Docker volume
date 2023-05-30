@@ -1,1 +1,157 @@
 
+Local Volumes
+
+External voulmes(Network Volumes)
+
+statefull 
+
+stateless 
+
+Bind mount --> it's a file or folder from docker host/server which is mounted with container directly.
+
+Docker Persistent Mount --> 
+
+
+docker run -d --name mongo -e MONGO_INITDB_ROOT_USERNAME=devdb -e MONGO_INITDB_ROOT_PASSWORD=devdb@123 
+-v /home/ubuntu/mongodb:/data/db --network springappnetwork mongo
+
+docker ps
+ls mongodb/
+ls
+docker rm -f mongo 
+
+docker run -d --name mongo -e MONGO_INITDB_ROOT_USERNAME=devdb -e MONGO_INITDB_ROOT_PASSWORD=devdb@123 
+-v /home/ubuntu/mongodb:/data/db --network springappnetwork mongo
+
+docker volume ls 
+
+Spring Boot application (Front End)
+
+Mongo DB (Data Base)
+
+What is the important pints be considered while deploying applications as containers?
+
+1)we should not hard code the configuration(environment specific details like DB Username,password,..etc) in the code.
+2)we have externilize the configurations which are different for each env(DEV,QA,PROD).
+
+
+docker run -e KEY=VALUE
+
+docker run -e MONGO_DB_HOSTNAME=mongo -e MONGO_DB_USERNAME=devdb -e MONGO_DB_PASSWORD=devdb@123
+
+docker run -d mongo -e MONGO_INITDB_ROOT_USERNAME=devdb -e MONGO_INITDB_ROOT_PASSWORD=devdb@123 
+
+git clone https://github.com/MithunTechnologiesDevOps/spring-boot-mongo-docker.git
+ls
+cd spring-boot-mongo-docker
+mvn clean package
+
+docker build -t 457naveen/spring-boot-mongo:1 .
+
+CMD ["java" ,"-jar,"./spring-boot-mongo.jar" , "-Dxargs"]
+
+ENTRYPOINT ["java" ,"-jar,"./spring-boot-mongo.jar" , "-Dxargs"]
+
+docker push 457naveen/spring-boot-mongo:1
+
+
+login deployment server and pull the image from docker hub
+
+docker run -d --name springapp -p 8080:8080 -e MONGO_DB_HOSTNAME=mongo -e MONGO_DB_USERNAME=devdb -e MONGO_DB_PASSWORD=devdb@123 457naveen/spring-boot-mongo:1
+
+docker logs conatiner id
+
+docker run -d --name mongo -e MONGO_INITDB_ROOT_USERNAME=devdb -e MONGO_INITDB_ROOT_PASSWORD=devdb@123 mongo    data base also running as a container
+ 
+
+docker network create -d bridge springappnetwork          use custom network
+
+docker network ls 
+
+docker ps 
+
+docker rm -f $(docker ps -qa)               remove all containers and recreate conatiner
+
+docker run -d -p 8080:8080 --name springapp -e MONGO_DB_HOSTNAME=mongo -e MONGO_DB_USERNAME=devdb -e MONGO_DB_PASSWORD=devdb@123  --network springappnetwork 457naveen/spring-boot-mongo:1
+
+docker ps
+
+docker run -d --name mongo -e MONGO_INITDB_ROOT_USERNAME=devdb -e MONGO_INITDB_ROOT_PASSWORD=devdb@123 --network springappnetwork mongo
+
+docker ps
+
+while creating database we are not provide port forwarding, frontend only expose the outside data base will not expose the outside
+
+stateless  application container
+
+statefull database application it means conatiner will be delete and create maintain the data
+
+
+docker exec mongo ls /data/db       inthis folder data will be available
+
+
+Local Volumes            server file system
+
+docker bind mounts --> it's a file or folder from docker host or dockerserver which is mounted with container directly.
+mkdir mongodb
+ls
+docker exec mongo ls /data/db  
+
+docker rm -f mongo 
+
+docker run -d --name mongo -e MONGO_INITDB_ROOT_USERNAME=devdb -e MONGO_INITDB_ROOT_PASSWORD=devdb@123 -v /home/ec2-user/mongo:/data/db --network springappnetwork mongo
+
+docker persistent volumes    
+docker volume ls
+docker inspect container id
+sudo ls /var/lib/docker/
+
+
+docker volume prune           this will remove all volumes, don't do this one real time because data will lose
+
+docker volume ls
+docker volume create -d local mongodbvol
+
+docker volume inspect mongodbvol  it will maintained this below path
+/var/lib/docker/volumes/mongodbvol/_data
+
+docker run -d --name mongo -e MONGO_INITDB_ROOT_USERNAME=devdb -e MONGO_INITDB_ROOT_PASSWORD=devdb@123 -v mongodbvol:/data/db --network springappnetwork mongo
+
+docker inspect dontainer id
+
+ls /var/lib/docker/volumes/mongodbvol/_data
+
+sudo ls /var/lib/docker/volumes/mongodbvol/_data
+docker rm -f mongo
+
+
+External Volumes (Network volume)
+
+docker plugin install rexray/ebs EBS_ACCESSKEY=(Access id) EBS_SECRETKEY=(keY)
+
+What is readonly volumes how can we can attach volumes as readonly?
+
+docker run -d --name -e MONGO_INITDB_ROOT_USERNAME=devdb -e MONGO_INITDB_ROOT_PASSWORD=devdb@123 -v mongodbebsvol:/data/db:ro --network sprongappnetwork mongo
+
+
+docker plugin install rexray/ebs EBS_ACCESSKEY=(Access id) EBS_SECRETKEY=(keY)
+
+docker plugin install rexray/ebs EBS_ACCESSKEY= EBS_SECRETKEY=
+
+docker plugin ls
+
+docker volume create -d rexray/ebs mongodbebsvol
+docker volume ls
+
+docker run -d --name -e MONGO_INITDB_ROOT_USERNAME=devdb -e MONGO_INITDB_ROOT_PASSWORD=devdb@123 -v mongodbebsvol:/data/db:ro --network sprongappnetwork mongo
+
+docker inspect container id
+
+
+Image --> Package
+
+Container --> Process
+
+Network --> Communication
+
+Volumes --> Storage
