@@ -1,3 +1,23 @@
+Docker Achitecture
+====================
+Docker consists of Three major components
+----------------------------------------------
+
+Docker Client
+============
+This is a command line interface(CLI) through which the user send the commands / instructions to docker.
+
+Docker Daemon
+==============
+Docker Daemon executes the commands sent by the user. commands may be installing an OS or pulling an image from registry or running a container etc.
+
+
+Docker Registry
+===============
+
+This is a central repository maintained by Docker and its called Docker Hub. This registry contains various public images that can be used. 
+Also. the user can create his own image and upload the image in registry either as public or private.
+
 
 Docker Is a containerization software using which we can create containers.
 
@@ -9,7 +29,7 @@ Docker CE --> Comunity Edition --> Open Source(Free)
 
 Docker EE --> Enterprise Edition --> Commercial
 
-Type: Containerization
+Type: Containerization Tool
 Vendor: Docker INC
 
 O.S --> Cross Platform(Docker can be installed in any O.S)
@@ -23,8 +43,8 @@ Docker EE can installed in all O.S including redhat.
 Docker CE --> OpenSouce Free
 
 Docker EE --> Commerical
-   DTR --> Docker Trusted Registry(Private Repo to main docker images)
-   UCP --> Universal Controll Pane --> It's GUI for managing Docker Machines
+   DTR --> Docker Trusted Registry(Private Repo to maintain docker images)
+   UCP --> Universal Controll Pane --> It's GUI for managing Docker Machines or clusters
 
 Docker,CoreOS,Rockert --> Containerzation Platforms/Softwares.
 
@@ -39,6 +59,10 @@ DockerImage --> It's a package which contains everything(Softwares+ENV+Applicati
 DockerContainer --> Run time instance of an image.If you run docker image container will be created
                     that's where our application(process) is running.
 DockerRegistriy/Repository
+
+Registry  --> Collection of one more repo.
+
+Repository  --> Collection of one or more versions same type(image)
 
 DockerRepo/Registry. --> We can store and share the docker images.
 
@@ -81,7 +105,7 @@ sudo docker info
 
 # You will get permison denied error as regular user dosn't have permisions to execute docker commands.Add user to docker group.
 
-sudo usermod -aG docker $USER 
+sudo usermod -aG docker $USER ($user current user)  (a-add G-Group)
      or 
 sudo usermod -aG docker ubuntu
 
@@ -94,6 +118,7 @@ docker ps
 sudo yum update -y		
 sudo yum install docker -y
 sudo service docker start
+sudo service docker status
 
 Add Regural user to dockergroup
 sudo usermod -aG docker  <username>
@@ -111,6 +136,7 @@ sudo curl -fsSL get.docker.com | /bin/bash
 
 Docker Home/Working Dir: 
 /var/lib/docker
+
 
 
 Install Docker on AWS RHEL  (Offcially No Support)
@@ -167,13 +193,13 @@ Note: Image name should have repository details along with name and version.
 
 Public Repo (Docker Hub)
 
-docker build -t <registryName>/<RepoName>:<version> .
+docker build -t <registryName>/<RepoName>:<version> .  (-t tagging)
 
 Note: If we don't mention version information. By defualt it will use 'latest' as version
 
 ex:
-docker build -t dockerhandson/maven-web-application .
-
+docker build -t dockerhandson/maven-web-application:1 . (. current directory)
+---------------------------------------------------------------------------
 Private Repo (Nexus/JFrog/DTR)
 
 docker build -t <imageName> .
@@ -182,9 +208,11 @@ docker build -t <IP/HostNameOfRepo>:<RepoPort>/<repoName>:<version> .
 
 ex:
 docker build -t 178.90.34.12:8083/maven-web-application .
-
+docker build -t nexus.tcs.com:8083/maven-web-application .
+docker build -t ecr.124234232.amazon.com:8083/maven-web-application .
+-------------------------------------------------------------------------------
 Authenticate with repo
-
+-----------------------
 # Public Repo
 docker login -u <userName> -p <password>
 ex:
