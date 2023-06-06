@@ -129,48 +129,47 @@ docker rmi $(docker images -q)                       for deleting all images    
 
 
 Image commands
-
+----------------------------------------------------------------------------------------------------------------
 docker build -t <Registry/Repository:tag>  <dockerbuildcontext>
 ex:
 docker build -t 457naveen/maven-web-app:1 .                     need to create application package
 docker build -t 178.90.89.92:8083/maven-web-app:1 .
 docker build -t ecr.1243789.aws.com/maven-web-app:1 .
-
+------------------------------------------------------------------------------------------------------
 #List images
 docker images or docker image ls 
-
+-------------------------------------------------------------------------------------------------------
+# To push docker image to docker (hub or Registry)
 docker push <imagename>          
 docker push 457naveen/maven-web-app:1
 docker push ecr.1243789.aws.com/maven-web-app:1
-
+-------------------------------------------------------------------------------------------------------------
+# To pull Image from (egistry or Docker Hub)
 docker pull 
 docker pull 457naveen/maven-web-app:1
 docker pull ecr.1243789.aws.com/maven-web-app:1
-
+------------------------------------------------------------------------------------------------------------------
 #Authentication with Repo
 
 docker login
 docker login -u <username> -p <password> <RegistryURL>                                      docker login 
-EX:
+EX: public registry
 docker login -u 457naveen -p <password>
-
+---------------------------------------------------------------------------------------------------------------
 docker login -u admin -p admin123 178.90.89.92:8083                                      private registry
 docker login -u admin -p admin123 ecr.1243789.aws.com
-
-
+----------------------------------------------------------------------------------------------------------------------
 docker image inspect <imageId/Name>                                                          more details of image
 or
 docker inspect <ImageId/Name>
-
 docker image inspect 457naveen/maven-web-app:1
 docker inspect 457naveen/maven-web-app:1
-
-
+------------------------------------------------------------------------------------------------------------------------
 docker build -t 457naveen/maven-web-app:4 --no-cache   if you want give cache
-
+-------------------------------------------------------------------------------------------------------------------------------
 docker rmi <ImageId/Name>                                                                     for delete image 
 docker rmi $(docker images -q)                                                                for delete all the images
-
+----------------------------------------------------------------------------------------------------------------------------------
 
 Login any server
 ls it will show maven project
@@ -178,11 +177,9 @@ ls it will show maven project
 cd maven-web-application 
 ls 
 
-
 docker build -t 457naveen/maven-web-app:2 . 
 
 docker client
-
 
 cd..
 docker build -t 457naveen/maven-web-app:2 .                       if we execute like this (unable to prepare context: unable to evaluate symlinks in Dockerfile path: lstat /home/ubuntu/Dockerfile: no such file or directory)
@@ -197,9 +194,7 @@ rm maven-web-application/Dockerfile
 
 docker build -t 457naveen/maven-web-app:2 ~/maven-web-application/              try to create image it will show no docker file in the build context
 
-
 docker build -t 457naveen/maven-web-app:2  -f Dockerfile ~/maven-web-application/  success fully created image
-
 
 docker build -t 457naveen/maven-web-app:2 ~/maven-web-application/  try to access 
 
@@ -211,30 +206,27 @@ docker build -t 457naveen/maven-web-app:2 .                                     
 
 ls
 
-mv Dockerfile  maven-web-application/                   moving docker file
+mv Dockerfile  maven-web-application/                     moving docker file
 
 ls
 
 cd maven-web-application/   it will show docker file
 
 
-docker build -t 457naveen/maven-web-app:2 .  override
-
+docker build -t 457naveen/maven-web-app:2 .                       override
+-------------------------------------------------------------------------------------------------------------------------------------------
 ls /var/lib/docker/                          ls: cannot open directory '/var/lib/docker/': Permission denied
 
 sudo ls /var/lib/docker                                 working folder of docker (buildkit  containers  image  network  overlay2  plugins  runtimes  swarm  tmp  trust  volumes)
 
-how can see the layesr of image?
-docker history image name:tag
+how can see the layers of image?
+docker history <imagename:tag>
 
 image is basically layer archectecture each image 
 
-
 docker history 457naveen/maven-web-app:1                it will show layerformat of image
 
-
 docker inspect 457naveen/maven-web-app:1                it will show complete information
-
 
 docker logout                   
 
@@ -246,7 +238,7 @@ docker rmi -f $(docker images -q)
 
 docker images 
 
-docker ps or docker container ls    for checking containe
+docker ps or docker container ls    for checking container
 
 docker run -d --name mavenwebapp -p 8080:8080 457naveen/maven-web-app:1
 
@@ -256,57 +248,62 @@ docker rmi 457naveen/maven-web-app for delete image
 
 docker rmi -f 457naveen/maven-web-app                               for delete repository and tag reference
 
+docker logout 457naveen
+
+can i delete image if there is running container?
+docker rmi -f <imagename> removing repository and tag reference
+-----------------------------------------------------------------------------
 what is dangling image?
 an image which doesn't have repository details, which is not tagged.
 
 docker tag <ImageID> <Regi/Repo:Version>
 
-docker images -f dangling=true                         for showing dangling image
-docker tag ImageiD 457naveen/maven-web-app             for re tag name 
-
+docker images -f dangling=true                         for showing only dangling image
+docker tag ImageiD 457naveen/maven-web-app             for re tag name for dangling image
+--------------------------------------------------------------------------------------------------
 docker rm -f mavenwebapp   removing container
 
-docker rmi -f <imagename> removing image
-
-
-docker system prune     
+docker rmi -f <imagename> removing repository name and tag name reference
+----------------------------------------------------------------------------------------------
+--------------------------------------------------------------------
+docker system prune          to clean up your system
 this will remove:
 -all stopped containers
 -all networks not used by at least one container
 -all dangling images
 -all dangling build cache 
-
+-------------------------------------------------------------
 docker image prune
 wARNING! This will remove all dangling images.
-
+-----------------------------------------------------------------
 docker container prune
 WARNING! This will remove all stopped containers.
-
+--------------------------------------------------------------------------
 docker volume prune
 WARNING! This will remove all local volumes not used by at least one container.
-
+---------------------------------------------------------------------------------------
 
 Private repositories
 ------------------------
 nexus
 Jfrog
 DTR
-ecr --> elastic Conatiner Registry  it will mainatin images in aws ecr services 
+ecr --> elastic Conatiner Registry       it will mainatin images in aws ecr services 
 
 What is Docker Registry and what is docker repository?
 Registry is collection of repositories and collection of different verions of same image.
-
+-------------------------------------------------------------------------
 Build Server
 docker build -t <Register/repo:veersion>
 
 docker login
 
 docker push <Reigst/repo:version>
-
+-----------------------------------------------------------------------
 Deployment 
 
 docker login
 
 docker pull it will execute only pull the image from docker hub
 docker run  it will execute pull and download the image from docker hub
-
+------------------------------------------------------------------------------
