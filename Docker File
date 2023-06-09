@@ -150,9 +150,9 @@ RUN echo "Run Two"
 RUN yum install unzip -y
 CMD ["echo", "Welcome From CMD"]
 CMD date
-LABEL branch develop
+LABEL branchname develop
 
-docker build -t imageone .
+docker build -t imageone .          build the image
 docker inspect imageone                        for seeing branch details in image
 ---------------------------------------------------------------------------------------------------------------------------
 ARG --> is like a varible which we can define and reffer in docker file.
@@ -170,9 +170,10 @@ CMD date
 ARG branch=develop
 LABEL branchname $develop
 
+docker build -t imageone.
 docker build -t imageone --build-arg branch=develop .
 
-docker build -t imageone --build-arg branch=feature/login .
+docker build -t imageone --build-arg branch=feature/login .   (pass arugumnets while creating an image)
 
 docker inspect imageone
 
@@ -185,8 +186,8 @@ USER  --> we can set an user for a container or a image. The instructions will b
 
 USER <USERNAME>
 
-docker run -d --name jenkins -p 9090:8080 jenkin/jenkins:lts
-
+docker run -d --name jenkins -p 9090:8080 jenkin/jenkins:lts  creating container
+docker exec -it jenkins bash                                     going to inside container
 -------------------------------------------------------------------------------------------------------------------------------------
 
 WORKDIR --> Using this we can set a working directory for an image/container.
@@ -195,6 +196,7 @@ WORKDIR <DirPath>
 WORKDIR /usr/local/tomcat
  
 docker exec mavenwebapp pwd              it will show working directory path
+ /usr/local/tomcat
 ------------------------------------------------------------------------------------------------
 EXPOSE --> EXPOSE indicates on which port our container is lisneting. 
 it's like documentation using this we can understanding what port is used.
@@ -233,9 +235,12 @@ ENTRYPOINT java -jar app.jar
 
 it will be executed as
 /bin/<shell> -c <command>
+java is not a parent process, its child process when ever we execute docker stop or kill the contaier
+docker will notify in main process( parent process) it will try to stop the parent process.
 
 Executable form
 ====================
+its parent process 
 
 RUN ["CMD" ,"ARG1","ARG2"]
 CMD ["CMD" ,"ARG1","ARG2"]
@@ -252,5 +257,6 @@ CMD ["sh" , "test.sh"]
 ENTRYPOINT ["java", "-jar", "app.jar"]
 /bin/java -jar app.jar
 
+it will executable
 /bin/<executable> <args>
 
