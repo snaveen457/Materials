@@ -1,5 +1,5 @@
 Dockerfile --> Dockerfile is file which will have instructions to create an image.
-docker deamon will process these commands from top to bottom.we will user docker DSL(Domain specific keyword) keyword in docker file.
+docker deamon will process these commands from top to bottom, we will user docker DSL(Domain specific keyword) keyword in docker file.
 ---------------------------------------------------------------------------------------------------------------
 FROM --> Indicates Base image on top it we can create our own image.
 
