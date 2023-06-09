@@ -1,7 +1,9 @@
 
 Docker Networks
 
-
+Monolothic Application or Archetecture
+Micro Services Application or Archetecture
+----------------------------------------------------------------------------------------------------------------------------------
 Monolothic Application or Archetecture
 In Monolothic Application will be build and deployed and maintain as a single entity(code Base)
 
@@ -18,7 +20,7 @@ Drawback
 1)code Maintaince
 2)Scaling
 
-
+--------------------------------------------------------------------------------------------------------------------------------
 Micro Services Application or Archetecture
 
 Micro Services Application is nothing collection multiple small application(Services) which are related.
@@ -39,7 +41,7 @@ profile          --->Git Repo  --> profile.jar        --->Docker Image   --> Con
 Containerzation shines for microservice Archetecture.
 
 Docker, core os, Rocket (RKT)  containerzation tool names.
-
+----------------------------------------------------------------------------------------------------------------------------------------
 Challanges
 =============
 
