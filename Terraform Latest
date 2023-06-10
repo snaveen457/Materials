@@ -1,5 +1,23 @@
 Terraform
 ==================
+1)provisioning
+2) install/boot
+3) configuration management
+
+resource is one of the keyword in terrafoem
+
+AWS
+---
+1) webUI
+2) CLI
+3) API
+
+
+
+
+
+
+====================================
 provider "aws" {
 
 region = "ap-south-1"
