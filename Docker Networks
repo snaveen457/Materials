@@ -7,6 +7,8 @@ Micro Services Application or Archetecture
 Monolothic Application or Archetecture
 In Monolothic Application will be build and deployed and maintain as a single entity(code Base)
 
+Monolothic Application is a tightly coupled 
+
 Flipkart
 
 login
@@ -25,6 +27,8 @@ Micro Services Application or Archetecture
 
 Micro Services Application is nothing collection multiple small application(Services) which are related.
 
+Micro Services Application is a loosely coupled 
+
 flipkart
 
 Login            --->Git Repo  --> Login.jar          --->Docker Image   --> Container
@@ -41,6 +45,12 @@ profile          --->Git Repo  --> profile.jar        --->Docker Image   --> Con
 Containerzation shines for microservice Archetecture.
 
 Docker, core os, Rocket (RKT)  containerzation tool names.
+
+Login 10 Replicas
+Regist 8 Replicas
+Orders 3 Replicas
+Profile 5 Replicas
+
 ----------------------------------------------------------------------------------------------------------------------------------------
 Challanges
 =============
@@ -52,34 +62,67 @@ CI/CD Tool to Build & Deploy
 Containerzation
 
 3)Communication b/w Micro Services 
-Docker Networks
+Docker Networks  --> we can create a network in a docker for your containers, so one container can communicated another contaier or set of containers using names.
+Because conatiner IP's are dynamic.
+-----------------------------------------------------------------------------------------------
+By default has below 3 networks:
+1) bridge
+2) host
+3) none/null
+--------------------------------------------------------------------------------------------------
+docker run -d --name javwebapp -p 8080:8080 naveen457/java-web-app:1   to create container
+docker inspect javwebapp      for checking all info in conatiner
+--------------------------------------------------------------------------------------------
+docker run -d --name mavenwebapp naveen457/maven-web-application
+docker inspect  mavenwebapp      for checking all info in conatiner
 
 docker network ls                                             it will show docker networks
-
-
-
-
+--------------------------------------------------------------------------------------------------
 docker network create -d bridge flipkartbridge       creating own network
+docker network ls
 
 custom bridge network creating network manually   (communication can happen only using IP'S 
 and also Names(hostname) containers can communicate with each other using names(host)& also IP
-
+--------------------------------------------------------------------------------------------------------------
 default bridge network automatically creted ( communication can happen only using IP'S 
 containers can't communicate with each other using name(host)
-
-
-docker exec -it javawebapp(containername) bash   it was going to inside the containername
+-------------------------------------------------------------------------------------------------------------
+ docker exec -it javawebapp(containername) bash   it was going to inside the containername
  ping mavenwebapp(containername) for checking communication two different containers
- ping 172.17.0.3 using ip it will able to ping
- 
- 
+ by deafult bridge network it will not able to communicate conatiners with host name 
+ ping 172.17.0.3                          using ip it will able to ping
+ using container IP with able to communicate with other conatiners
+ --------------------------------------------------------------------------------------------------------------
+ docker rm -f (docker ps -aq)  removing all containers 
+ -------------------------------------------------------------------------------------------------------------
  docker run -d --name (containername) -p 8080:8080 --network flipkartbridge(Networkname) 457naveen/javawebapp
- 
- docker inspect containername
- 
- host
+ docker run -d --name javawebapp -p 8080:8080 --network flipkartbridge(Networkname) 457naveen/javawebapp
+
+ docker inspect containername  for checking bridge
+ docker exec javawebapp
+ ping javawebapp    with host name able to ping
+ ping 172.18.0.2    with ip also able to ping
+ docker run -d --name mongo -p 8080:8080 --network flipkartbridge(Networkname) 457naveen/mongo
+ docker inspect containername  for checking bridge
+ docker exec mongo
+ ping mongo    with host name able to ping
+ ping 172.18.0.3    with ip also able to ping
+ ----------------------------------------------------------------------------------------------------------------------------------------------------
+ docker network connet  networkname containername/ID     we are connecting one network containers with other network conatiners
+ docker network connect flipkartbridge mavenwebapp
+ docker inspect mavenwebapp   for this two network ip's will have
+ docker exec -it javawebapp bash
+ ping mavenwebapp  it will able to ping
+ docker network disconnect flipkartbridge mavenwebapp  for disconnecting
+-----------------------------------------------------------------------------------------------------------------------------
+host
  ==========
- docker run -d --name javawebapp --network host 457naveen/javawebapp   creating host network container doen't have ip you can acces using host ip.
+ Host --> Containers can be created directly host(server) network. if conatiners are created in host network conatiners will not have ip address.
  
- 
- 
+docker run -d --name javawebapp --network host 457naveen/javawebapp   creating host network container doen't have ip you can acces using host ip(pc ip).
+docker inspect javawebapp  
+
+docker logs javawebapp
+
+
+
