@@ -123,6 +123,8 @@ docker run -d --name javawebapp --network host 457naveen/javawebapp   creating h
 docker inspect javawebapp  
 
 docker logs javawebapp
-
+----------------------------------------------------------------------------------------------------------------------------------------------
+None/null  --> if we create containers in null or none network conatiners will not have a IP Address, we can't access these containers form any where.
+-------------------------------------------------
 
 
