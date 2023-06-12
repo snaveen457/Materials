@@ -30,7 +30,6 @@ Spring Boot application (Front End)
 Mongo DB (Data Base)
 
 What is the important pints be considered while deploying applications as containers?
-
 1)we should not hard code the configuration(environment specific details like DB Username,password,..etc) in the code.
 2)we have externilize the configurations which are different for each env(DEV,QA,PROD).
 
@@ -58,19 +57,22 @@ docker push 457naveen/spring-boot-mongo:1
 login deployment server and pull the image from docker hub
 
 docker run -d --name springapp -p 8080:8080 -e MONGO_DB_HOSTNAME=mongo -e MONGO_DB_USERNAME=devdb -e MONGO_DB_PASSWORD=devdb@123 457naveen/spring-boot-mongo:1
+after creating container,now can access application with emmded tomcat
 
 docker logs conatiner id
 
-docker run -d --name mongo -e MONGO_INITDB_ROOT_USERNAME=devdb -e MONGO_INITDB_ROOT_PASSWORD=devdb@123 mongo    data base also running as a container
- 
+docker run -d --name mongo -e MONGO_INITDB_ROOT_USERNAME=devdb -e MONGO_INITDB_ROOT_PASSWORD=devdb@123 mongo     data base also running as a container
 
+later also database is not working because name does not resolve,
+
+ 
 docker network create -d bridge springappnetwork          use custom network
 
 docker network ls 
 
 docker ps 
 
-docker rm -f $(docker ps -qa)               remove all containers and recreate conatiner
+docker rm -f $(docker ps -aq)               remove all containers and recreate conatiner because deafult bridge only created
 
 docker run -d -p 8080:8080 --name springapp -e MONGO_DB_HOSTNAME=mongo -e MONGO_DB_USERNAME=devdb -e MONGO_DB_PASSWORD=devdb@123  --network springappnetwork 457naveen/spring-boot-mongo:1
 
