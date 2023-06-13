@@ -91,22 +91,39 @@ statefull database application it means conatiner will be delete and create main
 
 docker exec mongo ls /data/db       inthis folder data will be available
 
+volume is not like a backup, volume is nothing but we are going to mount the container file directory with external file sysytem.
+instead of container file system we are using external file system.
 
 Local Volumes            server file system
 
+external volumes(Network Volumes)
+
+
+Local Volumes 
 docker bind mounts --> it's a file or folder from docker host or dockerserver which is mounted with container directly.
+if use bind mount it's not going to be maintained outside of your container life cycle.
+docker is maintain volume information outside of your container life cycle?
+no
+
 mkdir mongodb
 ls
 docker exec mongo ls /data/db  
 
+can we do volume mapping for running conatiner?
+no, docker connect conatinername
+
 docker rm -f mongo 
 
-docker run -d --name mongo -e MONGO_INITDB_ROOT_USERNAME=devdb -e MONGO_INITDB_ROOT_PASSWORD=devdb@123 -v /home/ec2-user/mongo:/data/db --network springappnetwork mongo
+docker run -d --name mongo -e MONGO_INITDB_ROOT_USERNAME=devdb -e MONGO_INITDB_ROOT_PASSWORD=devdb@123 -v /home/ec2-user/mongodb:/data/db --network springappnetwork mongo
 
-docker persistent volumes    
+ls mongodb/  it will show some folders (the folder is mounted with container directory)
+
+docker persistent volumes -->    docker will maintain the state of volumes information of outside the container life cycle.
+
+
 docker volume ls
 docker inspect container id
-sudo ls /var/lib/docker/
+sudo ls /var/lib/docker/            inside volumes folder
 
 
 docker volume prune           this will remove all volumes, don't do this one real time because data will lose
@@ -114,22 +131,26 @@ docker volume prune           this will remove all volumes, don't do this one re
 docker volume ls
 docker volume create -d local mongodbvol
 
+docker volume ls
+
 docker volume inspect mongodbvol  it will maintained this below path
 /var/lib/docker/volumes/mongodbvol/_data
 
 docker run -d --name mongo -e MONGO_INITDB_ROOT_USERNAME=devdb -e MONGO_INITDB_ROOT_PASSWORD=devdb@123 -v mongodbvol:/data/db --network springappnetwork mongo
 
-docker inspect dontainer id
+docker inspect container id
 
-ls /var/lib/docker/volumes/mongodbvol/_data
+ls /var/lib/docker/volumes/mongodbvol/_data      normal user not able to access he will not able to do any modification
 
-sudo ls /var/lib/docker/volumes/mongodbvol/_data
+sudo ls /var/lib/docker/volumes/mongodbvol/_data  it will volume files
 docker rm -f mongo
 
 
 External Volumes (Network volume)
 
-docker plugin install rexray/ebs EBS_ACCESSKEY=(Access id) EBS_SECRETKEY=(keY)
+docker plugin install rexray/ebs EBS_ACCESSKEY=(Access id) EBS_SECRETKEY=(keY)  install EBS driver
+
+docker plugin ls
 
 What is readonly volumes how can we can attach volumes as readonly?
 
@@ -142,13 +163,24 @@ docker plugin install rexray/ebs EBS_ACCESSKEY= EBS_SECRETKEY=
 
 docker plugin ls
 
-docker volume create -d rexray/ebs mongodbebsvol
+docker volume create -d rexray/ebs mongodbebsvol   created volume in EC2 instance
 docker volume ls
 
 docker run -d --name -e MONGO_INITDB_ROOT_USERNAME=devdb -e MONGO_INITDB_ROOT_PASSWORD=devdb@123 -v mongodbebsvol:/data/db:ro --network sprongappnetwork mongo
 
-docker inspect container id
+docker volume ls 
+docker volume mongodbebsvol   inspect with volume
 
+docker inspect container id             outside of your server root file system
+
+volume is nothing but peace of storage which is mounted to the conatiner so that the data will be available irrespective of your container life cycle.
+
+volumes are more imporatant to statefull application
+
+
+What is readonly volumes how can we can attach volumes as readonly?
+containers can only have read the data from the volume, and it doe's not permission to write.
+docker run -d --name -e MONGO_INITDB_ROOT_USERNAME=devdb -e MONGO_INITDB_ROOT_PASSWORD=devdb@123 -v mongodbebsvol:/data/db:ro --network sprongappnetwork mongo
 
 Image --> Package
 
