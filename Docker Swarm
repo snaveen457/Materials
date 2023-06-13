@@ -7,17 +7,19 @@ Docker compose file used to create a one or more containers.
 
 container orchestration tools
 
+what is orchestration?
+managing or coordinating or instructing or something went wrong for replacing.
+
+container orchestration tools
+----------------------------------
 Docker swarm
-
 kubernetes
-
 Openshift
-
 
 what is Docker Swarm?
 Cluster management and orchestration feature embedded in docker engine.
 cluster of Docker engines or nodes
-one manger, and rest workers.
+one/more manger, and rest workers.
 
 Swarm Features?
 Cluster Management
@@ -26,7 +28,7 @@ Declarative Service mode
 scaling
 Desired state reconciliation
 Multi-host network
-Service discovery --> one design pattern docker swarm has embedded discovery
+Service discovery --> one design pattern docker swarm has embedded service discovery
 Load balancing
 secured by default
 rolling updates
@@ -72,8 +74,10 @@ productio
 10- worker Machine
 
 how many docker swarm cluster u have?
-
+each environment separate cluster
 DEV
+
+INT
 
 QA
 
@@ -84,7 +88,6 @@ sudo apt-get install curl -y
 sudo apt install docker.io -y
 sudo usermod -aG docker ubuntu
 systemctl start docker.service 
-
 
 
 docker swarm init          priviate ip it self
@@ -100,6 +103,8 @@ docker swarm join --token SWMTKN-1-29mapg3e9kvy2487uto2euize49d66p9verfbev2k1c56
 
 docker node ls             for view how many nodes
 
+what is docker swarm manager quarm?
+
 
 docker swarm join-token worker : docker swarm join --token SWMTKN-1-5ttly9mjt3zghroxhdltwvarrcofqvvoosgdbtxn6xyiakqqgh-2lhgmz7zdhahxzhxncvef0b1g 172.31.47.16:2377
 sudo docker node ls
@@ -110,19 +115,18 @@ docker swarm join-token manager : docker swarm join --token SWMTKN-1-5ttly9mjt3z
 docker swarm init --listen-addr=eth0 --advertise-addr$(curl http://13.40.107.210/latest/meta-data/public-ipv4) public ip
 
 docker swarm init --listen-addr=eth0 --advertise-addr$(curl http://172.31.47.16/latest/meta-data/public-ipv4) private ip
-
-docker run    not use in the cluster to create container
-
+-------------------------------------------------------------------------------------
+docker run   not use in the cluster to create container
+---------------------------------------------------------------------------------------------
 in docker swarm we have to deploy our application as a service.
-
+---------------------------------------------------------------------------------------
 Docker swarm service
 service is collection of one or more containers of same type(image).
-
+-------------------------------------------------------------------------------------------
 There are two types of services in docker swarm.
-
 1)replica mode --> (default mode) it will create 1 replica by default
 2)global mode
-
+------------------------------------------------------------------------------
 docker service create --name <serviceName> -p <hostport>:<containerport> --replicas 1 <imagename>
 
 docker service create --name javawebappservice -p 8080:8080 457naveen/java-web-app
