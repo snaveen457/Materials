@@ -1,11 +1,10 @@
-
+ 
 Docker Compose
 ====================
 
 Docker compose is a tool using which we can define & deploy multi/single container applications.
 
 it's a yaml file.
-
 
 
 What is difference b/w Dockerfile & docker compose file?
@@ -26,6 +25,13 @@ Project:
 	 artifactId: spring-context
 	 version:3.1.0	 
 tttttttttt
+------------------------------------------
+it's a yaml file.
+
+Version:
+Services:
+Volumes:
+networks:
 
 ---------------------------------------
 Version: '3.2'
@@ -33,6 +39,7 @@ Version: '3.2'
 Services:
    Springapp:
      image: 457naveen/spring-boot-mongo:1
+     depends_on: mongo
      Ports:
      - 8080:8080	 
      networks:
@@ -91,11 +98,11 @@ Services:
 	
 Volumes:
   mongodbvol:
-    external: true
+    external: true     existing volume we can create
 	
 networks:
 springappnetwork:
-external: true
+external: true     existing network we can create
 
 
 
@@ -106,21 +113,21 @@ default name: docker-compose.yml or docker-compose.yaml
 vi docker-compose.yml
 
 sudo apt install docker-compose              to install this software
-sudo chmod 777 docker-compose
+sudo chmod 777 docker-compose      
 
-sudo chmod +x/usr/local/bin/docker-compose
+sudo chmod +x/usr/local/bin/docker-compose  executable permissions
 
 
-docker-compose config 
+docker-compose config                     to check valid compose file
 
 docker-compose create
 docker-compose up -d   to excute the detach mode of docker compose file
-docker-compose down
-docker-compose stop
+docker-compose down    removing the conatiners and network it will not remove volume.
+docker-compose stop    
 docker-compose restart
-docker-compose -f docker-compose-springapp.yml up -d
+docker-compose -f docker-compose-springapp.yml up -d   file with default name
 
-docker-compose -f docker-compose.yml -f docker-compose-dev.yml config
+docker-compose -f docker-compose.yml -f docker-compose-dev.yml config              
 
 docker-compose -f docker-compose.yml -f docker-compose-dev.yml up -d
 
