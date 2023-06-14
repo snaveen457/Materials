@@ -804,7 +804,8 @@ terraform apply
 ------------------------
 mkdir modules
 mkdir ec2
-Module
+Module  --> we can create centralized(git/NAS)  folder all the planning all the code over here depend upon use case.
+
 =================
 main.tf
 -------
@@ -981,6 +982,13 @@ dynamic "ingress" {
               }
 }
 ----------------------------------------------------
+Remote State Management
+----------------------
+S3
+Lock State
+dyanmo DB
+
+
 Remote State
 =============
 s.tf  create instance
@@ -997,6 +1005,14 @@ tags = {
   }
 }
 -------------------------------------------
+how can we put state file in remotely?
+s3
+
+
+
+if manage state file remotely how can you manage the lock?
+
+
 s3.tf  create s3
 -----
 provider "aws" {
@@ -1005,14 +1021,14 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "b" {
-  bucket = "my2-tf2-lw2-test2-bucket2"
+  bucket = "my2-tf2-lw2-test2-bucket2"   bucket name should be unique
 
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = true             no one can destroy your bucket if give true
  }
 
   versioning {
-    enabled = true
+    enabled = true                    it will maintained by versions
  }
 
   tags = {
@@ -1020,9 +1036,23 @@ resource "aws_s3_bucket" "b" {
  }
 
 }
------------------------------------------
-r.tf  create resource
 
+terraform apply   it will be created bucket.
+
+-----------------------------------------
+to upload state file remotely
+
+i don't want maintain state file locally, because i am creating remote file
+
+create new folder again, folder is for remote state,
+i want to create a some resource r.tf, i want to create a same resource r.tf over here, 
+before if a crate resource and apply again it will create locally state file
+
+i would like tell my current folder what ever state file creted i want create state file remotely.
+my backend state file is s3
+
+r.tf  create resource
+----------------------------
 provider "aws"{
      region = "ap-south-1"
      profile = "default"
@@ -1033,9 +1063,14 @@ terraform {
      bucket = "my2-tf2-lw2-test2-bucket2"
      key = "my.tfstate"
      region = "ap-south-1"
-    }
-    
+
+dynamodb_table = "tfstate-lock-table"   we need to add this one once create dynamoDB
+
+    } 
  }
+ 
+ teraform init
+ terraform automatically take backend as s3
  ---------------------------------------------------------
 ec2.tf  in resource need to add
 ---------
@@ -1046,7 +1081,16 @@ tags = {
     Name = "HelloWorld"
   }
 }
------------------------------------------------
+terraform apply
+it will not maintain state file locally, it will maintain at remotely
+---------------------------------------------------------------------
+s3 doesn't provide locking, use for dynamodb.
+in dynamo db will keep lock information.
+
+go to dynamoDB in AWS Servides, create table, if required manually.
+
+mkdir dy
+cd dy
 dynamodb d.tf
 ------------
 provider "aws"{
@@ -1057,11 +1101,11 @@ provider "aws"{
 resource "aws_dynamodb_table" "basic-dynamodb-table" {
   name   = "tfstate-lock-table"
   read_capacity = 5
-  write_capacity = 5
-  hash_key = "LockID"
+  write_capacity = 5    speed
+  hash_key = "LockID"   
 
 attribute {
-  name = "LockID"
+  name = "LockID"   the table must have a primary key named LockID with type of string. if not configured state locking file will be disabled.
   type = "S"
   }
 }
