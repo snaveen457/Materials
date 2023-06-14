@@ -1110,9 +1110,49 @@ attribute {
   }
 }
 --------------------------------------------------
+workspace
+
+mkdir W
+cd w
+
+terraform workspace -h  help workplace commands
+terraform workspace list  it showing deafult
+terraform workspace new dev   creating new workspace
+terraform workspace new prod 
+terraform workspace show   it will show which workplace
+terraform init
+terraform apply
+terraform workspace select dev  particular work space selecting means switching one workplace to another workplace
 
 
+provider "aws" {
+profile = "default"
+region  = "ap-south-1"
+}
 
+variable "type" {
+type = map
+default = {
+        dev= "t2.micro"
+        test = "t2.small"
+        prod = "t2.large"
+        }
+
+resource "aws_instance" "webos1" {
+ami = "**********"
+instance_type= "t2.micro"
+instance_type= lookup(var.type, terraform.workspace)
+
+tags = {
+  Name = "web server by TF"
+  }
+}
+
+*/
+output "o1"{
+value = terraform.workspace
+}
+---------------------------------------------------------------------------------------------
 
 
 
