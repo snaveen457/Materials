@@ -182,6 +182,16 @@ when ever we add new node container will be automatically scheduled in that new 
 docker service create --name mavenwebapp --mode global -p 9090:8080 457naveen/maven-web-app:1
 docker service ls
 
+what type of services(application) deploy in global mode?
+in real time we deploy lot of like internal application like monitoring applications, logging applications
+i need to have monotoring software or monitor agent each and every server or i want have a logging agent which will send the logs,
+which will capture all the logs from the server and which will send the central server.
+
+
+what type of service(application) deploy in replica mode?
+our applications our projects our microservices we will deploy those in replica mode, 
+we can scale up and scale down what ever application, what ever project you are developing. those images deployed in a replica mode.
+
 docker service scale javasvc=1
 
 docker node ps khbi6rtpkfbhbhk4k0h0t4ajj
