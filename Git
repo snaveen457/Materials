@@ -1,1 +1,118 @@
+GIT
+----
+
+GitHub
+gitlab
+Bitbucket
+svn
+
+
+
+
+1) create organization
+2) create a repository
+3) createa a team
+4) add users to the team
+5) provide repository accesss to the team
+
+Git commands
+================
+open Git Bash  --> windows
+connecting to linux server  --> git --version
+cd ~/Desktop --> Windows
+cd ~ --> home directory in linux server
+mkdir wallmart
+cd wallmart
+pwd --> present working directory
+
+git init  --> git init is command to creates a empty git local repository 
+
+Working Area                   Sageing Area                                   Local Repo
+----------------------------------------------------------------
+vi employtee.java 
+
+git status --> check whether local stageing working area file will check
+                             -------->                                   ------>git commit -m "first commit
+                            git add .           all files going to move
+                           git add *              all files going to move
+                         git add employtee.java     one file going to move
+git add  --> moving from Working Area to Sageing Area  
+
+git commit -m "first commit" --> all the files moving from local repo to remote repo which are in staging area
+
+who you are?
+
+git config --global user.name "snaveen457"
+git config --global user.email "snaveenapt457@gmail.com"
+
+git config --global --list         ---> check the names 
+
+untracked file (Red Colour) --> the files which are available in working place those called untracked file
+tracked file (Green Colour) --> the files which are available in staging area those called tracked file
+
+git remote add   wm --> git remote add is a command to map your remote repository with local repository.
+
+wm --> alais name for the remote repo url
+
+git remote -v --> check whether which url is mapped
+
+git push aliasname branchname --> pushing the code from local repo to remote repo
+git push wm master
+
+how many commid id's are there waht is command?
+git log
+
+head is showing latest commit id
+
+commit id
+vcs  version control system
+
+particular commited id how many files create how to see?
+git show commit id
+
+git show --pretty="" --name-only commit id       it will show file names
+
+git commit -a( only modified file) -m "update users file"  --> when already existing file weupdate that time will execute.
+
+git reset --> what ever files which are in staging area it is going to revert back to the working area
+git reset filename      --> particular file revert it back from staging area to working area
+
+
+in which badly commited code remove that code
+----------------------------------------------
+git revert --> what ever commited id is going to pause, in that commit id what ever files are created newly 
+         those are going to delete and what ever files are updated updated content is  going to be deleted.
+
+once hit the git revert it will open window in that add reverted.. and save it.
+
+what is difference between git reset and git revert?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
