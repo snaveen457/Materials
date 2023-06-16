@@ -119,6 +119,7 @@ git coomit -a -m  "updated code"   --> it is already file updated code then only
 git diff development
 
 git merge development   --> merge purpose what ever code one branch to another branch
+git merge   --->    it will get updated code from local repo and it get into the working area also
 
 git checkout -b branchname   ---> crating branch and switch to that branch one time
 
@@ -128,22 +129,86 @@ git push wm(aliasname) stage development   --> individual pushing branches
 git conflicts  --> when you are going to get the merge conflicts?
                   when you are going to integrate one brach to another branch with same files same lines is updated in line that time it is going to merge conflicts
 
+git pull -->
+
+git branch  --> diplay local repo branch
+git branch -a --> display all branches
+git branch -r  --> display remote repo branches
+
+git branch -d master  --> deleting branch local repository
+
+git push aliasname :branchname  --> deleting branch remote repository
+git push wm :development
+---------------------------------------------------------------
+Tags
+====
+
+what is the diff b/w branch and taag?
+Branch                                  
+-----
+Branch is mutable                 once created branch you cannot modified branch
+on going development              this time need to be create branch
+git branch branch name             creating branch
+git branch                         display all branches
+git push aliasname branchname      push to remote repo from local repo single branch
+git push aliasname --all           push to remote repo from local repo all branches
+Tag
+---
+Tag is an immutable              once you create tag you cannot be modified tagcode
+production deployment            this time need to be create tag
+git tag tagname                  giving tag name
+git tag                          display tags
+git push aliasname tagname       push to remote repo from local repo single tagname
+git push aliasname --tags        push to remote repo from local repo all tags
+git tag -d tagname               deleteing tag
+Tags are going to be create which branch?
+Master branch
+
+git Stash ---> what is code available(incompleted commit) in working area it will take one temporary backup
+before commiting the code you should not switch the other branch.
+
+git stash list  --> backup files list
+
+git stash apply  --> it will coomit for backup file when ever you switch the particular branch
+git statsh drop  --> deletd backup file
+git stash pop  --> it will apply the command and it will delte the file
+
+git cherry pick 
+================
+git cherry-pick  --> what ever commit id you are specifying those files are going to integrated to other branch(master)
+
+in commit DC3 what ever files i have commited in DC3 those updates i want to integrate on master branch.
+
+master
+|
+v development DC1 DC2 DC3 DC4
+git merge development  going to execute   all the commits going to execute the master branch
 
 
+Git clone
+==========
+git clone repo url  --> git clone from remote repo to local repo download entire code
 
+git pull or git fetch  --> get the updated code from remote repo
 
+git pull  --> it will get updated code from Remote repo to local repo and it get into the working area copy also
 
+git fetch  -->  it will get updated code from Remote repo to local repo 
 
+git pull = git fetch+git merge
 
+what is the difference b/w git fetch and git pull?
 
+Remote Repo    updated code here
 
+Local Repo  
 
+Working Area
 
+git fetch origin(aliasname) master
+git merge origin/master
 
-
-
-
-
+when we use git fetch and git pull?
 
 
 
