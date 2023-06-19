@@ -128,7 +128,7 @@ mvn install -Dmaven.test.skip=true
 overview of jacoco plugin
 
 sonar qube 
-
+============
 what is pom.xml?
 POM is Project Object Model
 it contains maven project and configuration information to build the project such as dependieces,
@@ -383,11 +383,7 @@ sonarQube is code quality tool
 5)integrating the sonar qube as a maven
 6)sonar qube key points
 
-
-
-
 4GB RAM required
-
 
 Launch instance in AWS
 
@@ -439,7 +435,9 @@ useradd sonar            create user
 id sonar               it will show created or not
 passwd sonar password   give passwd to sonar user
 
+ls -l
 chown -R sonar:sonar sonar/              change permission root to sonar
+chmod -R 775 sonar:sonar sonar/ 
 cd sonar/ 
 ll                                       it will show all direcetories
 su - sonar
