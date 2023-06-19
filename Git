@@ -150,6 +150,8 @@ Branch is mutable                 once created branch you cannot modified branch
 on going development              this time need to be create branch
 git branch branch name             creating branch
 git branch                         display all branches
+git brnanch -m oldname newname      rename branch name
+git brnanch -m newname             current branch rename
 git push aliasname branchname      push to remote repo from local repo single branch
 git push aliasname --all           push to remote repo from local repo all branches
 Tag
@@ -210,12 +212,34 @@ git merge origin/master
 
 when we use git fetch and git pull?
 
+SSH urls
+============
+ssh-keygen 
 
+rsa algoritham
+rsa --> ryver shalimar admin
+2 keys create
+id_rsa   --> Private key
+id_rsa.pub --> Punlic Key
 
+ssh-keygen -t dsa
+id_dsa
+id_dsa.pub
 
+~/.ssh  default path
+ls -ls ~/.ssh
 
+what are pre request for password less ssh connection?
+public key
+ssh -T git@github.com
 
+remote add sshurl sshkey  for addding ssh url in client pc
+PAT -- personal access token
 
+git rebase  -->
+
+Branching Strategy
+====================
 
 
 
