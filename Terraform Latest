@@ -119,6 +119,7 @@ rpm -q httpd
 string interpolation
 vi ec2.tf
 ---------
+
 variable "x"{
   type = string
   default = "linux world"
@@ -134,6 +135,15 @@ variable "x"{
 output "myvalue"{
   value = "var.x"
 }
+------------------------------
+variable "x"{
+  type = string
+  default = "linux world"
+}
+output "myvalue"{
+  value = "${var.x}"
+}
+
 ----------------------------------------
 aws configure list-profiles
 --------------------------------------------------
@@ -152,6 +162,10 @@ instance_type = "t2.micro"
 tags = {
    Name = "my first TF OS 1"
    }
+}
+
+output "o1"{
+value = aws_instance.os1
 }
 
 output "my_public_ip"{
@@ -177,7 +191,7 @@ value = aws_ebs_volume.st1
 
 resource "aws_volume_attachment" "ebs_att" {
   device_name = "/dev/sdh"
-  volme id    = aws_ebs_volume.st1
+  volme_id    = aws_ebs_volume.st1.id
   instance_id = aws_instance.os1.id
 }
 
