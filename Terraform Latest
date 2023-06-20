@@ -335,7 +335,7 @@ connection {
 provisioner "remote-exec" {
     inline = [
       "sudo yum install git -y",
-      "sudo git clone https://github.com/snaveen457/naveenM.git var/www/html", 
+      "sudo git clone https://github.com/snaveen457/naveenM.git var/www/html/web", 
     ]
   }
 }
