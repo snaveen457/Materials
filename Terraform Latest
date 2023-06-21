@@ -482,13 +482,13 @@ resource "aws_volume_attachment" "ebs_att"{
   instance_id  = aws_instance.webos1.id
   force_detach = true
  }
-}
+
 ---------------------------------------------
 terraform plan
 terraform apply
 .tfstate (Terraform state) --> what is currently available to get all the information to store in one local file that file is called Terraform state
-1) Desired State --> what is instruct code
-2) Current state  --> what is there right now, all ready created or already available is called current state
+1) Desired State --> what is instruct code ( what ever you write code)
+2) Current state  --> what is there right now, all ready created or already available is called current state (if available code don't do terraform apply)
 ------------------------------------
 vi output.tf
 ------------------
@@ -497,7 +497,7 @@ value = aws_instance.webos1.public_ip
 }
 ---------------------------------------
 terraform apply  --> it will print public ip
-teraform refresh  --> they go to cloud retrive all the information about resources
+terraform refresh  --> they go to cloud retrive all the information about resources
 -------------------------------------------------------------
 vi appache.tf
 --------------
@@ -902,7 +902,8 @@ profile = "default"
 }
 
 module "vpc" {
-  source = "/root/vpc"
+  source = "terraform-aws-modules/root/vpc"
+   cidr = "10.0.0.0/16"
 }
 -------------------------
 provider "aws" {
