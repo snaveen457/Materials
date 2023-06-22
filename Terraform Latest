@@ -1042,11 +1042,10 @@ tags = {
 }
 -------------------------------------------
 how can we put state file in remotely?
-s3
-
-
+by using AWs cloud in that service name is s3
 
 if manage state file remotely how can you manage the lock?
+by using AWs cloud in that service name is Dynamo DB
 
 
 s3.tf  create s3
