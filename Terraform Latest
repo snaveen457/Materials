@@ -1189,8 +1189,8 @@ value = terraform.workspace
 }
 ---------------------------------------------------------------------------------------------
 
-
-
+regex -->retrive specific information
+replace -->
 
 
 
