@@ -12,6 +12,14 @@ AWS
 2) CLI
 3) API
 =======================================
+
+Terraform ACCESS key
+
+access_Key = AKIAY5HI2LWEQEM66NFX
+secret_key = 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
+
+ami-057752b3f1d6c4d6c
+
 vi first.tf
 ------------
 provider "aws" {
