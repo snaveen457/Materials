@@ -206,7 +206,7 @@ smtp user name and password,use ssl, default recipients give gmail id,save.
 jenkins directory structure
 -----------------------------
 /var/lib/jenkins jenkins home directory
-/var/log/jenkins jenkisns log directory
+/var/log/jenkins jenkins log directory
 
 /jobs
 flikart-dev
@@ -221,7 +221,7 @@ builds
 workspace
 -------------
 flikart-dev  --> source code is avaliable
-flikart-dev@tmp
+flikart-dev@temp
 
 users
 ----------
