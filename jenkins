@@ -268,7 +268,7 @@ Artifactory plugin              --> integrated with nexus will use this plugin
 cloud foundry                   --> connect IBM Cloud through jenkins server use this plugin
 Blue ocean                      --> separe you can do pipeline
 publish over ssh                -->
-ThinBackup                      -->
+ThinBackup                      --> jenkins backup
 Build name Description setter   -->  for giving name to build 
 convert to pipeline             --> existing build project type will change
 invoke top-levelmaven targets   --> to build code
@@ -287,6 +287,8 @@ tomcat/jBoss/wildfly/jenkins --> 8080 all these defalut port number
 Tomcat --> server.xml in this file onlychange port number
 
 jenkins --> /etc/sysconfig/jenkins change port number in jenkins
+/etc/sysconfig/jenkins   change context path also 
+/etc/sysconfig/jenkins   change jenkins user name also
 
 /etc/sysconfig  --> Redhat
 /etc/default    --> ubuntu
@@ -307,7 +309,7 @@ select add parameter and select chioce parameter,give the name BranchName,
 in choice give branch names master,development,testqa,stage
 under Branches to build
 Branch Specifier (blank for 'any'
-*/$(BranchName)
+*/${BranchName}
 
 String Parameter
 Name Name
@@ -352,7 +354,8 @@ go to manage jenkins, go to manage users, click manage users, create user, give 
 same to create users to 3 names
 user informatin store in file called users.xml
 cd /var/lib/jenkins/users/ path for users.xml
-login with created users and check whethe login or not
+login with created users and check whether login or not?
+
 how to restrict admin access to user?
 login with jenkins admin user, go to the manage jenkins, click on configure global security,check LDAP(Separate admin team to support for this),
 under Authentication, jenkins own user database,
