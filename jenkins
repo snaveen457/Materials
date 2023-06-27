@@ -124,7 +124,7 @@ vi settings.xml
 	
 Tomcat 
 
-Deploy to container 	this plug in using deploy 
+Deploy to container 	this plug in using for deploy 
 	
 go to jenkins dashboard, click manage jenkis , 	go to manage plugins, search Deploy to container plugin , click on install withou restart.
 
