@@ -165,7 +165,7 @@ go to job, click on configure, scroll down under build triggers select build per
 my requiremnt every 1 min,so every 1 min need to give *****,and save.
 build peridiocally what ever particular time configure it will going trigger that time only.
 
-. 
+.
 Disable this project (when ever shduled mainatince is there that time will use)
  --> it will not show build now option in jenkins when it disable.
 ----------------------------
