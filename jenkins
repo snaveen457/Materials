@@ -370,13 +370,26 @@ pipeline script
 1)scripted way
 ------------------
 
-node('master')
+node('master') { }
 
 (OR)127 status code standard code, mavenHome=/var/lib/jenkins/tools/hudson.tasks.Maven_MavenInstallation/maven_3.9.0
 ==================================================================================================================
+after creating pipeline script job  under it showing pipeline syntax, click on pipeline synatx
+it will take another tab, in that tab snippet generator it will show, click on sniippet genrerator,
+under sample step drop down, just scroll down, it will show git:Git and selcet this,
+once select git it will ask Repository URL, take the http url from git and paste at Repository UR.
+and give branch name development, and add credential,
+after we will get script, copy the script and paste in under stage ('CheckoutCode').
+
+build --> sh "mvn claen package"  for linux    sh means shell
+          bat "mvn clean package" for windows     bat means batch
+127(command not found) status code standard code,mavenHome=/var/lib/jenkins/tools/hudson.tasks.Maven_MavenInstallation/maven_3.9.0
+give the above path
+
 node
 {
-def mavenHome = tool name: "maven 3.9.0"
+def mavenHome = tool name: "maven 3.9.0"   global level
+
 stage ('CheckoutCode'){
 git branch: 'development', credentialsId: 'af55cb54-7ec0-4414-8c0e-4a8b999dadd8', url: 'https://github.com/snaveen457/maven-web-application.git'
 }
@@ -384,13 +397,15 @@ git branch: 'development', credentialsId: 'af55cb54-7ec0-4414-8c0e-4a8b999dadd8'
 stage('Build'){
 sh "${mavenHome}/bin/mvn clean package"
 }
- 
+
  stage('ExecuteSonarQubeReport'){
  sh "${mavenHome}/bin/mvn sonar:sonar"
  }
+
  stage('UploadArtifactintonexus'){
  sh "${mavenHome}/bin/mvn deploy"
   }
+
  stage('DeployAPpintoTomcat'){
  sshagent(['ae8a6ec4-f887-428d-8d23-a777d300da28']){
  sh "scp -o  StrictHostKeyChecking=no target/maven-web-application.war ec2-user@18.202.251.119:/opt/tomcat/webapps/"
@@ -405,8 +420,7 @@ Regards''', cc: 'snaveenapt457@gmail.com', from: '', replyTo: '', subject: 'Buil
 ===============================================================================================================================================
 node{
     
-     def mavenHome = tool name: "maven 3.9.0"    --->local variable
-
+   def mavenHome = tool name: "maven 3.9.0"    --->local variable
     stage("copying code from the git"){
         git credentialsId: '5fcccbf1-20a9-49b3-a90b-7ad12e2cb3dc', url: 'https://github.com/snaveen457/maven-web-application.git'
     }
