@@ -1,5 +1,5 @@
 jenkins
----------------
+--------------
 jenkins is an opensource, java based, ci tool.
 
 hudson --> 2004 --> oracle
@@ -528,10 +528,13 @@ cd node1
 ls
 remoting remototing .jar
 
-go to jenkisns job, build any job, restrict where this project in run
+go to jenkisns job, build any job, (restrict where this project in run) with free style project and maven project.
+pipeline project in jenkins file in node level node ('node1')
 give the node name in label expression,trigger job.
 in node1 install git, now trigger job it will come to node.
-in node1 
+in node1 tools worksapce
+in workspace service code
+tools maven file is there
 
 Jenkins Migration
 ----------------
