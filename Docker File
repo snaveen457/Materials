@@ -211,6 +211,8 @@ using docker it self
 u have to clone u r code, u have to build your code.
 
 what is shell form and executable form in docker?
+In Docker, the shell form refers to specifying the command as a string that will be executed within a shell environment. 
+The executable form, on the other hand, allows you to directly specify the command without involving a shell.
 
 RUN,CMD,ENTRYPOINT Instructions can be defined in shell form or executable form?
 
