@@ -113,14 +113,14 @@ EFS limit scalable elastic file system no limit.
 
 
 S3(Simple storage service)
-========================
+===========================
 s3 another kind of a storage we can use to store our data to maintain our data.
 s3 is an object storage, we can access data from any where without mounting s3.
-object(file) we upload to s3 will have unique id and endpoint(url), using which we can access from any where.
+what ever our object(file) we upload to s3 will have unique id and endpoint(url), using which we can access from any where.
 
 how can upload data to s3
 ====================================
-progamatically we upload and access data using
+progamatically we upload and access data using.
 AWS CLI --> command line interface
 AWS API --> application programming interface
 AWS SDK --> software development kit.
