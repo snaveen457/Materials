@@ -310,7 +310,11 @@ context.xml how to edit
 go to 
 cd /opt/tomcat/webapps/Manager/META-INF/context.xml 
 in value give comment <!-- matter  -->
- after shutdown and restart the tomcat form bin directory
+ <!--  <Valve className="org.apache.catalina.valves.RemoteAddrValve"
+  allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1" /> -->
+
+
+after shutdown and restart the tomcat form bin directory
  cd /opt/tomcat/bin/
  tomcatstop
  tomcatstart
@@ -389,8 +393,9 @@ Launch instance in AWS
 
 we can install sonarqube using zip file.
 step1: first install java
-yum install java-11-openjdk-devel -y
+apt install java-11-openjdk-devel -y
 yum install java-11-openjdk
+sudo apt install openjdk-11-jdk -y
 sudo amazon-linux-extras install java-openjdk11
 
 java -version
@@ -402,6 +407,7 @@ https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-8.9.10.61524.z
 go to cd /opt/
 
 wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-8.9.10.61524.zip
+wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-9.9.3.79811.zip
 
 step3: unzip the file
 
@@ -555,7 +561,7 @@ cd /opt
 yum insatll wget -y 
 sudo amazon-linux-extras install java-openjdk11
 for this must and java-1.8*
-
+sudo apt install openjdk-11-jdk -y
 install nexus server in ec2
 sudo su -
 cd /opt
@@ -601,6 +607,8 @@ ln -s /opt/nexus/bin/nexus /etc/init.d/nexus
 switch to the nexus user
 
 su - nexus
+sudo chsh -s /bin/bash nexus
+
 
 enable the nexus service
 
