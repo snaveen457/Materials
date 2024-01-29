@@ -561,6 +561,7 @@ cd /opt
 yum insatll wget -y 
 sudo amazon-linux-extras install java-openjdk11
 for this must and java-1.8*
+sudo apt install openjdk-8-jdk -y
 sudo apt install openjdk-11-jdk -y
 install nexus server in ec2
 sudo su -
