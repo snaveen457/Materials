@@ -605,6 +605,10 @@ creae a nexus as a service
 
 ln -s /opt/nexus/bin/nexus /etc/init.d/nexus
 
+sudo mkdir /home/nexus
+sudo chown nexus:nexus /home/nexus
+
+
 switch to the nexus user
 
 su - nexus
